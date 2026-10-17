@@ -1,0 +1,1080 @@
+{
+  "system": "b0",
+  "model": "gemini-2.5-flash",
+  "metrics": {
+    "total_questions": 20,
+    "error_count": 20,
+    "empty_count": 0,
+    "success_count": 0,
+    "timeout_count": 0,
+    "error_rate_pct": 100.0,
+    "empty_rate_pct": 0.0,
+    "ex_pct": 0.0,
+    "total_calls": 20,
+    "avg_prompt_tokens": 95.0,
+    "avg_completion_tokens": 18.0,
+    "rdr_pct": null
+  },
+  "states": [
+    {
+      "question_id": 1,
+      "db_id": "financial",
+      "question": "What is the total cash credit amount in district 1?",
+      "gold_sql": "SELECT SUM(amount) FROM financial_records WHERE district_id = 1 AND operation_type = 'Credit in Cash';",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 2.1609000104945153
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 2,
+      "db_id": "financial",
+      "question": "List all account IDs with a balance over 10000.",
+      "gold_sql": "SELECT account_id FROM financial_records WHERE balance > 10000;",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 1.3461000053212047
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 3,
+      "db_id": "financial",
+      "question": "What is the average withdrawal amount for district 2?",
+      "gold_sql": "SELECT AVG(amount) FROM financial_records WHERE district_id = 2 AND operation_type = 'Withdrawal in Cash';",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 1.7720000178087503
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 4,
+      "db_id": "financial",
+      "question": "How many records are in district 4?",
+      "gold_sql": "SELECT COUNT(*) FROM financial_records WHERE district_id = 4;",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 1.5562999760732055
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 5,
+      "db_id": "financial",
+      "question": "What is the maximum balance recorded in district 3?",
+      "gold_sql": "SELECT MAX(balance) FROM financial_records WHERE district_id = 3;",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 1.6161999956239015
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 6,
+      "db_id": "financial",
+      "question": "What is the total cash credit amount in district 1?",
+      "gold_sql": "SELECT SUM(amount) FROM financial_records WHERE district_id = 1 AND operation_type = 'Credit in Cash';",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 1.9896000158041716
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 7,
+      "db_id": "financial",
+      "question": "List all account IDs with a balance over 10000.",
+      "gold_sql": "SELECT account_id FROM financial_records WHERE balance > 10000;",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 1.7214999825228006
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 8,
+      "db_id": "financial",
+      "question": "What is the average withdrawal amount for district 2?",
+      "gold_sql": "SELECT AVG(amount) FROM financial_records WHERE district_id = 2 AND operation_type = 'Withdrawal in Cash';",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 1.869500003522262
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 9,
+      "db_id": "financial",
+      "question": "How many records are in district 4?",
+      "gold_sql": "SELECT COUNT(*) FROM financial_records WHERE district_id = 4;",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 1.6149000148288906
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 10,
+      "db_id": "financial",
+      "question": "What is the maximum balance recorded in district 3?",
+      "gold_sql": "SELECT MAX(balance) FROM financial_records WHERE district_id = 3;",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 1.8440000130794942
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 11,
+      "db_id": "financial",
+      "question": "What is the total cash credit amount in district 1?",
+      "gold_sql": "SELECT SUM(amount) FROM financial_records WHERE district_id = 1 AND operation_type = 'Credit in Cash';",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 1.860599993960932
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 12,
+      "db_id": "financial",
+      "question": "List all account IDs with a balance over 10000.",
+      "gold_sql": "SELECT account_id FROM financial_records WHERE balance > 10000;",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 1.6611999890301377
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 13,
+      "db_id": "financial",
+      "question": "What is the average withdrawal amount for district 2?",
+      "gold_sql": "SELECT AVG(amount) FROM financial_records WHERE district_id = 2 AND operation_type = 'Withdrawal in Cash';",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 1.6453000134788454
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 14,
+      "db_id": "financial",
+      "question": "How many records are in district 4?",
+      "gold_sql": "SELECT COUNT(*) FROM financial_records WHERE district_id = 4;",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 1.7517000087536871
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 15,
+      "db_id": "financial",
+      "question": "What is the maximum balance recorded in district 3?",
+      "gold_sql": "SELECT MAX(balance) FROM financial_records WHERE district_id = 3;",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 1.8681999936234206
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 16,
+      "db_id": "financial",
+      "question": "What is the total cash credit amount in district 1?",
+      "gold_sql": "SELECT SUM(amount) FROM financial_records WHERE district_id = 1 AND operation_type = 'Credit in Cash';",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 2.9491999885067344
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 17,
+      "db_id": "financial",
+      "question": "List all account IDs with a balance over 10000.",
+      "gold_sql": "SELECT account_id FROM financial_records WHERE balance > 10000;",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 3.516600001603365
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 18,
+      "db_id": "financial",
+      "question": "What is the average withdrawal amount for district 2?",
+      "gold_sql": "SELECT AVG(amount) FROM financial_records WHERE district_id = 2 AND operation_type = 'Withdrawal in Cash';",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 1.6512000001966953
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 19,
+      "db_id": "financial",
+      "question": "How many records are in district 4?",
+      "gold_sql": "SELECT COUNT(*) FROM financial_records WHERE district_id = 4;",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 1.779900019755587
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 20,
+      "db_id": "financial",
+      "question": "What is the maximum balance recorded in district 3?",
+      "gold_sql": "SELECT MAX(balance) FROM financial_records WHERE district_id = 3;",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 1.760699989972636
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18,
+      "model_config": {
+        "populate_by_name": true
+      }
+    }
+  ]
+}

@@ -122,8 +122,8 @@ def run_bird_evaluation(
             {
                 "system": system,
                 "model": model,
-                "metrics": metrics.model_dump(),
-                "states": [s.model_dump() for s in states],
+                "metrics": metrics.model_dump() if hasattr(metrics, "model_dump") else metrics.dict(),
+                "states": [s.model_dump() if hasattr(s, "model_dump") else s.dict() for s in states],
             },
             f,
             indent=2,
@@ -131,7 +131,7 @@ def run_bird_evaluation(
 
     print(f"\nResults saved to {results_file}")
     print(f"Total: {metrics.total_questions} | EX: {metrics.ex_pct}% | ERROR: {metrics.error_rate_pct}% | EMPTY: {metrics.empty_rate_pct}%")
-    return {"metrics": metrics.model_dump(), "states": states}
+    return {"metrics": metrics.model_dump() if hasattr(metrics, "model_dump") else metrics.dict(), "states": states}
 
 
 if __name__ == "__main__":

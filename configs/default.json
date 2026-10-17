@@ -1,5 +1,5 @@
 {
-  "model": "gpt-4o-mini",
+  "model": "gemini-2.5-flash",
   "temperature": 0.0,
   "max_repair_turns": 2,
   "timeout_sec": 30.0
