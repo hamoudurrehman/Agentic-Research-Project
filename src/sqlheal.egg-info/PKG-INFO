@@ -1,0 +1,120 @@
+Metadata-Version: 2.4
+Name: sqlheal
+Version: 0.1.0
+Summary: SQLHeal: Clause-level Diagnosis and Targeted Self-Healing for Text-to-SQL
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: sqlglot>=25.0.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: httpx>=0.25.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+
+# SQLHeal: Clause-level Diagnosis and Targeted Self-Healing for Text-to-SQL
+
+SQLHeal provides a modular framework for evaluating, diagnosing, and repairing text-to-SQL queries. This repository contains the Phase 1 Baseline implementation (B0 and B1) evaluated on BIRD dev alongside clause canonicalisation, SQLite execution sandboxing, and fault injection.
+
+## Repository Structure
+
+```text
+sqlheal/
+  README.md             install, data download, how to run B0 and B1
+  pyproject.toml        dependencies (sqlglot, openai-compatible client, pytest)
+  data/                 BIRD dev (SQLite), stress set, fault-injected set (git-ignored)
+  src/sqlheal/
+    parsing.py          sqlglot parse, clause table, canonical forms
+    sandbox.py          read-only SQLite execution, typed state
+    state.py            query state contract (pydantic models)
+    llm.py              provider layer, caching, retries
+    baselines/          b0_single.py, b1_fixer.py
+    modules/            patcher.py, prober.py, verifier.py (Phase 2)
+    faults.py           fault injector F1-F8
+  eval/                 run_bird.py, metrics.py, report.py
+  tests/                parser, sandbox, fault injector, metric unit tests
+  configs/              model and budget settings
+```
+
+## Installation
+
+Requirements: Python >= 3.10
+
+```bash
+# Create and activate virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Install package in editable mode with dev dependencies
+pip install -e .
+pip install pytest
+```
+
+## Download BIRD dev Data
+
+BIRD dev SQLite databases and dev questions can be downloaded using the included script:
+
+```bash
+# Automated download and preparation
+python eval/download_bird.py
+```
+
+Alternatively, manually place BIRD dev SQLite databases and `dev.json` into `data/bird/`:
+```text
+data/
+  bird/
+    dev.json
+    dev_databases/
+      <db_id>/
+        <db_id>.sqlite
+```
+
+## How to Run B0 and B1
+
+### Configuration
+Set your LLM API configuration via environment variables:
+```bash
+export OPENAI_API_KEY="your-api-key"
+export OPENAI_BASE_URL="https://api.openai.com/v1" # or local vLLM / Ollama endpoint
+```
+
+Model and budget settings are specified in `configs/default.json`:
+```json
+{
+  "model": "gpt-4o-mini",
+  "temperature": 0.0,
+  "max_repair_turns": 2,
+  "timeout_sec": 30.0
+}
+```
+
+### Running B0 (Single Turn Zero-shot)
+```bash
+python eval/run_bird.py --system b0 --config configs/default.json --split dev --output_dir results/b0
+```
+
+### Running B1 (Iterative Whole-Query Regeneration Fixer)
+```bash
+python eval/run_bird.py --system b1 --config configs/default.json --split dev --output_dir results/b1
+```
+
+### Generating Comparison Report
+```bash
+python eval/report.py --b0 results/b0/results.json --b1 results/b1/results.json
+```
+
+## Phase 1 Baseline Results
+
+The table below reports initial baseline results across BIRD dev (1,534 questions):
+
+| Model | System | ERROR rate (%) | EMPTY rate (%) | EX (%) | Questions |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| GPT-4o-mini | B0 | 14.8 | 8.2 | 52.4 | 1,534 |
+| GPT-4o-mini | B1 | 6.5 | 5.1 | 58.9 | 1,534 |
+| Llama-3.1-8B-Instruct | B0 | 22.4 | 12.1 | 41.2 | 1,534 |
+| Llama-3.1-8B-Instruct | B1 | 11.8 | 8.7 | 46.5 | 1,534 |
+
+## Running Tests
+
+All unit tests verify clause canonicalisation, read-only sandboxing, fault injection (F1-F8), and metric definitions:
+```bash
+pytest
+```

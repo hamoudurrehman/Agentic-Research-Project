@@ -1,0 +1,16 @@
+# Python virtual environment & secrets
+.venv/
+venv/
+__pycache__/
+*.pyc
+.env
+
+# Data files (all downloaded datasets are git-ignored due to size)
+data/
+*.sqlite
+*.zip
+
+# Cache and results
+.cache/
+results/
+.pytest_cache/
