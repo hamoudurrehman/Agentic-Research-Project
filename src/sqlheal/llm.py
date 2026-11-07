@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import hashlib
+import time
 import json
 import os
 from pathlib import Path
@@ -21,10 +22,13 @@ class LLMClient:
         base_url: Optional[str] = None,
         cache_dir: Optional[str] = ".cache/llm",
         temperature: float = 0.0,
-        max_retries: int = 3,
+        max_retries: int = 6,
         timeout: float = 30.0,
+        min_interval: float=0.0
     ):
         self.model = model
+        self.min_interval=0
+        self._last_call=0.0
         self.api_key = api_key or os.getenv("OPENAI_API_KEY", "")
         self.base_url = (base_url or os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")).rstrip("/")
         self.cache_dir = Path(cache_dir) if cache_dir else None
@@ -52,12 +56,15 @@ class LLMClient:
 
         # If no API key is provided, perform rule-based deterministic response simulation
         # (Allows end-to-end execution and tests without live network/API key)
+                # No key: fail loudly. The mock is only allowed when explicitly requested (tests).
         if not self.api_key or self.api_key == "mock":
-            simulated = self._simulate_response(messages)
-            if cache_file:
-                with open(cache_file, "w") as f:
-                    json.dump(simulated, f)
-            return simulated
+            if os.getenv("SQLHEAL_MOCK") == "1":
+                simulated = self._simulate_response(messages)
+                if cache_file:
+                    with open(cache_file, "w") as f:
+                        json.dump(simulated, f)
+                return simulated
+            raise RuntimeError("OPENAI_API_KEY is not set. Set it in .env (or SQLHEAL_MOCK=1 for tests).")
 
         url = f"{self.base_url}/chat/completions"
         headers = {
@@ -71,8 +78,13 @@ class LLMClient:
             **kwargs,
         }
 
+        last_err = None
         for attempt in range(self.max_retries):
             try:
+                wait = self.min_interval - (time.time() - self._last_call)
+                if wait > 0:
+                    time.sleep(wait)
+                self._last_call = time.time()
                 with httpx.Client(timeout=self.timeout) as client:
                     resp = client.post(url, headers=headers, json=body)
                     resp.raise_for_status()
@@ -87,12 +99,22 @@ class LLMClient:
                         with open(cache_file, "w") as f:
                             json.dump(result, f)
                     return result
+            except httpx.HTTPStatusError as e:
+                
+                code = e.response.status_code
+                last_err = f"{code}: {e.response.text[:300]}"
+                if code in (400, 401, 403, 404):  # will never succeed on retry
+                    raise RuntimeError(f"LLM request rejected ({last_err}")
+                if code == 429:
+                    time.sleep(min(float(e.response.headers.get("retry-after", 20)), 90))
+                    continue
+                
             except Exception as e:
-                if attempt == self.max_retries - 1:
-                    # Fallback to simulated if remote fails
-                    return self._simulate_response(messages)
+                last_err = e
+            if attempt < self.max_retries - 1:
+                time.sleep(2 ** attempt)  # backoff for 429/503/timeouts
 
-        return self._simulate_response(messages)
+        raise RuntimeError(f"LLM call failed after {self.max_retries} attempts: {last_err}")
 
     def _simulate_response(self, messages: List[Dict[str, str]]) -> Dict[str, Any]:
         """Deterministic mock response for offline/testing and fallback."""

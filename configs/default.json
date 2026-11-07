@@ -1,6 +1,7 @@
 {
-  "model": "gemini-2.5-flash",
+  "model": "gemini-3.6-flash",
   "temperature": 0.0,
   "max_repair_turns": 2,
-  "timeout_sec": 30.0
+  "timeout_sec": 30.0,
+  "min_interval_sec": 7
 }

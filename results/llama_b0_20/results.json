@@ -1,0 +1,3293 @@
+{
+  "system": "b0",
+  "model": "llama3.1:8b",
+  "metrics": {
+    "total_questions": 20,
+    "error_count": 8,
+    "empty_count": 3,
+    "success_count": 9,
+    "timeout_count": 0,
+    "error_rate_pct": 40.0,
+    "empty_rate_pct": 15.0,
+    "ex_pct": 20.0,
+    "total_calls": 20,
+    "avg_prompt_tokens": 1017.0,
+    "avg_completion_tokens": 67.8,
+    "rdr_pct": null
+  },
+  "states": [
+    {
+      "question_id": 0,
+      "db_id": "california_schools",
+      "question": "What is the highest eligible free rate for K-12 students in the schools in Alameda County?",
+      "gold_sql": "SELECT `Free Meal Count (K-12)` / `Enrollment (K-12)` FROM frpm WHERE `County Name` = 'Alameda' ORDER BY (CAST(`Free Meal Count (K-12)` AS REAL) / `Enrollment (K-12)`) DESC LIMIT 1",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT MAX(`Percent (%) Eligible Free (K-12)`) \nFROM frpm \nWHERE `County Name` = 'Alameda';",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "MAX(\"Percent (%) Eligible Free (K-12)\")",
+                "canonical": "MAX(\"Percent (%) Eligible Free (K-12)\")",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM frpm",
+                "canonical": "FROM frpm",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "\"County Name\" = 'Alameda'",
+                "canonical": "\"County Name\" = 'Alameda'",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                1.0
+              ]
+            ],
+            "columns": [
+              "MAX(`Percent (%) Eligible Free (K-12)`)"
+            ],
+            "error_message": null,
+            "execution_time_ms": 41.42180015332997
+          },
+          "prompt_tokens": 1034,
+          "completion_tokens": 34
+        }
+      ],
+      "final_sql": "SELECT MAX(`Percent (%) Eligible Free (K-12)`) \nFROM frpm \nWHERE `County Name` = 'Alameda';",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": true,
+      "total_calls": 1,
+      "total_prompt_tokens": 1034,
+      "total_completion_tokens": 34,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 1,
+      "db_id": "california_schools",
+      "question": "Please list the lowest three eligible free rates for students aged 5-17 in continuation schools.",
+      "gold_sql": "SELECT `Free Meal Count (Ages 5-17)` / `Enrollment (Ages 5-17)` FROM frpm WHERE `Educational Option Type` = 'Continuation School' AND `Free Meal Count (Ages 5-17)` / `Enrollment (Ages 5-17)` IS NOT NULL ORDER BY `Free Meal Count (Ages 5-17)` / `Enrollment (Ages 5-17)` ASC LIMIT 3",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT \n    CDSCode,\n    `Percent (%) Eligible Free (Ages 5-17)`\nFROM \n    frpm\nWHERE \n    `School Type` = 'Continuation'\nORDER BY \n    `Percent (%) Eligible Free (Ages 5-17)` ASC\nLIMIT 3;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "CDSCode, \"Percent (%) Eligible Free (Ages 5-17)\"",
+                "canonical": "CDSCode, \"Percent (%) Eligible Free (Ages 5-17)\"",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM frpm",
+                "canonical": "FROM frpm",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "\"School Type\" = 'Continuation'",
+                "canonical": "\"School Type\" = 'Continuation'",
+                "ast_type": "Where"
+              },
+              {
+                "clause_type": "ORDER_BY",
+                "content": "\"Percent (%) Eligible Free (Ages 5-17)\" ASC",
+                "canonical": "\"Percent (%) Eligible Free (Ages 5-17)\" ASC",
+                "ast_type": "Order"
+              },
+              {
+                "clause_type": "LIMIT",
+                "content": "3",
+                "canonical": "3",
+                "ast_type": "Limit"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "EMPTY",
+            "rows": [],
+            "columns": [
+              "CDSCode",
+              "Percent (%) Eligible Free (Ages 5-17)"
+            ],
+            "error_message": null,
+            "execution_time_ms": 5.334099987521768
+          },
+          "prompt_tokens": 1042,
+          "completion_tokens": 69
+        }
+      ],
+      "final_sql": "SELECT \n    CDSCode,\n    `Percent (%) Eligible Free (Ages 5-17)`\nFROM \n    frpm\nWHERE \n    `School Type` = 'Continuation'\nORDER BY \n    `Percent (%) Eligible Free (Ages 5-17)` ASC\nLIMIT 3;",
+      "final_status": "EMPTY",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 1042,
+      "total_completion_tokens": 69,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 2,
+      "db_id": "california_schools",
+      "question": "Please list the zip code of all the charter schools in Fresno County Office of Education.",
+      "gold_sql": "SELECT T2.Zip FROM frpm AS T1 INNER JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode WHERE T1.`District Name` = 'Fresno County Office of Education' AND T1.`Charter School (Y/N)` = 1",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.Zip \nFROM schools AS T1 \nJOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode \nWHERE T2.`County Name` = 'Fresno County Office of Education' AND T2.`Charter School (Y/N)` = 1;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.Zip",
+                "canonical": "T1.Zip",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM schools AS T1 JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode",
+                "canonical": "FROM schools AS T1 JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "T2.\"County Name\" = 'Fresno County Office of Education' AND T2.\"Charter School (Y/N)\" = 1",
+                "canonical": "T2.\"County Name\" = 'Fresno County Office of Education' AND T2.\"Charter School (Y/N)\" = 1",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "EMPTY",
+            "rows": [],
+            "columns": [
+              "Zip"
+            ],
+            "error_message": null,
+            "execution_time_ms": 5.276800133287907
+          },
+          "prompt_tokens": 1024,
+          "completion_tokens": 67
+        }
+      ],
+      "final_sql": "SELECT T1.Zip \nFROM schools AS T1 \nJOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode \nWHERE T2.`County Name` = 'Fresno County Office of Education' AND T2.`Charter School (Y/N)` = 1;",
+      "final_status": "EMPTY",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 1024,
+      "total_completion_tokens": 67,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 3,
+      "db_id": "california_schools",
+      "question": "What is the unabbreviated mailing street address of the school with the highest FRPM count for K-12 students?",
+      "gold_sql": "SELECT T2.MailStreet FROM frpm AS T1 INNER JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode ORDER BY T1.`FRPM Count (K-12)` DESC LIMIT 1",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.MailStreet\nFROM schools AS T1\nJOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode\nWHERE T2.`FRPM Count (K-12)` = ( SELECT MAX(`FRPM Count (K-12)`) FROM frpm )",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.MailStreet",
+                "canonical": "T1.MailStreet",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM schools AS T1 JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode",
+                "canonical": "FROM schools AS T1 JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "T2.\"FRPM Count (K-12)\" = (SELECT MAX(\"FRPM Count (K-12)\") FROM frpm)",
+                "canonical": "T2.\"FRPM Count (K-12)\" = (SELECT MAX(\"FRPM Count (K-12)\") FROM frpm)",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                "14429 South Downey Avenue"
+              ]
+            ],
+            "columns": [
+              "MailStreet"
+            ],
+            "error_message": null,
+            "execution_time_ms": 18.601099960505962
+          },
+          "prompt_tokens": 1004,
+          "completion_tokens": 66
+        }
+      ],
+      "final_sql": "SELECT T1.MailStreet\nFROM schools AS T1\nJOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode\nWHERE T2.`FRPM Count (K-12)` = ( SELECT MAX(`FRPM Count (K-12)`) FROM frpm )",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": true,
+      "total_calls": 1,
+      "total_prompt_tokens": 1004,
+      "total_completion_tokens": 66,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 4,
+      "db_id": "california_schools",
+      "question": "Please list the phone numbers of the direct charter-funded schools that are opened after 2000/1/1.",
+      "gold_sql": "SELECT T2.Phone FROM frpm AS T1 INNER JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode WHERE T1.`Charter Funding Type` = 'Directly funded' AND T1.`Charter School (Y/N)` = 1 AND T2.OpenDate > '2000-01-01'",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT Phone \nFROM schools \nWHERE Charter = 1 AND FundingType = 'Direct Charter' AND OpenDate > '2000-01-01';",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "Phone",
+                "canonical": "Phone",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM schools",
+                "canonical": "FROM schools",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "Charter = 1 AND FundingType = 'Direct Charter' AND OpenDate > '2000-01-01'",
+                "canonical": "Charter = 1 AND FundingType = 'Direct Charter' AND OpenDate > '2000-01-01'",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "EMPTY",
+            "rows": [],
+            "columns": [
+              "Phone"
+            ],
+            "error_message": null,
+            "execution_time_ms": 64.72869985736907
+          },
+          "prompt_tokens": 1029,
+          "completion_tokens": 36
+        }
+      ],
+      "final_sql": "SELECT Phone \nFROM schools \nWHERE Charter = 1 AND FundingType = 'Direct Charter' AND OpenDate > '2000-01-01';",
+      "final_status": "EMPTY",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 1029,
+      "total_completion_tokens": 36,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 5,
+      "db_id": "california_schools",
+      "question": "How many schools with an average score in Math greater than 400 in the SAT test are exclusively virtual?",
+      "gold_sql": "SELECT COUNT(DISTINCT T2.School) FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode WHERE T2.Virtual = 'F' AND T1.AvgScrMath > 400",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT COUNT(DISTINCT s.cds) \nFROM satscores s \nJOIN schools sc ON s.cds = sc.CDSCode \nWHERE s.AvgScrMath > 400 AND sc.Virtual = 'F';",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "COUNT(DISTINCT s.cds)",
+                "canonical": "COUNT(DISTINCT s.cds)",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM satscores AS s JOIN schools AS sc ON s.cds = sc.CDSCode",
+                "canonical": "FROM satscores AS s JOIN schools AS sc ON s.cds = sc.CDSCode",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "s.AvgScrMath > 400 AND sc.Virtual = 'F'",
+                "canonical": "s.AvgScrMath > 400 AND sc.Virtual = 'F'",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                4
+              ]
+            ],
+            "columns": [
+              "COUNT(DISTINCT s.cds)"
+            ],
+            "error_message": null,
+            "execution_time_ms": 36.13050002604723
+          },
+          "prompt_tokens": 1017,
+          "completion_tokens": 50
+        }
+      ],
+      "final_sql": "SELECT COUNT(DISTINCT s.cds) \nFROM satscores s \nJOIN schools sc ON s.cds = sc.CDSCode \nWHERE s.AvgScrMath > 400 AND sc.Virtual = 'F';",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": true,
+      "total_calls": 1,
+      "total_prompt_tokens": 1017,
+      "total_completion_tokens": 50,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 6,
+      "db_id": "california_schools",
+      "question": "Among the schools with the SAT test takers of over 500, please list the schools that are magnet schools or offer a magnet program.",
+      "gold_sql": "SELECT T2.School FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode WHERE T2.Magnet = 1 AND T1.NumTstTakr > 500",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT s.CDSCode, s.Magnet\nFROM satscores AS s\nJOIN schools AS sc ON s.cds = sc.CDSCode\nWHERE s.NumGE1500 > 0 AND sc.Magnet = 1;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "s.CDSCode, s.Magnet",
+                "canonical": "s.CDSCode, s.Magnet",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM satscores AS s JOIN schools AS sc ON s.cds = sc.CDSCode",
+                "canonical": "FROM satscores AS s JOIN schools AS sc ON s.cds = sc.CDSCode",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "s.NumGE1500 > 0 AND sc.Magnet = 1",
+                "canonical": "s.NumGE1500 > 0 AND sc.Magnet = 1",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such column: s.CDSCode",
+            "execution_time_ms": 1.500499900430441
+          },
+          "prompt_tokens": 1028,
+          "completion_tokens": 53
+        }
+      ],
+      "final_sql": "SELECT s.CDSCode, s.Magnet\nFROM satscores AS s\nJOIN schools AS sc ON s.cds = sc.CDSCode\nWHERE s.NumGE1500 > 0 AND sc.Magnet = 1;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 1028,
+      "total_completion_tokens": 53,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 7,
+      "db_id": "california_schools",
+      "question": "What is the phone number of the school that has the highest number of test takers with an SAT score of over 1500?",
+      "gold_sql": "SELECT T2.Phone FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode ORDER BY T1.NumGE1500 DESC LIMIT 1",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.Phone\nFROM schools AS T1\nJOIN satscores AS T2 ON T1.CDSCode = T2.cds\nWHERE T2.rtype = 'S' AND T2.NumGE1500 = (\n    SELECT MAX(NumGE1500)\n    FROM satscores\n    WHERE rtype = 'S'\n)",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.Phone",
+                "canonical": "T1.Phone",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM schools AS T1 JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "canonical": "FROM schools AS T1 JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "T2.rtype = 'S' AND T2.NumGE1500 = (SELECT MAX(NumGE1500) FROM satscores WHERE rtype = 'S')",
+                "canonical": "T2.rtype = 'S' AND T2.NumGE1500 = (SELECT MAX(NumGE1500) FROM satscores WHERE rtype = 'S')",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                "(415) 759-2730"
+              ]
+            ],
+            "columns": [
+              "Phone"
+            ],
+            "error_message": null,
+            "execution_time_ms": 3.45690012909472
+          },
+          "prompt_tokens": 1007,
+          "completion_tokens": 77
+        }
+      ],
+      "final_sql": "SELECT T1.Phone\nFROM schools AS T1\nJOIN satscores AS T2 ON T1.CDSCode = T2.cds\nWHERE T2.rtype = 'S' AND T2.NumGE1500 = (\n    SELECT MAX(NumGE1500)\n    FROM satscores\n    WHERE rtype = 'S'\n)",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 1007,
+      "total_completion_tokens": 77,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 8,
+      "db_id": "california_schools",
+      "question": "What is the number of SAT test takers of the schools with the highest FRPM count for K-12 students?",
+      "gold_sql": "SELECT NumTstTakr FROM satscores WHERE cds = ( SELECT CDSCode FROM frpm ORDER BY `FRPM Count (K-12)` DESC LIMIT 1 )",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.NumTstTakr\nFROM satscores AS T1\nJOIN (\n    SELECT CDSCode, MAX(FRPM Count (K-12)) AS max_FRPM\n    FROM frpm\n    GROUP BY CDSCode\n) AS T2\nON T1.cds = T2.CDSCode\nWHERE T1.cds = T2.CDSCode AND T1.NumTstTakr = T2.max_FRPM;",
+          "clause_table": {
+            "clauses": []
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "near \"Count\": syntax error",
+            "execution_time_ms": 1.6491999849677086
+          },
+          "prompt_tokens": 1004,
+          "completion_tokens": 100
+        }
+      ],
+      "final_sql": "SELECT T1.NumTstTakr\nFROM satscores AS T1\nJOIN (\n    SELECT CDSCode, MAX(FRPM Count (K-12)) AS max_FRPM\n    FROM frpm\n    GROUP BY CDSCode\n) AS T2\nON T1.cds = T2.CDSCode\nWHERE T1.cds = T2.CDSCode AND T1.NumTstTakr = T2.max_FRPM;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 1004,
+      "total_completion_tokens": 100,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 9,
+      "db_id": "california_schools",
+      "question": "Among the schools with the average score in Math over 560 in the SAT test, how many schools are directly charter-funded?",
+      "gold_sql": "SELECT COUNT(T2.`School Code`) FROM satscores AS T1 INNER JOIN frpm AS T2 ON T1.cds = T2.CDSCode WHERE T1.AvgScrMath > 560 AND T2.`Charter Funding Type` = 'Directly funded'",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT COUNT(DISTINCT s.CDSCode) \nFROM satscores s \nJOIN schools sc ON s.cds = sc.CDSCode \nWHERE s.AvgScrMath > 560 AND sc.FundingType = 'Direct Charter';",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "COUNT(DISTINCT s.CDSCode)",
+                "canonical": "COUNT(DISTINCT s.CDSCode)",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM satscores AS s JOIN schools AS sc ON s.cds = sc.CDSCode",
+                "canonical": "FROM satscores AS s JOIN schools AS sc ON s.cds = sc.CDSCode",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "s.AvgScrMath > 560 AND sc.FundingType = 'Direct Charter'",
+                "canonical": "s.AvgScrMath > 560 AND sc.FundingType = 'Direct Charter'",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such column: s.CDSCode",
+            "execution_time_ms": 2.2199000231921673
+          },
+          "prompt_tokens": 1005,
+          "completion_tokens": 54
+        }
+      ],
+      "final_sql": "SELECT COUNT(DISTINCT s.CDSCode) \nFROM satscores s \nJOIN schools sc ON s.cds = sc.CDSCode \nWHERE s.AvgScrMath > 560 AND sc.FundingType = 'Direct Charter';",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 1005,
+      "total_completion_tokens": 54,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 10,
+      "db_id": "california_schools",
+      "question": "For the school with the highest average score in Reading in the SAT test, what is its FRPM count for students aged 5-17?",
+      "gold_sql": "SELECT T2.`FRPM Count (Ages 5-17)` FROM satscores AS T1 INNER JOIN frpm AS T2 ON T1.cds = T2.CDSCode ORDER BY T1.AvgScrRead DESC LIMIT 1",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.FRPM_Count_Ages_5_17\nFROM frpm AS T1\nJOIN satscores AS T2 ON T1.CDSCode = T2.cds\nWHERE T2.rtype = 'S' AND T2.sname = 'SAT' AND T2.AvgScrRead = (\n    SELECT MAX(AvgScrRead)\n    FROM satscores\n    WHERE rtype = 'S' AND sname = 'SAT'\n)",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.FRPM_Count_Ages_5_17",
+                "canonical": "T1.FRPM_Count_Ages_5_17",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM frpm AS T1 JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "canonical": "FROM frpm AS T1 JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "T2.rtype = 'S' AND T2.sname = 'SAT' AND T2.AvgScrRead = (SELECT MAX(AvgScrRead) FROM satscores WHERE rtype = 'S' AND sname = 'SAT')",
+                "canonical": "T2.rtype = 'S' AND T2.sname = 'SAT' AND T2.AvgScrRead = (SELECT MAX(AvgScrRead) FROM satscores WHERE rtype = 'S' AND sname = 'SAT')",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such column: T1.FRPM_Count_Ages_5_17",
+            "execution_time_ms": 3.6595999263226986
+          },
+          "prompt_tokens": 1009,
+          "completion_tokens": 101
+        }
+      ],
+      "final_sql": "SELECT T1.FRPM_Count_Ages_5_17\nFROM frpm AS T1\nJOIN satscores AS T2 ON T1.CDSCode = T2.cds\nWHERE T2.rtype = 'S' AND T2.sname = 'SAT' AND T2.AvgScrRead = (\n    SELECT MAX(AvgScrRead)\n    FROM satscores\n    WHERE rtype = 'S' AND sname = 'SAT'\n)",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 1009,
+      "total_completion_tokens": 101,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 11,
+      "db_id": "california_schools",
+      "question": "Please list the codes of the schools with a total enrollment of over 500.",
+      "gold_sql": "SELECT T2.CDSCode FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode WHERE T2.`Enrollment (K-12)` + T2.`Enrollment (Ages 5-17)` > 500",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT CDSCode \nFROM frpm \nWHERE Enrollment (K-12) + Enrollment (Ages 5-17) > 500;",
+          "clause_table": {
+            "clauses": []
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "near \"5\": syntax error",
+            "execution_time_ms": 1.9566002301871777
+          },
+          "prompt_tokens": 1028,
+          "completion_tokens": 35
+        }
+      ],
+      "final_sql": "SELECT CDSCode \nFROM frpm \nWHERE Enrollment (K-12) + Enrollment (Ages 5-17) > 500;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 1028,
+      "total_completion_tokens": 35,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 12,
+      "db_id": "california_schools",
+      "question": "Among the schools with an SAT excellence rate of over 0.3, what is the highest eligible free rate for students aged 5-17?",
+      "gold_sql": "SELECT MAX(CAST(T1.`Free Meal Count (Ages 5-17)` AS REAL) / T1.`Enrollment (Ages 5-17)`) FROM frpm AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds WHERE CAST(T2.NumGE1500 AS REAL) / T2.NumTstTakr > 0.3",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT MAX(`Percent (%) Eligible Free (Ages 5-17)`) \nFROM frpm \nJOIN satscores ON frpm.CDSCode = satscores.cds \nWHERE satscores.rtype = 'S' AND satscores.cds IN (\n    SELECT cds \n    FROM satscores \n    WHERE NumTstTakr > 0 AND AvgScrRead IS NOT NULL AND AvgScrMath IS NOT NULL AND AvgScrWrite IS NOT NULL \n    GROUP BY cds \n    HAVING NumGE1500 / NumTstTakr > 0.3\n)",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "MAX(\"Percent (%) Eligible Free (Ages 5-17)\")",
+                "canonical": "MAX(\"Percent (%) Eligible Free (Ages 5-17)\")",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM frpm JOIN satscores ON frpm.CDSCode = satscores.cds",
+                "canonical": "FROM frpm JOIN satscores ON frpm.CDSCode = satscores.cds",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "satscores.rtype = 'S' AND satscores.cds IN (SELECT cds FROM satscores WHERE NumTstTakr > 0 AND NOT AvgScrRead IS NULL AND NOT AvgScrMath IS NULL AND NOT AvgScrWrite IS NULL GROUP BY cds HAVING NumGE1500 / NumTstTakr > 0.3)",
+                "canonical": "satscores.rtype = 'S' AND satscores.cds IN (SELECT cds FROM satscores WHERE NumTstTakr > 0 AND NOT AvgScrRead IS NULL AND NOT AvgScrMath IS NULL AND NOT AvgScrWrite IS NULL GROUP BY cds HAVING NumGE1500 / NumTstTakr > 0.3)",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                null
+              ]
+            ],
+            "columns": [
+              "MAX(`Percent (%) Eligible Free (Ages 5-17)`)"
+            ],
+            "error_message": null,
+            "execution_time_ms": 25.336999911814928
+          },
+          "prompt_tokens": 1068,
+          "completion_tokens": 129
+        }
+      ],
+      "final_sql": "SELECT MAX(`Percent (%) Eligible Free (Ages 5-17)`) \nFROM frpm \nJOIN satscores ON frpm.CDSCode = satscores.cds \nWHERE satscores.rtype = 'S' AND satscores.cds IN (\n    SELECT cds \n    FROM satscores \n    WHERE NumTstTakr > 0 AND AvgScrRead IS NOT NULL AND AvgScrMath IS NOT NULL AND AvgScrWrite IS NOT NULL \n    GROUP BY cds \n    HAVING NumGE1500 / NumTstTakr > 0.3\n)",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 1068,
+      "total_completion_tokens": 129,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 13,
+      "db_id": "california_schools",
+      "question": "Please list the phone numbers of the schools with the top 3 SAT excellence rate.",
+      "gold_sql": "SELECT T1.Phone FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds ORDER BY CAST(T2.NumGE1500 AS REAL) / T2.NumTstTakr DESC LIMIT 3",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.Phone\nFROM schools AS T1\nJOIN satscores AS T2 ON T1.CDSCode = T2.cds\nORDER BY T2.NumGE1500 / T2.NumTstTakr DESC\nLIMIT 3;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.Phone",
+                "canonical": "T1.Phone",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM schools AS T1 JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "canonical": "FROM schools AS T1 JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "ORDER_BY",
+                "content": "T2.NumGE1500 / T2.NumTstTakr DESC",
+                "canonical": "T2.NumGE1500 / T2.NumTstTakr DESC",
+                "ast_type": "Order"
+              },
+              {
+                "clause_type": "LIMIT",
+                "content": "3",
+                "canonical": "3",
+                "ast_type": "Limit"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                "(559) 327-9000"
+              ],
+              [
+                "(559) 327-5000"
+              ],
+              [
+                "(559) 327-2000"
+              ]
+            ],
+            "columns": [
+              "Phone"
+            ],
+            "error_message": null,
+            "execution_time_ms": 26.22150001116097
+          },
+          "prompt_tokens": 1018,
+          "completion_tokens": 57
+        }
+      ],
+      "final_sql": "SELECT T1.Phone\nFROM schools AS T1\nJOIN satscores AS T2 ON T1.CDSCode = T2.cds\nORDER BY T2.NumGE1500 / T2.NumTstTakr DESC\nLIMIT 3;",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 1018,
+      "total_completion_tokens": 57,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 14,
+      "db_id": "california_schools",
+      "question": "List the top five schools, by descending order, from the highest to the lowest, the most number of Enrollment (Ages 5-17). Please give their NCES school identification number.",
+      "gold_sql": "SELECT T1.NCESSchool FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode ORDER BY T2.`Enrollment (Ages 5-17)` DESC LIMIT 5",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.NCESSchool, T1.Enrollment (Ages 5-17)\nFROM schools AS T1\nJOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode\nORDER BY T1.Enrollment (Ages 5-17) DESC\nLIMIT 5;",
+          "clause_table": {
+            "clauses": []
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "near \"(\": syntax error",
+            "execution_time_ms": 2.0616999827325344
+          },
+          "prompt_tokens": 1019,
+          "completion_tokens": 69
+        }
+      ],
+      "final_sql": "SELECT T1.NCESSchool, T1.Enrollment (Ages 5-17)\nFROM schools AS T1\nJOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode\nORDER BY T1.Enrollment (Ages 5-17) DESC\nLIMIT 5;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 1019,
+      "total_completion_tokens": 69,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 15,
+      "db_id": "california_schools",
+      "question": "Which active district has the highest average score in Reading?",
+      "gold_sql": "SELECT T1.District FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds WHERE T1.StatusType = 'Active' ORDER BY T2.AvgScrRead DESC LIMIT 1",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.DistrictName, T1.DistrictType, T2.AvgScrRead\nFROM frpm AS T1\nJOIN satscores AS T2 ON T1.CDSCode = T2.cds\nWHERE T1.DistrictType = 'Active' AND T2.rtype = 'District'\nORDER BY T2.AvgScrRead DESC\nLIMIT 1;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.DistrictName, T1.DistrictType, T2.AvgScrRead",
+                "canonical": "T1.DistrictName, T1.DistrictType, T2.AvgScrRead",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM frpm AS T1 JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "canonical": "FROM frpm AS T1 JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "T1.DistrictType = 'Active' AND T2.rtype = 'District'",
+                "canonical": "T1.DistrictType = 'Active' AND T2.rtype = 'District'",
+                "ast_type": "Where"
+              },
+              {
+                "clause_type": "ORDER_BY",
+                "content": "T2.AvgScrRead DESC",
+                "canonical": "T2.AvgScrRead DESC",
+                "ast_type": "Order"
+              },
+              {
+                "clause_type": "LIMIT",
+                "content": "1",
+                "canonical": "1",
+                "ast_type": "Limit"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such column: T1.DistrictName",
+            "execution_time_ms": 1.0110000148415565
+          },
+          "prompt_tokens": 991,
+          "completion_tokens": 84
+        }
+      ],
+      "final_sql": "SELECT T1.DistrictName, T1.DistrictType, T2.AvgScrRead\nFROM frpm AS T1\nJOIN satscores AS T2 ON T1.CDSCode = T2.cds\nWHERE T1.DistrictType = 'Active' AND T2.rtype = 'District'\nORDER BY T2.AvgScrRead DESC\nLIMIT 1;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 991,
+      "total_completion_tokens": 84,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 16,
+      "db_id": "california_schools",
+      "question": "How many schools in merged Alameda have number of test takers less than 100?",
+      "gold_sql": "SELECT COUNT(T1.CDSCode) FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds WHERE T1.StatusType = 'Merged' AND T2.NumTstTakr < 100 AND T1.County = 'Lake'",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT COUNT(DISTINCT s.cds) \nFROM schools s \nJOIN satscores ss ON s.cds = ss.cds \nWHERE s.County = 'Alameda' AND ss.NumTstTakr < 100;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "COUNT(DISTINCT s.cds)",
+                "canonical": "COUNT(DISTINCT s.cds)",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM schools AS s JOIN satscores AS ss ON s.cds = ss.cds",
+                "canonical": "FROM schools AS s JOIN satscores AS ss ON s.cds = ss.cds",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "s.County = 'Alameda' AND ss.NumTstTakr < 100",
+                "canonical": "s.County = 'Alameda' AND ss.NumTstTakr < 100",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such column: s.cds",
+            "execution_time_ms": 1.0222001001238823
+          },
+          "prompt_tokens": 998,
+          "completion_tokens": 53
+        }
+      ],
+      "final_sql": "SELECT COUNT(DISTINCT s.cds) \nFROM schools s \nJOIN satscores ss ON s.cds = ss.cds \nWHERE s.County = 'Alameda' AND ss.NumTstTakr < 100;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 998,
+      "total_completion_tokens": 53,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 17,
+      "db_id": "california_schools",
+      "question": "Rank schools by their average score in Writing where the score is greater than 499, showing their charter numbers.",
+      "gold_sql": "SELECT CharterNum, AvgScrWrite, RANK() OVER (ORDER BY AvgScrWrite DESC) AS WritingScoreRank FROM schools AS T1  INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds WHERE T2.AvgScrWrite > 499 AND CharterNum is not null",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT \n    s.CDSCode, \n    s.CharterNum, \n    AVG(ss.AvgScrWrite) AS avg_score\nFROM \n    schools s\nJOIN \n    satscores ss ON s.CDSCode = ss.cds\nWHERE \n    ss.AvgScrWrite > 499\nGROUP BY \n    s.CDSCode, s.CharterNum\nORDER BY \n    avg_score DESC;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "s.CDSCode, s.CharterNum, AVG(ss.AvgScrWrite) AS avg_score",
+                "canonical": "s.CDSCode, s.CharterNum, AVG(ss.AvgScrWrite) AS avg_score",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM schools AS s JOIN satscores AS ss ON s.CDSCode = ss.cds",
+                "canonical": "FROM schools AS s JOIN satscores AS ss ON s.CDSCode = ss.cds",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "ss.AvgScrWrite > 499",
+                "canonical": "ss.AvgScrWrite > 499",
+                "ast_type": "Where"
+              },
+              {
+                "clause_type": "GROUP_BY",
+                "content": "s.CDSCode, s.CharterNum",
+                "canonical": "s.CDSCode, s.CharterNum",
+                "ast_type": "Group"
+              },
+              {
+                "clause_type": "ORDER_BY",
+                "content": "avg_score DESC",
+                "canonical": "avg_score DESC",
+                "ast_type": "Order"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                "43694684334421",
+                null,
+                664.0
+              ],
+              [
+                "19642121931880",
+                null,
+                661.0
+              ],
+              [
+                "43694684334462",
+                null,
+                657.0
+              ],
+              [
+                "43695344337762",
+                null,
+                650.0
+              ],
+              [
+                "43696414332904",
+                null,
+                646.0
+              ],
+              [
+                "30664313030616",
+                null,
+                634.0
+              ],
+              [
+                "43696410000000",
+                null,
+                634.0
+              ],
+              [
+                "44104470000000",
+                null,
+                630.0
+              ],
+              [
+                "44104474430252",
+                "0210",
+                630.0
+              ],
+              [
+                "30736503035102",
+                null,
+                624.0
+              ],
+              [
+                "43696414335782",
+                null,
+                624.0
+              ],
+              [
+                "43696094334116",
+                null,
+                622.0
+              ],
+              [
+                "30736503030657",
+                null,
+                621.0
+              ],
+              [
+                "43694680000000",
+                null,
+                621.0
+              ],
+              [
+                "43694684331799",
+                null,
+                619.0
+              ],
+              [
+                "30665143037496",
+                null,
+                617.0
+              ],
+              [
+                "37683463730033",
+                null,
+                617.0
+              ],
+              [
+                "43695340000000",
+                null,
+                617.0
+              ],
+              [
+                "19649640000000",
+                null,
+                613.0
+              ],
+              [
+                "19649641937754",
+                null,
+                613.0
+              ],
+              [
+                "37683460106328",
+                null,
+                611.0
+              ],
+              [
+                "19648651995588",
+                null,
+                607.0
+              ],
+              [
+                "19646590000000",
+                null,
+                605.0
+              ],
+              [
+                "19646591934611",
+                null,
+                605.0
+              ],
+              [
+                "30736500000000",
+                null,
+                603.0
+              ],
+              [
+                "43696090000000",
+                null,
+                603.0
+              ],
+              [
+                "43696664333522",
+                null,
+                603.0
+              ],
+              [
+                "19642611995299",
+                null,
+                601.0
+              ],
+              [
+                "19651361996321",
+                null,
+                596.0
+              ],
+              [
+                "38684783833407",
+                null,
+                594.0
+              ],
+              [
+                "10621660114553",
+                "0890",
+                593.0
+              ],
+              [
+                "19642610000000",
+                null,
+                592.0
+              ],
+              [
+                "19642611930288",
+                null,
+                592.0
+              ],
+              [
+                "19648650000000",
+                null,
+                592.0
+              ],
+              [
+                "43694684333316",
+                null,
+                591.0
+              ],
+              [
+                "57726785732201",
+                null,
+                590.0
+              ],
+              [
+                "43695344334371",
+                null,
+                589.0
+              ],
+              [
+                "43696094334728",
+                null,
+                589.0
+              ],
+              [
+                "19643110000000",
+                null,
+                588.0
+              ],
+              [
+                "19643111930981",
+                null,
+                588.0
+              ],
+              [
+                "37683460000000",
+                null,
+                586.0
+              ],
+              [
+                "56738745630132",
+                null,
+                586.0
+              ],
+              [
+                "57726780000000",
+                null,
+                586.0
+              ],
+              [
+                "30736503030152",
+                null,
+                583.0
+              ],
+              [
+                "34674473435930",
+                null,
+                583.0
+              ],
+              [
+                "30666703030723",
+                "0290",
+                582.0
+              ],
+              [
+                "37682963731528",
+                null,
+                581.0
+              ],
+              [
+                "56738740000000",
+                null,
+                581.0
+              ],
+              [
+                "12101240000000",
+                null,
+                579.0
+              ],
+              [
+                "12101240115097",
+                "0930",
+                579.0
+              ],
+              [
+                "19647251995539",
+                null,
+                579.0
+              ],
+              [
+                "21654822132587",
+                null,
+                579.0
+              ],
+              [
+                "19753330000000",
+                null,
+                577.0
+              ],
+              [
+                "19753331935808",
+                null,
+                577.0
+              ],
+              [
+                "30665550000000",
+                null,
+                577.0
+              ],
+              [
+                "30665553033206",
+                null,
+                577.0
+              ],
+              [
+                "30736503030285",
+                null,
+                577.0
+              ],
+              [
+                "21654822133692",
+                null,
+                576.0
+              ],
+              [
+                "29663570112367",
+                null,
+                576.0
+              ],
+              [
+                "31668450000000",
+                null,
+                576.0
+              ],
+              [
+                "31668450121418",
+                "1169",
+                576.0
+              ],
+              [
+                "27659870000000",
+                null,
+                575.0
+              ],
+              [
+                "27659872730414",
+                null,
+                575.0
+              ],
+              [
+                "41690624133716",
+                null,
+                575.0
+              ],
+              [
+                "21654820000000",
+                null,
+                574.0
+              ],
+              [
+                "19646831930080",
+                null,
+                573.0
+              ],
+              [
+                "56737595630116",
+                null,
+                573.0
+              ],
+              [
+                "30736430102871",
+                null,
+                572.0
+              ],
+              [
+                "41690474130217",
+                null,
+                572.0
+              ],
+              [
+                "19101991933399",
+                null,
+                570.0
+              ],
+              [
+                "41690624130993",
+                null,
+                569.0
+              ],
+              [
+                "19734601932862",
+                null,
+                568.0
+              ],
+              [
+                "49738824930384",
+                null,
+                567.0
+              ],
+              [
+                "19645681932144",
+                null,
+                566.0
+              ],
+              [
+                "21654822131340",
+                null,
+                566.0
+              ],
+              [
+                "30665973031697",
+                null,
+                566.0
+              ],
+              [
+                "37682960118935",
+                null,
+                565.0
+              ],
+              [
+                "39685853930443",
+                null,
+                565.0
+              ],
+              [
+                "43694274330692",
+                null,
+                565.0
+              ],
+              [
+                "19646830000000",
+                null,
+                564.0
+              ],
+              [
+                "19648651996552",
+                null,
+                564.0
+              ],
+              [
+                "19734600000000",
+                null,
+                564.0
+              ],
+              [
+                "37683383730884",
+                null,
+                564.0
+              ],
+              [
+                "19650290000000",
+                null,
+                563.0
+              ],
+              [
+                "19650291938455",
+                null,
+                563.0
+              ],
+              [
+                "49709204930244",
+                null,
+                563.0
+              ],
+              [
+                "37682960000000",
+                null,
+                560.0
+              ],
+              [
+                "41690474130472",
+                null,
+                560.0
+              ],
+              [
+                "19647331932847",
+                null,
+                559.0
+              ],
+              [
+                "19734601939149",
+                null,
+                559.0
+              ],
+              [
+                "21654822130078",
+                null,
+                559.0
+              ],
+              [
+                "37682963730819",
+                null,
+                559.0
+              ],
+              [
+                "41690474136370",
+                null,
+                559.0
+              ],
+              [
+                "42767860120402",
+                null,
+                558.0
+              ],
+              [
+                "57726780119578",
+                "1079",
+                558.0
+              ],
+              [
+                "19650520000000",
+                null,
+                556.0
+              ],
+              [
+                "19650521938679",
+                null,
+                556.0
+              ],
+              [
+                "56726035630322",
+                null,
+                556.0
+              ],
+              [
+                "37681890000000",
+                null,
+                555.0
+              ],
+              [
+                "37681893731072",
+                "0120",
+                555.0
+              ],
+              [
+                "19646831931781",
+                null,
+                554.0
+              ],
+              [
+                "37683383733508",
+                null,
+                554.0
+              ],
+              [
+                "44698070110007",
+                "0747",
+                554.0
+              ],
+              [
+                "19649801995737",
+                null,
+                553.0
+              ],
+              [
+                "37683463737418",
+                null,
+                553.0
+              ],
+              [
+                "38684783830387",
+                null,
+                553.0
+              ],
+              [
+                "56737590000000",
+                null,
+                553.0
+              ],
+              [
+                "34673300113571",
+                null,
+                552.0
+              ],
+              [
+                "37682963735867",
+                null,
+                552.0
+              ],
+              [
+                "43694840114496",
+                null,
+                552.0
+              ],
+              [
+                "30665143037348",
+                null,
+                551.0
+              ],
+              [
+                "31669283130184",
+                null,
+                551.0
+              ],
+              [
+                "45701360106013",
+                "0612",
+                551.0
+              ],
+              [
+                "49708624935151",
+                null,
+                550.0
+              ],
+              [
+                "40688094036703",
+                null,
+                549.0
+              ],
+              [
+                "49709204936803",
+                null,
+                549.0
+              ],
+              [
+                "19650601938356",
+                null,
+                548.0
+              ],
+              [
+                "30664643030574",
+                null,
+                548.0
+              ],
+              [
+                "37681060111195",
+                "0759",
+                548.0
+              ],
+              [
+                "31750850119487",
+                "1071",
+                547.0
+              ],
+              [
+                "44698234437109",
+                null,
+                547.0
+              ],
+              [
+                "44754320000000",
+                null,
+                547.0
+              ],
+              [
+                "44754324430211",
+                null,
+                547.0
+              ],
+              [
+                "19642121930056",
+                null,
+                546.0
+              ],
+              [
+                "45701364537304",
+                null,
+                546.0
+              ],
+              [
+                "30664643030756",
+                null,
+                545.0
+              ],
+              [
+                "41690470000000",
+                null,
+                544.0
+              ],
+              [
+                "41690620000000",
+                null,
+                544.0
+              ],
+              [
+                "43694014330239",
+                null,
+                544.0
+              ],
+              [
+                "49706074930400",
+                null,
+                544.0
+              ],
+              [
+                "19647331933746",
+                "0572",
+                543.0
+              ],
+              [
+                "30665483032158",
+                null,
+                543.0
+              ],
+              [
+                "30666470119404",
+                null,
+                543.0
+              ],
+              [
+                "41690474134557",
+                null,
+                543.0
+              ],
+              [
+                "27661340000000",
+                null,
+                542.0
+              ],
+              [
+                "27661342733657",
+                null,
+                542.0
+              ],
+              [
+                "29663570000000",
+                null,
+                542.0
+              ],
+              [
+                "37683463731007",
+                null,
+                542.0
+              ],
+              [
+                "50710430107136",
+                "0658",
+                542.0
+              ],
+              [
+                "56737595633748",
+                null,
+                542.0
+              ],
+              [
+                "19734521937564",
+                null,
+                541.0
+              ],
+              [
+                "12626871230705",
+                null,
+                540.0
+              ],
+              [
+                "23656152330413",
+                "0271",
+                540.0
+              ],
+              [
+                "29663572930048",
+                null,
+                540.0
+              ],
+              [
+                "43694014330866",
+                null,
+                540.0
+              ],
+              [
+                "56737595637004",
+                null,
+                540.0
+              ],
+              [
+                "19645681996131",
+                null,
+                539.0
+              ],
+              [
+                "19650601939602",
+                null,
+                539.0
+              ],
+              [
+                "19651360102475",
+                null,
+                539.0
+              ],
+              [
+                "30666213030046",
+                null,
+                539.0
+              ],
+              [
+                "33751923330917",
+                "0284",
+                539.0
+              ],
+              [
+                "40688090000000",
+                null,
+                539.0
+              ],
+              [
+                "19645680000000",
+                null,
+                538.0
+              ],
+              [
+                "34673303433216",
+                null,
+                538.0
+              ],
+              [
+                "37735510000000",
+                null,
+                538.0
+              ],
+              [
+                "37735513730694",
+                null,
+                538.0
+              ],
+              [
+                "41690620119503",
+                "1070",
+                538.0
+              ],
+              [
+                "43694274335907",
+                null,
+                538.0
+              ],
+              [
+                "48705240000000",
+                null,
+                538.0
+              ],
+              [
+                "48705244831004",
+                null,
+                538.0
+              ],
+              [
+                "30664643030210",
+                null,
+                537.0
+              ],
+              [
+                "30665140000000",
+                null,
+                537.0
+              ],
+              [
+                "43104390113431",
+                "0844",
+                537.0
+              ],
+              [
+                "56726525630298",
+                null,
+                537.0
+              ],
+              [
+                "34674473436714",
+                null,
+                536.0
+              ],
+              [
+                "37682963730074",
+                null,
+                536.0
+              ],
+              [
+                "49708620000000",
+                null,
+                536.0
+              ],
+              [
+                "30664640000000",
+                null,
+                535.0
+              ],
+              [
+                "36678433630928",
+                "0180",
+                535.0
+              ],
+              [
+                "39686500125849",
+                "1398",
+                535.0
+              ],
+              [
+                "45701360000000",
+                null,
+                535.0
+              ],
+              [
+                "49706070000000",
+                null,
+                535.0
+              ],
+              [
+                "49709204934154",
+                null,
+                535.0
+              ],
+              [
+                "19642120000000",
+                null,
+                534.0
+              ],
+              [
+                "29663572935500",
+                null,
+                534.0
+              ],
+              [
+                "30664640113381",
+                null,
+                534.0
+              ],
+              [
+                "30665483031895",
+                null,
+                534.0
+              ],
+              [
+                "30665483032943",
+                null,
+                534.0
+              ],
+              [
+                "21654172132272",
+                null,
+                533.0
+              ],
+              [
+                "34674473430717",
+                "0248",
+                533.0
+              ],
+              [
+                "48705734830113",
+                "0056",
+                533.0
+              ],
+              [
+                "49709200000000",
+                null,
+                533.0
+              ],
+              [
+                "56739405633250",
+                null,
+                533.0
+              ],
+              [
+                "30666473038023",
+                null,
+                532.0
+              ],
+              [
+                "30736433032109",
+                null,
+                532.0
+              ],
+              [
+                "34673300000000",
+                null,
+                532.0
+              ],
+              [
+                "37680310000000",
+                null,
+                532.0
+              ],
+              [
+                "37680313731478",
+                null,
+                532.0
+              ],
+              [
+                "41689244135075",
+                null,
+                532.0
+              ],
+              [
+                "44698234437406",
+                null,
+                532.0
+              ],
+              [
+                "56739400000000",
+                null,
+                532.0
+              ],
+              [
+                "19734451939834",
+                null,
+                531.0
+              ],
+              [
+                "21654170000000",
+                null,
+                531.0
+              ],
+              [
+                "31668943131851",
+                null,
+                531.0
+              ],
+              [
+                "37684523730942",
+                "0050",
+                531.0
+              ],
+              [
+                "43694014336137",
+                null,
+                531.0
+              ],
+              [
+                "43696664335949",
+                null,
+                531.0
+              ],
+              [
+                "19649800000000",
+                null,
+                530.0
+              ],
+              [
+                "31668943135704",
+                "0084",
+                530.0
+              ],
+              [
+                "34674473430493",
+                null,
+                530.0
+              ],
+              [
+                "56726525630348",
+                null,
+                530.0
+              ],
+              [
+                "21654662134005",
+                null,
+                529.0
+              ],
+              [
+                "30664313033115",
+                null,
+                529.0
+              ],
+              [
+                "37680496119564",
+                "0419",
+                529.0
+              ],
+              [
+                "42767864231726",
+                null,
+                529.0
+              ],
+              [
+                "42767864235727",
+                null,
+                529.0
+              ],
+              [
+                "43694014338505",
+                null,
+                529.0
+              ],
+              [
+                "19651361995802",
+                null,
+                528.0
+              ],
+              [
+                "30103060000000",
+                null,
+                528.0
+              ],
+              [
+                "30103063030632",
+                "0147",
+                528.0
+              ],
+              [
+                "30666470000000",
+                null,
+                528.0
+              ],
+              [
+                "30736353034956",
+                null,
+                528.0
+              ],
+              [
+                "43694010000000",
+                null,
+                528.0
+              ],
+              [
+                "44698230000000",
+                null,
+                528.0
+              ],
+              [
+                "45701364530044",
+                null,
+                528.0
+              ],
+              [
+                "23655810000000",
+                null,
+                527.0
+              ],
+              [
+                "23655812333185",
+                null,
+                527.0
+              ],
+              [
+                "30664643038569",
+                null,
+                527.0
+              ],
+              [
+                "30666473030053",
+                null,
+                527.0
+              ],
+              [
+                "30736353030244",
+                null,
+                527.0
+              ],
+              [
+                "31750853130150",
+                null,
+                527.0
+              ],
+              [
+                "56726030000000",
+                null,
+                527.0
+              ],
+              [
+                "19757131934553",
+                null,
+                526.0
+              ],
+              [
+                "21654172133056",
+                null,
+                526.0
+              ],
+              [
+                "34674390101899",
+                "0588",
+                526.0
+              ],
+              [
+                "41690624136693",
+                null,
+                526.0
+              ],
+              [
+                "42767860000000",
+                null,
+                526.0
+              ],
+              [
+                "43696744338802",
+                null,
+                526.0
+              ],
+              [
+                "19645760000000",
+                null,
+                525.0
+              ],
+              [
+                "19645761933597",
+                null,
+                525.0
+              ],
+              [
+                "19647331933233",
+                null,
+                525.0
+              ],
+              [
+                "19647331995836",
+                "0037",
+                525.0
+              ],
+              [
+                "37681303731536",
+                null,
+                525.0
+              ],
+              [
+                "43694684332474",
+                null,
+                525.0
+              ],
+              [
+                "43696660000000",
+                null,
+                525.0
+              ],
+              [
+                "49708624930012",
+                null,
+                525.0
+              ],
+              [
+                "12628100108688",
+                null,
+                524.0
+              ],
+              [
+                "19647331938612",
+                "1580",
+                524.0
+              ],
+              [
+                "19649801938000",
+                null,
+                524.0
+              ],
+              [
+                "34752833430659",
+                "0019",
+                524.0
+              ],
+              [
+                "40687594030557",
+                null,
+                524.0
+              ],
+              [
+                "41688900000000",
+                null,
+                524.0
+              ],
+              [
+                "41688904132817",
+                null,
+                524.0
+              ],
+              [
+                "43733870000000",
+                null,
+                524.0
+              ],
+              [
+                "43733874334470",
+                null,
+                524.0
+              ],
+              [
+                "56726035636188",
+                null,
+                524.0
+              ],
+              [
+                "19650600000000",
+                null,
+                523.0
+              ],
+              [
+                "30736350000000",
+                null,
+                523.0
+              ],
+              [
+                "30736430000000",
+                null,
+                523.0
+              ],
+              [
+                "31668940000000",
+                null,
+                523.0
+              ],
+              [
+                "32669693236007",
+                null,
+                523.0
+              ],
+              [
+                "37683380107029",
+                null,
+                523.0
+              ],
+              [
+                "41689244137535",
+                null,
+                523.0
+              ],
+              [
+                "44698070000000",
+                null,
+                523.0
+              ],
+              [
+                "30664643036001",
+                null,
+                522.0
+              ],
+              [
+                "37681063730058",
+                null,
+                522.0
+              ],
+              [
+                "40687000000000",
+                null,
+                522.0
+              ],
+              [
+                "41690620112722",
+                "0835",
+                522.0
+              ],
+              [
+                "19650940112706",
+                "0838",
+                521.0
+              ],
+              [
+                "30664490000000",
+                null,
+                521.0
+              ],
+              [
+                "30664493030640",
+                null,
+                521.0
+              ],
+              [
+                "30736353030061",
+                null,
+                521.0
+              ],
+              [
+                "37683383730751",
+                null,
+                521.0
+              ],
+              [
+                "40687004030755",
+                null,
+                521.0
+              ],
+              [
+                "40688414037701",
+                null,
+                521.0
+              ],
+              [
+                "44697994430518",
+                null,
+                521.0
+              ],
+              [
+                "56725465631619",
+                null,
+                521.0
+              ],
+              [
+                "15635291530344",
+                null,
+                520.0
+              ],
+              [
+                "19753411937143",
+                null,
+                520.0
+              ],
+              [
+                "30665480000000",
+                null,
+                520.0
+              ],
+              [
+                "30665483034410",
+                null,
+                520.0
+              ],
+              [
+                "37683383731189",
+                "0169",
+                520.0
+              ],
+              [
+                "40688410000000",
+                null,
+                520.0
+              ],
+              [
+                "41690474133070",
+                null,
+                520.0
+              ],
+              [
+                "10621170113555",
+                null,
+                519.0
+              ],
+              [
+                "19643941931823",
+                null,
+                519.0
+              ],
+              [
+                "19651360000000",
+                null,
+                519.0
+              ],
+              [
+                "19753410000000",
+                null,
+                519.0
+              ],
+              [
+                "31668943132453",
+                null,
+                519.0
+              ],
+              [
+                "39686760119743",
+                "1083",
+                519.0
+              ],
+              [
+                "54105460000000",
+                null,
+                519.0
+              ],
+              [
+                "56739405630371",
+                null,
+                519.0
+              ],
+              [
+                "19643940000000",
+                null,
+                518.0
+              ],
+              [
+                "19651361931740",
+                null,
+                518.0
+              ],
+              [
+                "19752911995810",
+                null,
+                518.0
+              ],
+              [
+                "21654660000000",
+                null,
+                517.0
+              ],
+              [
+                "23656150000000",
+                null,
+                517.0
+              ],
+              [
+                "30665143037090",
+                null,
+                517.0
+              ],
+              [
+                "30736353030392",
+                null,
+                517.0
+              ],
+              [
+                "30739240000000",
+                null,
+                517.0
+              ],
+              [
+                "30739243033917",
+                null,
+                517.0
+              ],
+              [
+                "31750850000000",
+                null,
+                517.0
+              ],
+              [
+                "37681633731239",
+                "0267",
+                517.0
+              ],
+              [
+                "37684036120893",
+                "0493",
+                517.0
+              ],
+              [
+                "44698074436754",
+                null,
+                517.0
+              ],
+              [
+                "37681303730066",
+                null,
+                516.0
+              ],
+              [
+                "42693280000000",
+                null,
+                516.0
+              ],
+              [
+                "42693284236345",
+                null,
+                516.0
+              ],
+              [
+                "49753580000000",
+                null,
+                516.0
+              ],
+              [
+                "49753584930228",
+                null,
+                516.0
+              ],
+              [
+                "12626870000000",
+                null,
+                515.0
+              ],
+              [
+                "23656152335024",
+                null,
+                515.0
+              ],
+              [
+                "36678433635042",
+                null,
+                515.0
+              ],
+              [
+                "37681630000000",
+                null,
+                515.0
+              ],
+              [
+                "40687590000000",
+                null,
+                515.0
+              ],
+              [
+                "43695830102368",
+                null,
+                515.0
+              ],
+              [
+                "43696740000000",
+                null,
+                515.0
+              ],
+              [
+                "15737420000000",
+                null,
+                514.0
+              ],
+              [
+                "15737421531367",
+                null,
+                514.0
+              ],
+              [
+                "19647331932623",
+                "1314",
+                514.0
+              ],
+              [
+                "30665973035045",
+                null,
+                514.0
+              ],
+              [
+                "34674470000000",
+                null,
+                514.0
+              ],
+              [
+                "42767864235230",
+                null,
+                514.0
+              ],
+              [
+                "49706074931507",
+                null,
+                514.0
+              ],
+              [
+                "55723895536503",
+                null,
+                514.0
+              ],
+              [
+                "56726035635008",
+                null,
+                514.0
+              ],
+              [
+                "19643371931187",
+                null,
+                513.0
+              ],
+              [
+                "19645350000000",
+                null,
+                513.0
+              ],
+              [
+                "19645351932763",
+                null,
+                513.0
+              ],
+              [
+                "22655320000000",
+                null,
+                513.0
+              ],
+              [
+                "22655322235356",
+                null,
+                513.0
+              ],
+              [
+                "28662900000000",
+                null,
+                513.0
+              ],
+              [
+                "28662902837102",
+                null,
+                513.0
+              ],
+              [
+                "30664313030038",
+                null,
+                513.0
+              ],
+              [
+                "30666210000000",
+                null,
+                513.0
+              ],
+              [
+                "30666213031952",
+                null,
+                513.0
+              ],
+              [
+                "34673140108753",
+                null,
+                513.0
+              ],
+              [
+                "37681063731023",
+                "0109",
+                513.0
+              ],
+              [
+                "47704664735403",
+                null,
+                513.0
+              ],
+              [
+                "19752910000000",
+                null,
+                512.0
+              ],
+              [
+                "30664640106765",
+                "0664",
+                512.0
+              ],
+              [
+                "34673143430873",
+                null,
+                512.0
+              ],
+              [
+                "34674393435419",
+                null,
+                512.0
+              ],
+              [
+                "40688094034807",
+                null,
+                512.0
+              ],
+              [
+                "55723890000000",
+                null,
+                512.0
+              ],
+              [
+                "56726520000000",
+                null,
+                512.0
+              ],
+              [
+                "12753740000000",
+                null,
+                511.0
+              ],
+              [
+                "12753741232909",
+                null,
+                511.0
+              ],
+              [
+                "19645681934082",
+                null,
+                511.0
+              ],
+              [
+                "19647331938968",
+                null,
+                511.0
+              ],
+              [
+                "31669443138500",
+                null,
+                511.0
+              ],
+              [
+                "36676523631058",
+                null,
+                511.0
+              ],
+              [
+                "37764710114694",
+                "0756",
+                511.0
+              ],
+              [
+                "43694274337903",
+                null,
+                511.0
+              ],
+              [
+                "45699894533600",
+                null,
+                511.0
+              ],
+              [
+                "19647331936350",
+                null,
+                510.0
+              ],
+              [
+                "19651361933902",
+                null,
+                510.0
+              ],
+              [
+                "31669283135308",
+                null,
+                510.0
+              ],
+              [
+                "36676783630522",
+                null,
+                510.0
+              ],
+              [
+                "45699890000000",
+                null,
+                510.0
+              ],
+              [
+                "19643370000000",
+                null,
+                509.0
+              ],
+              [
+                "19643371931237",
+                null,
+                509.0
+              ],
+              [
+                "19647330102921",
+                null,
+                509.0
+              ],
+              [
+                "19647331931864",
+                "1571",
+                509.0
+              ],
+              [
+                "30666213038098",
+                null,
+                509.0
+              ],
+              [
+                "31669280000000",
+                null,
+                509.0
+              ],
+              [
+                "31669440000000",
+                null,
+                509.0
+              ],
+              [
+                "37684030000000",
+                null,
+                509.0
+              ],
+              [
+                "19647330100677",
+                "0537",
+                508.0
+              ],
+              [
+                "29102980126219",
+                "1427",
+                508.0
+              ],
+              [
+                "31669443130010",
+                null,
+                508.0
+              ],
+              [
+                "33670583330388",
+                null,
+                508.0
+              ],
+              [
+                "36676783631017",
+                null,
+                508.0
+              ],
+              [
+                "37737913737632",
+                null,
+                508.0
+              ],
+              [
+                "43694274330023",
+                null,
+                508.0
+              ],
+              [
+                "49753900000000",
+                null,
+                508.0
+              ],
+              [
+                "49753904932554",
+                null,
+                508.0
+              ],
+              [
+                "56726525637822",
+                null,
+                508.0
+              ],
+              [
+                "10621171030196",
+                null,
+                507.0
+              ],
+              [
+                "10621171030501",
+                null,
+                507.0
+              ],
+              [
+                "45701364532750",
+                null,
+                507.0
+              ],
+              [
+                "19647330101683",
+                "0579",
+                506.0
+              ],
+              [
+                "33752003330529",
+                null,
+                506.0
+              ],
+              [
+                "37683383735750",
+                null,
+                506.0
+              ],
+              [
+                "44697650000000",
+                null,
+                506.0
+              ],
+              [
+                "44697650100305",
+                "0512",
+                506.0
+              ],
+              [
+                "33751920105734",
+                null,
+                505.0
+              ],
+              [
+                "36750773631207",
+                "0127",
+                505.0
+              ],
+              [
+                "56725200000000",
+                null,
+                505.0
+              ],
+              [
+                "56725205634076",
+                null,
+                505.0
+              ],
+              [
+                "30666473031929",
+                null,
+                504.0
+              ],
+              [
+                "38684783830197",
+                null,
+                504.0
+              ],
+              [
+                "42692294230454",
+                null,
+                504.0
+              ],
+              [
+                "43696744330122",
+                null,
+                504.0
+              ],
+              [
+                "48705650000000",
+                null,
+                504.0
+              ],
+              [
+                "48705654838801",
+                null,
+                504.0
+              ],
+              [
+                "50755725030317",
+                "0477",
+                504.0
+              ],
+              [
+                "19734520000000",
+                null,
+                503.0
+              ],
+              [
+                "21654662133262",
+                null,
+                503.0
+              ],
+              [
+                "33671160000000",
+                null,
+                503.0
+              ],
+              [
+                "33671160109843",
+                "0730",
+                503.0
+              ],
+              [
+                "39685850101956",
+                "0565",
+                503.0
+              ],
+              [
+                "12755150000000",
+                null,
+                502.0
+              ],
+              [
+                "12755151232206",
+                null,
+                502.0
+              ],
+              [
+                "15101571530492",
+                "0332",
+                502.0
+              ],
+              [
+                "19644440000000",
+                null,
+                502.0
+              ],
+              [
+                "19644441932201",
+                null,
+                502.0
+              ],
+              [
+                "31750850108084",
+                null,
+                502.0
+              ],
+              [
+                "38767030000000",
+                null,
+                502.0
+              ],
+              [
+                "38767030121814",
+                "1208",
+                502.0
+              ],
+              [
+                "50755645035654",
+                null,
+                502.0
+              ],
+              [
+                "10752750000000",
+                null,
+                501.0
+              ],
+              [
+                "10752751036938",
+                null,
+                501.0
+              ],
+              [
+                "15635291530476",
+                null,
+                501.0
+              ],
+              [
+                "15638260000000",
+                null,
+                501.0
+              ],
+              [
+                "15638261536135",
+                null,
+                501.0
+              ],
+              [
+                "19647331996115",
+                null,
+                501.0
+              ],
+              [
+                "31669283130176",
+                null,
+                501.0
+              ],
+              [
+                "37681303737905",
+                null,
+                501.0
+              ],
+              [
+                "37683040000000",
+                null,
+                501.0
+              ],
+              [
+                "37683043735974",
+                null,
+                501.0
+              ],
+              [
+                "37683383730314",
+                null,
+                501.0
+              ],
+              [
+                "37684520118430",
+                null,
+                501.0
+              ],
+              [
+                "37737910000000",
+                null,
+                501.0
+              ],
+              [
+                "39685853934783",
+                null,
+                501.0
+              ],
+              [
+                "50755640000000",
+                null,
+                501.0
+              ],
+              [
+                "19643291931088",
+                null,
+                500.0
+              ],
+              [
+                "19650601938752",
+                null,
+                500.0
+              ],
+              [
+                "19651360102459",
+                null,
+                500.0
+              ],
+              [
+                "19753091995786",
+                null,
+                500.0
+              ],
+              [
+                "20764142030013",
+                null,
+                500.0
+              ],
+              [
+                "25735850000000",
+                null,
+                500.0
+              ],
+              [
+                "25735852535409",
+                null,
+                500.0
+              ],
+              [
+                "28662662830115",
+                null,
+                500.0
+              ],
+              [
+                "28662662835601",
+                null,
+                500.0
+              ],
+              [
+                "30665970000000",
+                null,
+                500.0
+              ],
+              [
+                "34674393430865",
+                null,
+                500.0
+              ],
+              [
+                "36679340110064",
+                null,
+                500.0
+              ],
+              [
+                "39754990119040",
+                null,
+                500.0
+              ],
+              [
+                "43694270000000",
+                null,
+                500.0
+              ]
+            ],
+            "columns": [
+              "CDSCode",
+              "CharterNum",
+              "avg_score"
+            ],
+            "error_message": null,
+            "execution_time_ms": 10.375899961218238
+          },
+          "prompt_tokens": 1017,
+          "completion_tokens": 90
+        }
+      ],
+      "final_sql": "SELECT \n    s.CDSCode, \n    s.CharterNum, \n    AVG(ss.AvgScrWrite) AS avg_score\nFROM \n    schools s\nJOIN \n    satscores ss ON s.CDSCode = ss.cds\nWHERE \n    ss.AvgScrWrite > 499\nGROUP BY \n    s.CDSCode, s.CharterNum\nORDER BY \n    avg_score DESC;",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 1017,
+      "total_completion_tokens": 90,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 18,
+      "db_id": "california_schools",
+      "question": "How many schools in Fresno (directly funded) have number of test takers not more than 250?",
+      "gold_sql": "SELECT COUNT(T1.CDSCode) FROM frpm AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds WHERE T1.`Charter Funding Type` = 'Directly funded' AND T1.`County Name` = 'Fresno' AND T2.NumTstTakr <= 250",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT COUNT(DISTINCT s.cds)\nFROM satscores s\nJOIN schools sc ON s.cds = sc.CDSCode\nWHERE sc.County = 'Fresno' AND sc.StatusType = 'Directly Funded' AND s.NumTstTakr <= 250;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "COUNT(DISTINCT s.cds)",
+                "canonical": "COUNT(DISTINCT s.cds)",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM satscores AS s JOIN schools AS sc ON s.cds = sc.CDSCode",
+                "canonical": "FROM satscores AS s JOIN schools AS sc ON s.cds = sc.CDSCode",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "sc.County = 'Fresno' AND sc.StatusType = 'Directly Funded' AND s.NumTstTakr <= 250",
+                "canonical": "sc.County = 'Fresno' AND sc.StatusType = 'Directly Funded' AND s.NumTstTakr <= 250",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                0
+              ]
+            ],
+            "columns": [
+              "COUNT(DISTINCT s.cds)"
+            ],
+            "error_message": null,
+            "execution_time_ms": 13.678299961611629
+          },
+          "prompt_tokens": 1002,
+          "completion_tokens": 65
+        }
+      ],
+      "final_sql": "SELECT COUNT(DISTINCT s.cds)\nFROM satscores s\nJOIN schools sc ON s.cds = sc.CDSCode\nWHERE sc.County = 'Fresno' AND sc.StatusType = 'Directly Funded' AND s.NumTstTakr <= 250;",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 1002,
+      "total_completion_tokens": 65,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 19,
+      "db_id": "california_schools",
+      "question": "What is the phone number of the school that has the highest average score in Math?",
+      "gold_sql": "SELECT T1.Phone FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds ORDER BY T2.AvgScrMath DESC LIMIT 1",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.Phone \nFROM schools AS T1 \nJOIN satscores AS T2 ON T1.CDSCode = T2.cds \nWHERE T2.rtype = 'S' AND T2.rtype = 'S' \nORDER BY T2.AvgScrMath DESC \nLIMIT 1;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.Phone",
+                "canonical": "T1.Phone",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM schools AS T1 JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "canonical": "FROM schools AS T1 JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "T2.rtype = 'S' AND T2.rtype = 'S'",
+                "canonical": "T2.rtype = 'S' AND T2.rtype = 'S'",
+                "ast_type": "Where"
+              },
+              {
+                "clause_type": "ORDER_BY",
+                "content": "T2.AvgScrMath DESC",
+                "canonical": "T2.AvgScrMath DESC",
+                "ast_type": "Order"
+              },
+              {
+                "clause_type": "LIMIT",
+                "content": "1",
+                "canonical": "1",
+                "ast_type": "Limit"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                "(408) 366-7700"
+              ]
+            ],
+            "columns": [
+              "Phone"
+            ],
+            "error_message": null,
+            "execution_time_ms": 3.597700037062168
+          },
+          "prompt_tokens": 997,
+          "completion_tokens": 68
+        }
+      ],
+      "final_sql": "SELECT T1.Phone \nFROM schools AS T1 \nJOIN satscores AS T2 ON T1.CDSCode = T2.cds \nWHERE T2.rtype = 'S' AND T2.rtype = 'S' \nORDER BY T2.AvgScrMath DESC \nLIMIT 1;",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": true,
+      "total_calls": 1,
+      "total_prompt_tokens": 997,
+      "total_completion_tokens": 68,
+      "model_config": {
+        "populate_by_name": true
+      }
+    }
+  ]
+}

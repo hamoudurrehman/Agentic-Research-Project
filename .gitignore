@@ -12,5 +12,6 @@ data/
 
 # Cache and results
 .cache/
-results/
 .pytest_cache/
+
+*.egg-info/

@@ -1,0 +1,1 @@
+{"model": "llama3.1:8b", "base_url": "http://localhost:11434/v1", "api_key": "ollama", "temperature": 0.0, "max_repair_turns": 2, "timeout_sec": 180}

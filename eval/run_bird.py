@@ -19,6 +19,19 @@ from sqlheal.parsing import print_clause_table
 from sqlheal.sandbox import SQLiteSandbox
 from eval.metrics import compute_benchmark_metrics
 
+import sqlite3
+
+def get_schema_ddl(db_path: str) -> str:
+    if db_path == ":memory:":
+        return ""
+    con = sqlite3.connect(db_path)
+    try:
+        rows = con.execute(
+            "SELECT sql FROM sqlite_master WHERE type='table' AND sql IS NOT NULL"
+        ).fetchall()
+    finally:
+        con.close()
+    return "\n\n".join(r[0] for r in rows)
 
 def run_bird_evaluation(
     data_path: str,
@@ -39,7 +52,14 @@ def run_bird_evaluation(
     max_repair_turns = cfg.get("max_repair_turns", 2)
     timeout_sec = cfg.get("timeout_sec", 30.0)
 
-    llm = LLMClient(model=model, temperature=temperature, timeout=timeout_sec)
+    llm = LLMClient(
+        model=model,
+        base_url=cfg.get("base_url"),
+        api_key=cfg.get("api_key"),
+        temperature=temperature,
+        timeout=timeout_sec,
+        min_interval=cfg.get("min_interval_sec", 0.0),
+    )
     sandbox = SQLiteSandbox(timeout_sec=timeout_sec)
 
     runner = (
@@ -97,15 +117,19 @@ def run_bird_evaluation(
             db_path = ":memory:"
         else:
             db_path = str(db_file)
-
-        state = runner.run(
-            question_id=qid,
-            question=question_text,
-            db_path=db_path,
-            db_id=db_id,
-            evidence=evidence,
-            gold_sql=gold_sql,
-        )
+        try:
+            state = runner.run(
+                question_id=qid,
+                question=question_text,
+                db_path=db_path,
+                db_id=db_id,
+                evidence=evidence,
+                gold_sql=gold_sql,
+                schema_ddl=get_schema_ddl(db_path),
+            )
+        except RuntimeError as e:
+            print(f"\nStopped at item {i}: {e}")
+            break
         states.append(state)
 
         # Print clause table for first turn

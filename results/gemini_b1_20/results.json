@@ -1,0 +1,4660 @@
+{
+  "system": "b1",
+  "model": "gemini-3.5-flash-lite",
+  "metrics": {
+    "total_questions": 20,
+    "error_count": 0,
+    "empty_count": 1,
+    "success_count": 19,
+    "timeout_count": 0,
+    "error_rate_pct": 0.0,
+    "empty_rate_pct": 5.0,
+    "ex_pct": 70.0,
+    "total_calls": 25,
+    "avg_prompt_tokens": 1411.1,
+    "avg_completion_tokens": 87.8,
+    "rdr_pct": null
+  },
+  "states": [
+    {
+      "question_id": 0,
+      "db_id": "california_schools",
+      "question": "What is the highest eligible free rate for K-12 students in the schools in Alameda County?",
+      "gold_sql": "SELECT `Free Meal Count (K-12)` / `Enrollment (K-12)` FROM frpm WHERE `County Name` = 'Alameda' ORDER BY (CAST(`Free Meal Count (K-12)` AS REAL) / `Enrollment (K-12)`) DESC LIMIT 1",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "sql\nSELECT MAX(T1.`Free Meal Count (K-12)` / T1.`Enrollment (K-12)`) \nFROM frpm AS T1 \nJOIN schools AS T2 ON T1.CDSCode = T2.CDSCode \nWHERE T2.County = 'Alameda' AND T1.`Enrollment (K-12)` > 0",
+          "clause_table": {
+            "clauses": []
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "near \"sql\": syntax error",
+            "execution_time_ms": 0.48699998296797276
+          },
+          "prompt_tokens": 1126,
+          "completion_tokens": 89
+        },
+        {
+          "turn_index": 2,
+          "sql": "SELECT MAX(T1.`Percent (%) Eligible Free (K-12)`) \nFROM frpm AS T1 \nJOIN schools AS T2 ON T1.CDSCode = T2.CDSCode \nWHERE T2.County = 'Alameda'",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "MAX(T1.\"Percent (%) Eligible Free (K-12)\")",
+                "canonical": "MAX(T1.\"Percent (%) Eligible Free (K-12)\")",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM frpm AS T1 JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode",
+                "canonical": "FROM frpm AS T1 JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "T2.County = 'Alameda'",
+                "canonical": "T2.County = 'Alameda'",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                1.0
+              ]
+            ],
+            "columns": [
+              "MAX(T1.`Percent (%) Eligible Free (K-12)`)"
+            ],
+            "error_message": null,
+            "execution_time_ms": 21.66979992762208
+          },
+          "prompt_tokens": 1207,
+          "completion_tokens": 61
+        }
+      ],
+      "final_sql": "SELECT MAX(T1.`Percent (%) Eligible Free (K-12)`) \nFROM frpm AS T1 \nJOIN schools AS T2 ON T1.CDSCode = T2.CDSCode \nWHERE T2.County = 'Alameda'",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": true,
+      "total_calls": 2,
+      "total_prompt_tokens": 2333,
+      "total_completion_tokens": 150,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 1,
+      "db_id": "california_schools",
+      "question": "Please list the lowest three eligible free rates for students aged 5-17 in continuation schools.",
+      "gold_sql": "SELECT `Free Meal Count (Ages 5-17)` / `Enrollment (Ages 5-17)` FROM frpm WHERE `Educational Option Type` = 'Continuation School' AND `Free Meal Count (Ages 5-17)` / `Enrollment (Ages 5-17)` IS NOT NULL ORDER BY `Free Meal Count (Ages 5-17)` / `Enrollment (Ages 5-17)` ASC LIMIT 3",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.`Free Meal Count (Ages 5-17)` / T1.`Enrollment (Ages 5-17)` \nFROM frpm AS T1 \nJOIN schools AS T2 ON T1.CDSCode = T2.CDSCode \nWHERE T2.SOCType = 'Continuation School' AND T1.`Enrollment (Ages 5-17)` > 0\nORDER BY T1.`Free Meal Count (Ages 5-17)` / T1.`Enrollment (Ages 5-17)` ASC \nLIMIT 3;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.\"Free Meal Count (Ages 5-17)\" / T1.\"Enrollment (Ages 5-17)\"",
+                "canonical": "T1.\"Free Meal Count (Ages 5-17)\" / T1.\"Enrollment (Ages 5-17)\"",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM frpm AS T1 JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode",
+                "canonical": "FROM frpm AS T1 JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "T2.SOCType = 'Continuation School' AND T1.\"Enrollment (Ages 5-17)\" > 0",
+                "canonical": "T2.SOCType = 'Continuation School' AND T1.\"Enrollment (Ages 5-17)\" > 0",
+                "ast_type": "Where"
+              },
+              {
+                "clause_type": "ORDER_BY",
+                "content": "T1.\"Free Meal Count (Ages 5-17)\" / T1.\"Enrollment (Ages 5-17)\" ASC",
+                "canonical": "T1.\"Free Meal Count (Ages 5-17)\" / T1.\"Enrollment (Ages 5-17)\" ASC",
+                "ast_type": "Order"
+              },
+              {
+                "clause_type": "LIMIT",
+                "content": "3",
+                "canonical": "3",
+                "ast_type": "Limit"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "EMPTY",
+            "rows": [],
+            "columns": [
+              "T1.`Free Meal Count (Ages 5-17)` / T1.`Enrollment (Ages 5-17)`"
+            ],
+            "error_message": null,
+            "execution_time_ms": 17.06840004771948
+          },
+          "prompt_tokens": 1135,
+          "completion_tokens": 136
+        },
+        {
+          "turn_index": 2,
+          "sql": "SELECT T1.`Percent (%) Eligible Free (Ages 5-17)` \nFROM frpm AS T1 \nJOIN schools AS T2 ON T1.CDSCode = T2.CDSCode \nWHERE T2.SOCType LIKE '%Continuation%' AND T1.`Percent (%) Eligible Free (Ages 5-17)` IS NOT NULL\nORDER BY T1.`Percent (%) Eligible Free (Ages 5-17)` ASC \nLIMIT 3;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.\"Percent (%) Eligible Free (Ages 5-17)\"",
+                "canonical": "T1.\"Percent (%) Eligible Free (Ages 5-17)\"",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM frpm AS T1 JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode",
+                "canonical": "FROM frpm AS T1 JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "T2.SOCType LIKE '%Continuation%' AND NOT T1.\"Percent (%) Eligible Free (Ages 5-17)\" IS NULL",
+                "canonical": "T2.SOCType LIKE '%Continuation%' AND NOT T1.\"Percent (%) Eligible Free (Ages 5-17)\" IS NULL",
+                "ast_type": "Where"
+              },
+              {
+                "clause_type": "ORDER_BY",
+                "content": "T1.\"Percent (%) Eligible Free (Ages 5-17)\" ASC",
+                "canonical": "T1.\"Percent (%) Eligible Free (Ages 5-17)\" ASC",
+                "ast_type": "Order"
+              },
+              {
+                "clause_type": "LIMIT",
+                "content": "3",
+                "canonical": "3",
+                "ast_type": "Limit"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                0.0434782608695652
+              ],
+              [
+                0.0704225352112676
+              ],
+              [
+                0.113636363636364
+              ]
+            ],
+            "columns": [
+              "Percent (%) Eligible Free (Ages 5-17)"
+            ],
+            "error_message": null,
+            "execution_time_ms": 65.49499998800457
+          },
+          "prompt_tokens": 1259,
+          "completion_tokens": 109
+        }
+      ],
+      "final_sql": "SELECT T1.`Percent (%) Eligible Free (Ages 5-17)` \nFROM frpm AS T1 \nJOIN schools AS T2 ON T1.CDSCode = T2.CDSCode \nWHERE T2.SOCType LIKE '%Continuation%' AND T1.`Percent (%) Eligible Free (Ages 5-17)` IS NOT NULL\nORDER BY T1.`Percent (%) Eligible Free (Ages 5-17)` ASC \nLIMIT 3;",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 2,
+      "total_prompt_tokens": 2394,
+      "total_completion_tokens": 245,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 2,
+      "db_id": "california_schools",
+      "question": "Please list the zip code of all the charter schools in Fresno County Office of Education.",
+      "gold_sql": "SELECT T2.Zip FROM frpm AS T1 INNER JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode WHERE T1.`District Name` = 'Fresno County Office of Education' AND T1.`Charter School (Y/N)` = 1",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.Zip FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode WHERE T2.`District Name` = 'Fresno County Office of Education' AND T2.`Charter School (Y/N)` = 1",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.Zip",
+                "canonical": "T1.Zip",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode",
+                "canonical": "FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "T2.\"District Name\" = 'Fresno County Office of Education' AND T2.\"Charter School (Y/N)\" = 1",
+                "canonical": "T2.\"District Name\" = 'Fresno County Office of Education' AND T2.\"Charter School (Y/N)\" = 1",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                "93726-5309"
+              ],
+              [
+                "93628-9602"
+              ],
+              [
+                "93706-2611"
+              ],
+              [
+                "93726-5208"
+              ],
+              [
+                "93706-2819"
+              ]
+            ],
+            "columns": [
+              "Zip"
+            ],
+            "error_message": null,
+            "execution_time_ms": 5.257199984043837
+          },
+          "prompt_tokens": 1113,
+          "completion_tokens": 64
+        }
+      ],
+      "final_sql": "SELECT T1.Zip FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode WHERE T2.`District Name` = 'Fresno County Office of Education' AND T2.`Charter School (Y/N)` = 1",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": true,
+      "total_calls": 1,
+      "total_prompt_tokens": 1113,
+      "total_completion_tokens": 64,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 3,
+      "db_id": "california_schools",
+      "question": "What is the unabbreviated mailing street address of the school with the highest FRPM count for K-12 students?",
+      "gold_sql": "SELECT T2.MailStreet FROM frpm AS T1 INNER JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode ORDER BY T1.`FRPM Count (K-12)` DESC LIMIT 1",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.MailStreet FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode ORDER BY T2.`FRPM Count (K-12)` DESC LIMIT 1",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.MailStreet",
+                "canonical": "T1.MailStreet",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode",
+                "canonical": "FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "ORDER_BY",
+                "content": "T2.\"FRPM Count (K-12)\" DESC",
+                "canonical": "T2.\"FRPM Count (K-12)\" DESC",
+                "ast_type": "Order"
+              },
+              {
+                "clause_type": "LIMIT",
+                "content": "1",
+                "canonical": "1",
+                "ast_type": "Limit"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                "14429 South Downey Avenue"
+              ]
+            ],
+            "columns": [
+              "MailStreet"
+            ],
+            "error_message": null,
+            "execution_time_ms": 28.528299881145358
+          },
+          "prompt_tokens": 1095,
+          "completion_tokens": 53
+        }
+      ],
+      "final_sql": "SELECT T1.MailStreet FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode ORDER BY T2.`FRPM Count (K-12)` DESC LIMIT 1",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": true,
+      "total_calls": 1,
+      "total_prompt_tokens": 1095,
+      "total_completion_tokens": 53,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 4,
+      "db_id": "california_schools",
+      "question": "Please list the phone numbers of the direct charter-funded schools that are opened after 2000/1/1.",
+      "gold_sql": "SELECT T2.Phone FROM frpm AS T1 INNER JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode WHERE T1.`Charter Funding Type` = 'Directly funded' AND T1.`Charter School (Y/N)` = 1 AND T2.OpenDate > '2000-01-01'",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.Phone FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode WHERE T2.`Charter Funding Type` = 'Direct' AND T1.OpenDate > '2000-01-01' AND T2.`Charter School (Y/N)` = 1",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.Phone",
+                "canonical": "T1.Phone",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode",
+                "canonical": "FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "T2.\"Charter Funding Type\" = 'Direct' AND T1.OpenDate > '2000-01-01' AND T2.\"Charter School (Y/N)\" = 1",
+                "canonical": "T2.\"Charter Funding Type\" = 'Direct' AND T1.OpenDate > '2000-01-01' AND T2.\"Charter School (Y/N)\" = 1",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "EMPTY",
+            "rows": [],
+            "columns": [
+              "Phone"
+            ],
+            "error_message": null,
+            "execution_time_ms": 11.156699853017926
+          },
+          "prompt_tokens": 1121,
+          "completion_tokens": 79
+        },
+        {
+          "turn_index": 2,
+          "sql": "SELECT T1.Phone FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode WHERE T2.`Charter Funding Type` = 'Direct' AND T1.OpenDate > '2000-01-01'",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.Phone",
+                "canonical": "T1.Phone",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode",
+                "canonical": "FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "T2.\"Charter Funding Type\" = 'Direct' AND T1.OpenDate > '2000-01-01'",
+                "canonical": "T2.\"Charter Funding Type\" = 'Direct' AND T1.OpenDate > '2000-01-01'",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "EMPTY",
+            "rows": [],
+            "columns": [
+              "Phone"
+            ],
+            "error_message": null,
+            "execution_time_ms": 14.486399944871664
+          },
+          "prompt_tokens": 1208,
+          "completion_tokens": 65
+        },
+        {
+          "turn_index": 3,
+          "sql": "SELECT Phone FROM schools WHERE FundingType = 'Direct' AND OpenDate > '2000-01-01'",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "Phone",
+                "canonical": "Phone",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM schools",
+                "canonical": "FROM schools",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "FundingType = 'Direct' AND OpenDate > '2000-01-01'",
+                "canonical": "FundingType = 'Direct' AND OpenDate > '2000-01-01'",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "EMPTY",
+            "rows": [],
+            "columns": [
+              "Phone"
+            ],
+            "error_message": null,
+            "execution_time_ms": 19.36490018852055
+          },
+          "prompt_tokens": 1194,
+          "completion_tokens": 32
+        }
+      ],
+      "final_sql": "SELECT Phone FROM schools WHERE FundingType = 'Direct' AND OpenDate > '2000-01-01'",
+      "final_status": "EMPTY",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 3,
+      "total_prompt_tokens": 3523,
+      "total_completion_tokens": 176,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 5,
+      "db_id": "california_schools",
+      "question": "How many schools with an average score in Math greater than 400 in the SAT test are exclusively virtual?",
+      "gold_sql": "SELECT COUNT(DISTINCT T2.School) FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode WHERE T2.Virtual = 'F' AND T1.AvgScrMath > 400",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "sql\nSELECT count(T1.cds) FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds  =  T2.CDSCode WHERE T1.AvgScrMath  >  400 AND T2.Virtual  =  'F'",
+          "clause_table": {
+            "clauses": []
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "near \"sql\": syntax error",
+            "execution_time_ms": 0.3945999778807163
+          },
+          "prompt_tokens": 1109,
+          "completion_tokens": 64
+        },
+        {
+          "turn_index": 2,
+          "sql": "SELECT count(T1.cds) FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds  =  T2.CDSCode WHERE T1.AvgScrMath  >  400 AND T2.Virtual  =  'F'",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "COUNT(T1.cds)",
+                "canonical": "COUNT(T1.cds)",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode",
+                "canonical": "FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "T1.AvgScrMath > 400 AND T2.Virtual = 'F'",
+                "canonical": "T1.AvgScrMath > 400 AND T2.Virtual = 'F'",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                4
+              ]
+            ],
+            "columns": [
+              "count(T1.cds)"
+            ],
+            "error_message": null,
+            "execution_time_ms": 30.357599956914783
+          },
+          "prompt_tokens": 1185,
+          "completion_tokens": 62
+        }
+      ],
+      "final_sql": "SELECT count(T1.cds) FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds  =  T2.CDSCode WHERE T1.AvgScrMath  >  400 AND T2.Virtual  =  'F'",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": true,
+      "total_calls": 2,
+      "total_prompt_tokens": 2294,
+      "total_completion_tokens": 126,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 6,
+      "db_id": "california_schools",
+      "question": "Among the schools with the SAT test takers of over 500, please list the schools that are magnet schools or offer a magnet program.",
+      "gold_sql": "SELECT T2.School FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode WHERE T2.Magnet = 1 AND T1.NumTstTakr > 500",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.School FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode  =  T2.cds WHERE T2.NumTstTakr  >  500 AND T1.Magnet  =  1",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.School",
+                "canonical": "T1.School",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "canonical": "FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "T2.NumTstTakr > 500 AND T1.Magnet = 1",
+                "canonical": "T2.NumTstTakr > 500 AND T1.Magnet = 1",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                "Millikan High"
+              ],
+              [
+                "Polytechnic High"
+              ],
+              [
+                "Troy High"
+              ]
+            ],
+            "columns": [
+              "School"
+            ],
+            "error_message": null,
+            "execution_time_ms": 29.736399883404374
+          },
+          "prompt_tokens": 1118,
+          "completion_tokens": 59
+        }
+      ],
+      "final_sql": "SELECT T1.School FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode  =  T2.cds WHERE T2.NumTstTakr  >  500 AND T1.Magnet  =  1",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": true,
+      "total_calls": 1,
+      "total_prompt_tokens": 1118,
+      "total_completion_tokens": 59,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 7,
+      "db_id": "california_schools",
+      "question": "What is the phone number of the school that has the highest number of test takers with an SAT score of over 1500?",
+      "gold_sql": "SELECT T2.Phone FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode ORDER BY T1.NumGE1500 DESC LIMIT 1",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.Phone FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds ORDER BY T2.NumGE1500 DESC LIMIT 1",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.Phone",
+                "canonical": "T1.Phone",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "canonical": "FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "ORDER_BY",
+                "content": "T2.NumGE1500 DESC",
+                "canonical": "T2.NumGE1500 DESC",
+                "ast_type": "Order"
+              },
+              {
+                "clause_type": "LIMIT",
+                "content": "1",
+                "canonical": "1",
+                "ast_type": "Limit"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                "(213) 241-1000"
+              ]
+            ],
+            "columns": [
+              "Phone"
+            ],
+            "error_message": null,
+            "execution_time_ms": 71.09350012615323
+          },
+          "prompt_tokens": 1098,
+          "completion_tokens": 48
+        }
+      ],
+      "final_sql": "SELECT T1.Phone FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds ORDER BY T2.NumGE1500 DESC LIMIT 1",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": true,
+      "total_calls": 1,
+      "total_prompt_tokens": 1098,
+      "total_completion_tokens": 48,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 8,
+      "db_id": "california_schools",
+      "question": "What is the number of SAT test takers of the schools with the highest FRPM count for K-12 students?",
+      "gold_sql": "SELECT NumTstTakr FROM satscores WHERE cds = ( SELECT CDSCode FROM frpm ORDER BY `FRPM Count (K-12)` DESC LIMIT 1 )",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.NumTstTakr \nFROM satscores AS T1\nJOIN frpm AS T2 ON T1.cds = T2.CDSCode\nORDER BY T2.`FRPM Count (K-12)` DESC\nLIMIT 1;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.NumTstTakr",
+                "canonical": "T1.NumTstTakr",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM satscores AS T1 JOIN frpm AS T2 ON T1.cds = T2.CDSCode",
+                "canonical": "FROM satscores AS T1 JOIN frpm AS T2 ON T1.cds = T2.CDSCode",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "ORDER_BY",
+                "content": "T2.\"FRPM Count (K-12)\" DESC",
+                "canonical": "T2.\"FRPM Count (K-12)\" DESC",
+                "ast_type": "Order"
+              },
+              {
+                "clause_type": "LIMIT",
+                "content": "1",
+                "canonical": "1",
+                "ast_type": "Limit"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                459
+              ]
+            ],
+            "columns": [
+              "NumTstTakr"
+            ],
+            "error_message": null,
+            "execution_time_ms": 9.842900093644857
+          },
+          "prompt_tokens": 1094,
+          "completion_tokens": 61
+        }
+      ],
+      "final_sql": "SELECT T1.NumTstTakr \nFROM satscores AS T1\nJOIN frpm AS T2 ON T1.cds = T2.CDSCode\nORDER BY T2.`FRPM Count (K-12)` DESC\nLIMIT 1;",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": true,
+      "total_calls": 1,
+      "total_prompt_tokens": 1094,
+      "total_completion_tokens": 61,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 9,
+      "db_id": "california_schools",
+      "question": "Among the schools with the average score in Math over 560 in the SAT test, how many schools are directly charter-funded?",
+      "gold_sql": "SELECT COUNT(T2.`School Code`) FROM satscores AS T1 INNER JOIN frpm AS T2 ON T1.cds = T2.CDSCode WHERE T1.AvgScrMath > 560 AND T2.`Charter Funding Type` = 'Directly funded'",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT count(T1.cds) FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode WHERE T1.AvgScrMath > 560 AND T2.FundingType = 'Directly funded'",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "COUNT(T1.cds)",
+                "canonical": "COUNT(T1.cds)",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode",
+                "canonical": "FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "T1.AvgScrMath > 560 AND T2.FundingType = 'Directly funded'",
+                "canonical": "T1.AvgScrMath > 560 AND T2.FundingType = 'Directly funded'",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                2
+              ]
+            ],
+            "columns": [
+              "count(T1.cds)"
+            ],
+            "error_message": null,
+            "execution_time_ms": 23.14860001206398
+          },
+          "prompt_tokens": 1098,
+          "completion_tokens": 60
+        }
+      ],
+      "final_sql": "SELECT count(T1.cds) FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode WHERE T1.AvgScrMath > 560 AND T2.FundingType = 'Directly funded'",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": true,
+      "total_calls": 1,
+      "total_prompt_tokens": 1098,
+      "total_completion_tokens": 60,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 10,
+      "db_id": "california_schools",
+      "question": "For the school with the highest average score in Reading in the SAT test, what is its FRPM count for students aged 5-17?",
+      "gold_sql": "SELECT T2.`FRPM Count (Ages 5-17)` FROM satscores AS T1 INNER JOIN frpm AS T2 ON T1.cds = T2.CDSCode ORDER BY T1.AvgScrRead DESC LIMIT 1",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.`FRPM Count (Ages 5-17)` \nFROM frpm AS T1 \nJOIN satscores AS T2 ON T1.CDSCode = T2.cds \nORDER BY T2.AvgScrRead DESC \nLIMIT 1;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.\"FRPM Count (Ages 5-17)\"",
+                "canonical": "T1.\"FRPM Count (Ages 5-17)\"",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM frpm AS T1 JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "canonical": "FROM frpm AS T1 JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "ORDER_BY",
+                "content": "T2.AvgScrRead DESC",
+                "canonical": "T2.AvgScrRead DESC",
+                "ast_type": "Order"
+              },
+              {
+                "clause_type": "LIMIT",
+                "content": "1",
+                "canonical": "1",
+                "ast_type": "Limit"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                136.0
+              ]
+            ],
+            "columns": [
+              "FRPM Count (Ages 5-17)"
+            ],
+            "error_message": null,
+            "execution_time_ms": 11.271100025624037
+          },
+          "prompt_tokens": 1100,
+          "completion_tokens": 65
+        }
+      ],
+      "final_sql": "SELECT T1.`FRPM Count (Ages 5-17)` \nFROM frpm AS T1 \nJOIN satscores AS T2 ON T1.CDSCode = T2.cds \nORDER BY T2.AvgScrRead DESC \nLIMIT 1;",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": true,
+      "total_calls": 1,
+      "total_prompt_tokens": 1100,
+      "total_completion_tokens": 65,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 11,
+      "db_id": "california_schools",
+      "question": "Please list the codes of the schools with a total enrollment of over 500.",
+      "gold_sql": "SELECT T2.CDSCode FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode WHERE T2.`Enrollment (K-12)` + T2.`Enrollment (Ages 5-17)` > 500",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT CDSCode FROM frpm WHERE (`Enrollment (K-12)` + `Enrollment (Ages 5-17)`) > 500",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "CDSCode",
+                "canonical": "CDSCode",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM frpm",
+                "canonical": "FROM frpm",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "(\"Enrollment (K-12)\" + \"Enrollment (Ages 5-17)\") > 500",
+                "canonical": "(\"Enrollment (K-12)\" + \"Enrollment (Ages 5-17)\") > 500",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                "01100170109835"
+              ],
+              [
+                "01100170112607"
+              ],
+              [
+                "01100170124172"
+              ],
+              [
+                "01100170125567"
+              ],
+              [
+                "01100176001788"
+              ],
+              [
+                "01100176002000"
+              ],
+              [
+                "01316170131763"
+              ],
+              [
+                "01611190111765"
+              ],
+              [
+                "01611190119222"
+              ],
+              [
+                "01611190122085"
+              ],
+              [
+                "01611190126656"
+              ],
+              [
+                "01611190130229"
+              ],
+              [
+                "01611190130609"
+              ],
+              [
+                "01611190132878"
+              ],
+              [
+                "01611196090005"
+              ],
+              [
+                "01611196090013"
+              ],
+              [
+                "01611196090021"
+              ],
+              [
+                "01611196090039"
+              ],
+              [
+                "01611196090047"
+              ],
+              [
+                "01611196090054"
+              ],
+              [
+                "01611196090112"
+              ],
+              [
+                "01611196090120"
+              ],
+              [
+                "01611196100374"
+              ],
+              [
+                "01611196110779"
+              ],
+              [
+                "01611270130450"
+              ],
+              [
+                "01611276090146"
+              ],
+              [
+                "01611276090161"
+              ],
+              [
+                "01611276095376"
+              ],
+              [
+                "01611276116222"
+              ],
+              [
+                "01611430122689"
+              ],
+              [
+                "01611430122697"
+              ],
+              [
+                "01611430131177"
+              ],
+              [
+                "01611436056857"
+              ],
+              [
+                "01611436056865"
+              ],
+              [
+                "01611436090187"
+              ],
+              [
+                "01611436090195"
+              ],
+              [
+                "01611436090211"
+              ],
+              [
+                "01611436090252"
+              ],
+              [
+                "01611436090278"
+              ],
+              [
+                "01611436090286"
+              ],
+              [
+                "01611436090294"
+              ],
+              [
+                "01611436090302"
+              ],
+              [
+                "01611436090310"
+              ],
+              [
+                "01611436090328"
+              ],
+              [
+                "01611436097729"
+              ],
+              [
+                "01611436105316"
+              ],
+              [
+                "01611500132225"
+              ],
+              [
+                "01611506090351"
+              ],
+              [
+                "01611506090369"
+              ],
+              [
+                "01611506090385"
+              ],
+              [
+                "01611506090393"
+              ],
+              [
+                "01611506090401"
+              ],
+              [
+                "01611506090435"
+              ],
+              [
+                "01611506090468"
+              ],
+              [
+                "01611506090484"
+              ],
+              [
+                "01611506097653"
+              ],
+              [
+                "01611506113005"
+              ],
+              [
+                "01611686090492"
+              ],
+              [
+                "01611760130062"
+              ],
+              [
+                "01611760134270"
+              ],
+              [
+                "01611760134452"
+              ],
+              [
+                "01611760135244"
+              ],
+              [
+                "01611760138693"
+              ],
+              [
+                "01611766000541"
+              ],
+              [
+                "01611766000558"
+              ],
+              [
+                "01611766000566"
+              ],
+              [
+                "01611766000590"
+              ],
+              [
+                "01611766000624"
+              ],
+              [
+                "01611766000640"
+              ],
+              [
+                "01611766000665"
+              ],
+              [
+                "01611766000673"
+              ],
+              [
+                "01611766000681"
+              ],
+              [
+                "01611766000715"
+              ],
+              [
+                "01611766000723"
+              ],
+              [
+                "01611766000749"
+              ],
+              [
+                "01611766000756"
+              ],
+              [
+                "01611766000764"
+              ],
+              [
+                "01611766000798"
+              ],
+              [
+                "01611766000806"
+              ],
+              [
+                "01611766000830"
+              ],
+              [
+                "01611766000848"
+              ],
+              [
+                "01611766056873"
+              ],
+              [
+                "01611766056881"
+              ],
+              [
+                "01611766056907"
+              ],
+              [
+                "01611766056915"
+              ],
+              [
+                "01611766056923"
+              ],
+              [
+                "01611766066468"
+              ],
+              [
+                "01611766089320"
+              ],
+              [
+                "01611766089619"
+              ],
+              [
+                "01611766090526"
+              ],
+              [
+                "01611766090534"
+              ],
+              [
+                "01611766090542"
+              ],
+              [
+                "01611766090559"
+              ],
+              [
+                "01611766104723"
+              ],
+              [
+                "01611766106983"
+              ],
+              [
+                "01611766111330"
+              ],
+              [
+                "01611920108670"
+              ],
+              [
+                "01611920111815"
+              ],
+              [
+                "01611920113902"
+              ],
+              [
+                "01611920127696"
+              ],
+              [
+                "01611920133629"
+              ],
+              [
+                "01611920135319"
+              ],
+              [
+                "01611920138339"
+              ],
+              [
+                "01611926000889"
+              ],
+              [
+                "01611926000905"
+              ],
+              [
+                "01611926000913"
+              ],
+              [
+                "01611926000921"
+              ],
+              [
+                "01611926000947"
+              ],
+              [
+                "01611926000962"
+              ],
+              [
+                "01611926000988"
+              ],
+              [
+                "01611926000996"
+              ],
+              [
+                "01611926001044"
+              ],
+              [
+                "01611926001051"
+              ],
+              [
+                "01611926001093"
+              ],
+              [
+                "01611926001101"
+              ],
+              [
+                "01611926001127"
+              ],
+              [
+                "01611926001135"
+              ],
+              [
+                "01611926001176"
+              ],
+              [
+                "01611926001192"
+              ],
+              [
+                "01611926056931"
+              ],
+              [
+                "01611926056949"
+              ],
+              [
+                "01611926056956"
+              ],
+              [
+                "01611926056972"
+              ],
+              [
+                "01611926062160"
+              ],
+              [
+                "01611926066476"
+              ],
+              [
+                "01611926090583"
+              ],
+              [
+                "01611926104566"
+              ],
+              [
+                "01612000107839"
+              ],
+              [
+                "01612000133397"
+              ],
+              [
+                "01612000134536"
+              ],
+              [
+                "01612006001234"
+              ],
+              [
+                "01612006001242"
+              ],
+              [
+                "01612006001259"
+              ],
+              [
+                "01612006001283"
+              ],
+              [
+                "01612006001291"
+              ],
+              [
+                "01612006001317"
+              ],
+              [
+                "01612006001341"
+              ],
+              [
+                "01612006071906"
+              ],
+              [
+                "01612006085773"
+              ],
+              [
+                "01612006089338"
+              ],
+              [
+                "01612006097661"
+              ],
+              [
+                "01612006110332"
+              ],
+              [
+                "01612006117543"
+              ],
+              [
+                "01612340130054"
+              ],
+              [
+                "01612346001440"
+              ],
+              [
+                "01612346001457"
+              ],
+              [
+                "01612346001473"
+              ],
+              [
+                "01612346001481"
+              ],
+              [
+                "01612346001499"
+              ],
+              [
+                "01612346001507"
+              ],
+              [
+                "01612346001523"
+              ],
+              [
+                "01612346001531"
+              ],
+              [
+                "01612346102917"
+              ],
+              [
+                "01612420134668"
+              ],
+              [
+                "01612426001572"
+              ],
+              [
+                "01612426001606"
+              ],
+              [
+                "01612426001622"
+              ],
+              [
+                "01612426068266"
+              ],
+              [
+                "01612426097679"
+              ],
+              [
+                "01612426101604"
+              ],
+              [
+                "01612426115505"
+              ],
+              [
+                "01612426115554"
+              ],
+              [
+                "01612426118525"
+              ],
+              [
+                "01612590100065"
+              ],
+              [
+                "01612590100792"
+              ],
+              [
+                "01612590102988"
+              ],
+              [
+                "01612590106906"
+              ],
+              [
+                "01612590108944"
+              ],
+              [
+                "01612590109819"
+              ],
+              [
+                "01612590110189"
+              ],
+              [
+                "01612590110239"
+              ],
+              [
+                "01612590110247"
+              ],
+              [
+                "01612590110254"
+              ],
+              [
+                "01612590110262"
+              ],
+              [
+                "01612590111476"
+              ],
+              [
+                "01612590112763"
+              ],
+              [
+                "01612590112771"
+              ],
+              [
+                "01612590112789"
+              ],
+              [
+                "01612590112797"
+              ],
+              [
+                "01612590112805"
+              ],
+              [
+                "01612590112813"
+              ],
+              [
+                "01612590114363"
+              ],
+              [
+                "01612590114868"
+              ],
+              [
+                "01612590115014"
+              ],
+              [
+                "01612590115204"
+              ],
+              [
+                "01612590115238"
+              ],
+              [
+                "01612590115576"
+              ],
+              [
+                "01612590115584"
+              ],
+              [
+                "01612590115592"
+              ],
+              [
+                "01612590115600"
+              ],
+              [
+                "01612590115618"
+              ],
+              [
+                "01612590115667"
+              ],
+              [
+                "01612590118224"
+              ],
+              [
+                "01612590125161"
+              ],
+              [
+                "01612590125716"
+              ],
+              [
+                "01612590126748"
+              ],
+              [
+                "01612590128413"
+              ],
+              [
+                "01612590130575"
+              ],
+              [
+                "01612590130617"
+              ],
+              [
+                "01612590130633"
+              ],
+              [
+                "01612590130666"
+              ],
+              [
+                "01612590130732"
+              ],
+              [
+                "01612590135905"
+              ],
+              [
+                "01612590136051"
+              ],
+              [
+                "01612590137943"
+              ],
+              [
+                "01612593030772"
+              ],
+              [
+                "01612596001630"
+              ],
+              [
+                "01612596001648"
+              ],
+              [
+                "01612596001655"
+              ],
+              [
+                "01612596001663"
+              ],
+              [
+                "01612596001689"
+              ],
+              [
+                "01612596001697"
+              ],
+              [
+                "01612596001739"
+              ],
+              [
+                "01612596001754"
+              ],
+              [
+                "01612596001812"
+              ],
+              [
+                "01612596001820"
+              ],
+              [
+                "01612596001838"
+              ],
+              [
+                "01612596001846"
+              ],
+              [
+                "01612596001853"
+              ],
+              [
+                "01612596001879"
+              ],
+              [
+                "01612596001895"
+              ],
+              [
+                "01612596001903"
+              ],
+              [
+                "01612596001911"
+              ],
+              [
+                "01612596001929"
+              ],
+              [
+                "01612596001945"
+              ],
+              [
+                "01612596001994"
+              ],
+              [
+                "01612596002018"
+              ],
+              [
+                "01612596002042"
+              ],
+              [
+                "01612596002059"
+              ],
+              [
+                "01612596002075"
+              ],
+              [
+                "01612596002083"
+              ],
+              [
+                "01612596002091"
+              ],
+              [
+                "01612596002109"
+              ],
+              [
+                "01612596002117"
+              ],
+              [
+                "01612596002141"
+              ],
+              [
+                "01612596002174"
+              ],
+              [
+                "01612596002182"
+              ],
+              [
+                "01612596002190"
+              ],
+              [
+                "01612596002216"
+              ],
+              [
+                "01612596002273"
+              ],
+              [
+                "01612596056998"
+              ],
+              [
+                "01612596057004"
+              ],
+              [
+                "01612596057046"
+              ],
+              [
+                "01612596057061"
+              ],
+              [
+                "01612596057079"
+              ],
+              [
+                "01612596057087"
+              ],
+              [
+                "01612596057095"
+              ],
+              [
+                "01612596066450"
+              ],
+              [
+                "01612596072235"
+              ],
+              [
+                "01612596096523"
+              ],
+              [
+                "01612596117568"
+              ],
+              [
+                "01612596118608"
+              ],
+              [
+                "01612596118616"
+              ],
+              [
+                "01612596118640"
+              ],
+              [
+                "01612596118657"
+              ],
+              [
+                "01612750136515"
+              ],
+              [
+                "01612756002281"
+              ],
+              [
+                "01612756002299"
+              ],
+              [
+                "01612756002307"
+              ],
+              [
+                "01612756066492"
+              ],
+              [
+                "01612910137588"
+              ],
+              [
+                "01612916002372"
+              ],
+              [
+                "01612916002398"
+              ],
+              [
+                "01612916002414"
+              ],
+              [
+                "01612916002422"
+              ],
+              [
+                "01612916002430"
+              ],
+              [
+                "01612916002448"
+              ],
+              [
+                "01612916002455"
+              ],
+              [
+                "01612916002463"
+              ],
+              [
+                "01612916057111"
+              ],
+              [
+                "01612916066518"
+              ],
+              [
+                "01613090101212"
+              ],
+              [
+                "01613090114421"
+              ],
+              [
+                "01613090130849"
+              ],
+              [
+                "01613090137810"
+              ],
+              [
+                "01613096002505"
+              ],
+              [
+                "01613096002513"
+              ],
+              [
+                "01613096002521"
+              ],
+              [
+                "01613096002539"
+              ],
+              [
+                "01613096002547"
+              ],
+              [
+                "01613096002554"
+              ],
+              [
+                "01613096002562"
+              ],
+              [
+                "01613096002604"
+              ],
+              [
+                "01613096002612"
+              ],
+              [
+                "01613096002620"
+              ],
+              [
+                "01613096002653"
+              ],
+              [
+                "01613096002703"
+              ],
+              [
+                "01750930114579"
+              ],
+              [
+                "01750930123935"
+              ],
+              [
+                "01750930125930"
+              ],
+              [
+                "01750930132704"
+              ],
+              [
+                "01750936001374"
+              ],
+              [
+                "01750936001390"
+              ],
+              [
+                "01750936001424"
+              ],
+              [
+                "01750936066484"
+              ],
+              [
+                "01750936118038"
+              ],
+              [
+                "01751010130096"
+              ],
+              [
+                "01751010130583"
+              ],
+              [
+                "01751016001366"
+              ],
+              [
+                "01751016001416"
+              ],
+              [
+                "01751016002315"
+              ],
+              [
+                "01751016002323"
+              ],
+              [
+                "01751016002349"
+              ],
+              [
+                "01751016002356"
+              ],
+              [
+                "01751016066500"
+              ],
+              [
+                "01751016089361"
+              ],
+              [
+                "01751016108971"
+              ],
+              [
+                "01751016114318"
+              ],
+              [
+                "01751016117592"
+              ],
+              [
+                "01751016117600"
+              ],
+              [
+                "01751196002711"
+              ],
+              [
+                "03739810330753"
+              ],
+              [
+                "03739810334755"
+              ],
+              [
+                "03739816002810"
+              ],
+              [
+                "03739816002828"
+              ],
+              [
+                "03739816002844"
+              ],
+              [
+                "03739816002877"
+              ],
+              [
+                "03739816107387"
+              ],
+              [
+                "03739816107395"
+              ],
+              [
+                "04100410114991"
+              ],
+              [
+                "04100410430090"
+              ],
+              [
+                "04614086002943"
+              ],
+              [
+                "04614240120394"
+              ],
+              [
+                "04614240431676"
+              ],
+              [
+                "04614240437558"
+              ],
+              [
+                "04614246002968"
+              ],
+              [
+                "04614246002976"
+              ],
+              [
+                "04614246003008"
+              ],
+              [
+                "04614246003024"
+              ],
+              [
+                "04614246003032"
+              ],
+              [
+                "04614246003040"
+              ],
+              [
+                "04614246003073"
+              ],
+              [
+                "04614246003081"
+              ],
+              [
+                "04614246003099"
+              ],
+              [
+                "04614246003107"
+              ],
+              [
+                "04614246057129"
+              ],
+              [
+                "04614246057137"
+              ],
+              [
+                "04614246109722"
+              ],
+              [
+                "04614246111116"
+              ],
+              [
+                "04614246113773"
+              ],
+              [
+                "04614246116610"
+              ],
+              [
+                "04614246119523"
+              ],
+              [
+                "04614320433201"
+              ],
+              [
+                "04614326003115"
+              ],
+              [
+                "04614996003198"
+              ],
+              [
+                "04615070110072"
+              ],
+              [
+                "04615070129577"
+              ],
+              [
+                "04615076003230"
+              ],
+              [
+                "04615076003255"
+              ],
+              [
+                "04615076003263"
+              ],
+              [
+                "04615076003271"
+              ],
+              [
+                "04615076094957"
+              ],
+              [
+                "04615150434803"
+              ],
+              [
+                "04615150435602"
+              ],
+              [
+                "04615230110510"
+              ],
+              [
+                "04615236003289"
+              ],
+              [
+                "04615236003297"
+              ],
+              [
+                "04615310437350"
+              ],
+              [
+                "04615316003313"
+              ],
+              [
+                "04615316003321"
+              ],
+              [
+                "04615316003339"
+              ],
+              [
+                "04615316105522"
+              ],
+              [
+                "04615316113526"
+              ],
+              [
+                "04615490102327"
+              ],
+              [
+                "04615496003354"
+              ],
+              [
+                "04615496003370"
+              ],
+              [
+                "04755070433953"
+              ],
+              [
+                "04755076003156"
+              ],
+              [
+                "04755076003164"
+              ],
+              [
+                "04755076003172"
+              ],
+              [
+                "05100580530154"
+              ],
+              [
+                "05615560532507"
+              ],
+              [
+                "05615640531509"
+              ],
+              [
+                "05615646003438"
+              ],
+              [
+                "05615646003446"
+              ],
+              [
+                "05615646105431"
+              ],
+              [
+                "05615646108518"
+              ],
+              [
+                "05615726003388"
+              ],
+              [
+                "05615726003461"
+              ],
+              [
+                "06615980631259"
+              ],
+              [
+                "06615986003495"
+              ],
+              [
+                "06615986057152"
+              ],
+              [
+                "06616140635250"
+              ],
+              [
+                "06616146003511"
+              ],
+              [
+                "06616146103576"
+              ],
+              [
+                "06616220118729"
+              ],
+              [
+                "06616220637504"
+              ],
+              [
+                "06616226003552"
+              ],
+              [
+                "07100740114470"
+              ],
+              [
+                "07100740129528"
+              ],
+              [
+                "07100740731380"
+              ],
+              [
+                "07616300730283"
+              ],
+              [
+                "07616300731125"
+              ],
+              [
+                "07616300733725"
+              ],
+              [
+                "07616300734244"
+              ],
+              [
+                "07616480100461"
+              ],
+              [
+                "07616480100479"
+              ],
+              [
+                "07616480106583"
+              ],
+              [
+                "07616480113761"
+              ],
+              [
+                "07616480117218"
+              ],
+              [
+                "07616480730259"
+              ],
+              [
+                "07616480730465"
+              ],
+              [
+                "07616480730861"
+              ],
+              [
+                "07616486003578"
+              ],
+              [
+                "07616486003594"
+              ],
+              [
+                "07616486003602"
+              ],
+              [
+                "07616486003610"
+              ],
+              [
+                "07616486003628"
+              ],
+              [
+                "07616486003636"
+              ],
+              [
+                "07616486057178"
+              ],
+              [
+                "07616486061154"
+              ],
+              [
+                "07616486084941"
+              ],
+              [
+                "07616486108989"
+              ],
+              [
+                "07616486110514"
+              ],
+              [
+                "07616486113104"
+              ],
+              [
+                "07616486115380"
+              ],
+              [
+                "07616486117501"
+              ],
+              [
+                "07616550102376"
+              ],
+              [
+                "07616550108019"
+              ],
+              [
+                "07616550110528"
+              ],
+              [
+                "07616550127464"
+              ],
+              [
+                "07616556003644"
+              ],
+              [
+                "07616556003651"
+              ],
+              [
+                "07616556070981"
+              ],
+              [
+                "07616556109730"
+              ],
+              [
+                "07616556112718"
+              ],
+              [
+                "07616556117410"
+              ],
+              [
+                "07616556119754"
+              ],
+              [
+                "07616630130930"
+              ],
+              [
+                "07616636003669"
+              ],
+              [
+                "07616636101943"
+              ],
+              [
+                "07616636119838"
+              ],
+              [
+                "07616970737023"
+              ],
+              [
+                "07616976003685"
+              ],
+              [
+                "07616976003701"
+              ],
+              [
+                "07617056003719"
+              ],
+              [
+                "07617136003727"
+              ],
+              [
+                "07617136003743"
+              ],
+              [
+                "07617136003750"
+              ],
+              [
+                "07617136003768"
+              ],
+              [
+                "07617136003792"
+              ],
+              [
+                "07617210107797"
+              ],
+              [
+                "07617210730457"
+              ],
+              [
+                "07617210730572"
+              ],
+              [
+                "07617210733980"
+              ],
+              [
+                "07617390730549"
+              ],
+              [
+                "07617396003826"
+              ],
+              [
+                "07617396003834"
+              ],
+              [
+                "07617396003842"
+              ],
+              [
+                "07617396003875"
+              ],
+              [
+                "07617396057186"
+              ],
+              [
+                "07617476003909"
+              ],
+              [
+                "07617476003917"
+              ],
+              [
+                "07617476003925"
+              ],
+              [
+                "07617476003933"
+              ],
+              [
+                "07617540106088"
+              ],
+              [
+                "07617540730044"
+              ],
+              [
+                "07617540731646"
+              ],
+              [
+                "07617540731836"
+              ],
+              [
+                "07617540734566"
+              ],
+              [
+                "07617540734764"
+              ],
+              [
+                "07617540737809"
+              ],
+              [
+                "07617546003958"
+              ],
+              [
+                "07617546003966"
+              ],
+              [
+                "07617546003974"
+              ],
+              [
+                "07617546003982"
+              ],
+              [
+                "07617546004030"
+              ],
+              [
+                "07617546004048"
+              ],
+              [
+                "07617546004055"
+              ],
+              [
+                "07617546004063"
+              ],
+              [
+                "07617546004097"
+              ],
+              [
+                "07617546004105"
+              ],
+              [
+                "07617546004154"
+              ],
+              [
+                "07617546004162"
+              ],
+              [
+                "07617546004170"
+              ],
+              [
+                "07617546004188"
+              ],
+              [
+                "07617546004196"
+              ],
+              [
+                "07617546004220"
+              ],
+              [
+                "07617546004246"
+              ],
+              [
+                "07617546004253"
+              ],
+              [
+                "07617546004261"
+              ],
+              [
+                "07617546004295"
+              ],
+              [
+                "07617546004303"
+              ],
+              [
+                "07617546004311"
+              ],
+              [
+                "07617546004329"
+              ],
+              [
+                "07617546004337"
+              ],
+              [
+                "07617546004345"
+              ],
+              [
+                "07617546004352"
+              ],
+              [
+                "07617546004360"
+              ],
+              [
+                "07617546004378"
+              ],
+              [
+                "07617546004394"
+              ],
+              [
+                "07617546004402"
+              ],
+              [
+                "07617546004410"
+              ],
+              [
+                "07617546096226"
+              ],
+              [
+                "07617546105357"
+              ],
+              [
+                "07617546111504"
+              ],
+              [
+                "07617546112395"
+              ],
+              [
+                "07617546114904"
+              ],
+              [
+                "07617620110684"
+              ],
+              [
+                "07617620129064"
+              ],
+              [
+                "07617626004428"
+              ],
+              [
+                "07617626096234"
+              ],
+              [
+                "07617626108765"
+              ],
+              [
+                "07617626110803"
+              ],
+              [
+                "07617626110811"
+              ],
+              [
+                "07617626119226"
+              ],
+              [
+                "07617706004444"
+              ],
+              [
+                "07617706004451"
+              ],
+              [
+                "07617706004477"
+              ],
+              [
+                "07617706004501"
+              ],
+              [
+                "07617706066583"
+              ],
+              [
+                "07617880116863"
+              ],
+              [
+                "07617880125435"
+              ],
+              [
+                "07617880735407"
+              ],
+              [
+                "07617886004527"
+              ],
+              [
+                "07617886004535"
+              ],
+              [
+                "07617886004543"
+              ],
+              [
+                "07617886004568"
+              ],
+              [
+                "07617886004576"
+              ],
+              [
+                "07617886061162"
+              ],
+              [
+                "07617886084966"
+              ],
+              [
+                "07617886098578"
+              ],
+              [
+                "07617886109383"
+              ],
+              [
+                "07617960101477"
+              ],
+              [
+                "07617960110973"
+              ],
+              [
+                "07617960730291"
+              ],
+              [
+                "07617960730598"
+              ],
+              [
+                "07617960732164"
+              ],
+              [
+                "07617960732941"
+              ],
+              [
+                "07617960733659"
+              ],
+              [
+                "07617960735316"
+              ],
+              [
+                "07617960735902"
+              ],
+              [
+                "07617966004600"
+              ],
+              [
+                "07617966004659"
+              ],
+              [
+                "07617966004667"
+              ],
+              [
+                "07617966004691"
+              ],
+              [
+                "07617966004733"
+              ],
+              [
+                "07617966004741"
+              ],
+              [
+                "07617966004758"
+              ],
+              [
+                "07617966004766"
+              ],
+              [
+                "07617966004774"
+              ],
+              [
+                "07617966004782"
+              ],
+              [
+                "07617966004808"
+              ],
+              [
+                "07617966004824"
+              ],
+              [
+                "07617966004832"
+              ],
+              [
+                "07617966004840"
+              ],
+              [
+                "07617966004857"
+              ],
+              [
+                "07617966004865"
+              ],
+              [
+                "07617966004873"
+              ],
+              [
+                "07617966004881"
+              ],
+              [
+                "07617966004899"
+              ],
+              [
+                "07617966004907"
+              ],
+              [
+                "07617966004915"
+              ],
+              [
+                "07617966004931"
+              ],
+              [
+                "07617966004956"
+              ],
+              [
+                "07617966004964"
+              ],
+              [
+                "07617966004972"
+              ],
+              [
+                "07617966004980"
+              ],
+              [
+                "07617966004998"
+              ],
+              [
+                "07617966005003"
+              ],
+              [
+                "07617966005011"
+              ],
+              [
+                "07617966005037"
+              ],
+              [
+                "07617966005045"
+              ],
+              [
+                "07617966057210"
+              ],
+              [
+                "07617966057228"
+              ],
+              [
+                "07617966057236"
+              ],
+              [
+                "07617966057244"
+              ],
+              [
+                "07617966061170"
+              ],
+              [
+                "07617966097141"
+              ],
+              [
+                "07617966099717"
+              ],
+              [
+                "07617966112015"
+              ],
+              [
+                "07617966114094"
+              ],
+              [
+                "07617966119515"
+              ],
+              [
+                "07617966120885"
+              ],
+              [
+                "07618040102566"
+              ],
+              [
+                "07618040108324"
+              ],
+              [
+                "07618040109173"
+              ],
+              [
+                "07618040113118"
+              ],
+              [
+                "07618040113589"
+              ],
+              [
+                "07618040116541"
+              ],
+              [
+                "07618040119032"
+              ],
+              [
+                "07618040730051"
+              ],
+              [
+                "07618040734368"
+              ],
+              [
+                "07618040736504"
+              ],
+              [
+                "07618046005060"
+              ],
+              [
+                "07618046005078"
+              ],
+              [
+                "07618046005086"
+              ],
+              [
+                "07618046005094"
+              ],
+              [
+                "07618046005102"
+              ],
+              [
+                "07618046005110"
+              ],
+              [
+                "07618046005128"
+              ],
+              [
+                "07618046005136"
+              ],
+              [
+                "07618046005144"
+              ],
+              [
+                "07618046005151"
+              ],
+              [
+                "07618046066591"
+              ],
+              [
+                "07618046071039"
+              ],
+              [
+                "07618046089130"
+              ],
+              [
+                "07618046096036"
+              ],
+              [
+                "07618046097158"
+              ],
+              [
+                "07618046097166"
+              ],
+              [
+                "07618046100952"
+              ],
+              [
+                "07618046108161"
+              ],
+              [
+                "07618046110449"
+              ],
+              [
+                "07618046113336"
+              ],
+              [
+                "07618046114326"
+              ],
+              [
+                "07618046117451"
+              ],
+              [
+                "07618046117485"
+              ],
+              [
+                "07618126005169"
+              ],
+              [
+                "07618126005177"
+              ],
+              [
+                "07618126005185"
+              ],
+              [
+                "07618126005193"
+              ],
+              [
+                "07618126005235"
+              ],
+              [
+                "07618126005243"
+              ],
+              [
+                "08100820830059"
+              ],
+              [
+                "08618200833004"
+              ],
+              [
+                "08618206005375"
+              ],
+              [
+                "08618206005383"
+              ],
+              [
+                "08618206005391"
+              ],
+              [
+                "08618206005433"
+              ],
+              [
+                "08618206005441"
+              ],
+              [
+                "08618206113013"
+              ],
+              [
+                "09100900930123"
+              ],
+              [
+                "09618380100024"
+              ],
+              [
+                "09618380107227"
+              ],
+              [
+                "09618380111724"
+              ],
+              [
+                "09618386005466"
+              ],
+              [
+                "09618386005474"
+              ],
+              [
+                "09618386096614"
+              ],
+              [
+                "09618386107361"
+              ],
+              [
+                "09618386110456"
+              ],
+              [
+                "09618386112361"
+              ],
+              [
+                "09618466005482"
+              ],
+              [
+                "09618530930081"
+              ],
+              [
+                "09618530930164"
+              ],
+              [
+                "09618530932756"
+              ],
+              [
+                "09618530936302"
+              ],
+              [
+                "09618796005508"
+              ],
+              [
+                "09618876005516"
+              ],
+              [
+                "09618876110167"
+              ],
+              [
+                "09619030110155"
+              ],
+              [
+                "09619030937805"
+              ],
+              [
+                "09619036005540"
+              ],
+              [
+                "09619036005565"
+              ],
+              [
+                "09619036005573"
+              ],
+              [
+                "09619036095301"
+              ],
+              [
+                "09619296005615"
+              ],
+              [
+                "09619296106678"
+              ],
+              [
+                "09619526005649"
+              ],
+              [
+                "09619526005656"
+              ],
+              [
+                "09619526005664"
+              ],
+              [
+                "09619606005680"
+              ],
+              [
+                "09619606107437"
+              ],
+              [
+                "09619780101519"
+              ],
+              [
+                "09619780108258"
+              ],
+              [
+                "09619786005706"
+              ],
+              [
+                "09619786005714"
+              ],
+              [
+                "09619786098693"
+              ],
+              [
+                "09619786103527"
+              ],
+              [
+                "09619786109441"
+              ],
+              [
+                "09737830930073"
+              ],
+              [
+                "09737836005623"
+              ],
+              [
+                "10101080109991"
+              ],
+              [
+                "10101081030337"
+              ],
+              [
+                "10101086069488"
+              ],
+              [
+                "10101086085112"
+              ],
+              [
+                "10621170106419"
+              ],
+              [
+                "10621170108142"
+              ],
+              [
+                "10621170111153"
+              ],
+              [
+                "10621170113548"
+              ],
+              [
+                "10621170113555"
+              ],
+              [
+                "10621170113563"
+              ],
+              [
+                "10621170118018"
+              ],
+              [
+                "10621170123869"
+              ],
+              [
+                "10621171030196"
+              ],
+              [
+                "10621171030501"
+              ],
+              [
+                "10621171030683"
+              ],
+              [
+                "10621171031053"
+              ],
+              [
+                "10621176005847"
+              ],
+              [
+                "10621176005854"
+              ],
+              [
+                "10621176005862"
+              ],
+              [
+                "10621176005870"
+              ],
+              [
+                "10621176005888"
+              ],
+              [
+                "10621176005904"
+              ],
+              [
+                "10621176005912"
+              ],
+              [
+                "10621176005920"
+              ],
+              [
+                "10621176005938"
+              ],
+              [
+                "10621176066617"
+              ],
+              [
+                "10621176097026"
+              ],
+              [
+                "10621176100408"
+              ],
+              [
+                "10621176101190"
+              ],
+              [
+                "10621176101984"
+              ],
+              [
+                "10621176104624"
+              ],
+              [
+                "10621176106660"
+              ],
+              [
+                "10621176108088"
+              ],
+              [
+                "10621176108096"
+              ],
+              [
+                "10621176109235"
+              ],
+              [
+                "10621176109243"
+              ],
+              [
+                "10621176109912"
+              ],
+              [
+                "10621176109920"
+              ],
+              [
+                "10621176110258"
+              ],
+              [
+                "10621176112742"
+              ],
+              [
+                "10621176113575"
+              ],
+              [
+                "10621176113583"
+              ],
+              [
+                "10621176116313"
+              ],
+              [
+                "10621176116321"
+              ],
+              [
+                "10621176117550"
+              ],
+              [
+                "10621176120083"
+              ],
+              [
+                "10621176120091"
+              ],
+              [
+                "10621251031376"
+              ],
+              [
+                "10621256005961"
+              ],
+              [
+                "10621256005979"
+              ],
+              [
+                "10621256057269"
+              ],
+              [
+                "10621256110209"
+              ],
+              [
+                "10621256110225"
+              ],
+              [
+                "10621256113849"
+              ],
+              [
+                "10621581032150"
+              ],
+              [
+                "10621586006027"
+              ],
+              [
+                "10621586006050"
+              ],
+              [
+                "10621586115190"
+              ],
+              [
+                "10621660106740"
+              ],
+              [
+                "10621660108100"
+              ],
+              [
+                "10621660108118"
+              ],
+              [
+                "10621660113811"
+              ],
+              [
+                "10621660113829"
+              ],
+              [
+                "10621660114355"
+              ],
+              [
+                "10621660114553"
+              ],
+              [
+                "10621660119339"
+              ],
+              [
+                "10621660121533"
+              ],
+              [
+                "10621660129338"
+              ],
+              [
+                "10621661030279"
+              ],
+              [
+                "10621661030287"
+              ],
+              [
+                "10621661030295"
+              ],
+              [
+                "10621661030584"
+              ],
+              [
+                "10621661030675"
+              ],
+              [
+                "10621661030840"
+              ],
+              [
+                "10621661031897"
+              ],
+              [
+                "10621661032507"
+              ],
+              [
+                "10621661032911"
+              ],
+              [
+                "10621661034214"
+              ],
+              [
+                "10621661035831"
+              ],
+              [
+                "10621666006068"
+              ],
+              [
+                "10621666006076"
+              ],
+              [
+                "10621666006084"
+              ],
+              [
+                "10621666006092"
+              ],
+              [
+                "10621666006100"
+              ],
+              [
+                "10621666006118"
+              ],
+              [
+                "10621666006126"
+              ],
+              [
+                "10621666006142"
+              ],
+              [
+                "10621666006159"
+              ],
+              [
+                "10621666006183"
+              ],
+              [
+                "10621666006191"
+              ],
+              [
+                "10621666006217"
+              ],
+              [
+                "10621666006225"
+              ],
+              [
+                "10621666006233"
+              ],
+              [
+                "10621666006258"
+              ],
+              [
+                "10621666006266"
+              ],
+              [
+                "10621666006274"
+              ],
+              [
+                "10621666006282"
+              ],
+              [
+                "10621666006290"
+              ],
+              [
+                "10621666006308"
+              ],
+              [
+                "10621666006316"
+              ],
+              [
+                "10621666006324"
+              ],
+              [
+                "10621666006332"
+              ],
+              [
+                "10621666006357"
+              ],
+              [
+                "10621666006365"
+              ],
+              [
+                "10621666006373"
+              ],
+              [
+                "10621666006381"
+              ],
+              [
+                "10621666006407"
+              ],
+              [
+                "10621666006415"
+              ],
+              [
+                "10621666006423"
+              ],
+              [
+                "10621666006431"
+              ],
+              [
+                "10621666006449"
+              ],
+              [
+                "10621666006456"
+              ],
+              [
+                "10621666006464"
+              ],
+              [
+                "10621666006472"
+              ],
+              [
+                "10621666006480"
+              ],
+              [
+                "10621666006514"
+              ],
+              [
+                "10621666006522"
+              ],
+              [
+                "10621666006530"
+              ],
+              [
+                "10621666006548"
+              ],
+              [
+                "10621666006555"
+              ],
+              [
+                "10621666006563"
+              ],
+              [
+                "10621666006571"
+              ],
+              [
+                "10621666006589"
+              ],
+              [
+                "10621666006597"
+              ],
+              [
+                "10621666057285"
+              ],
+              [
+                "10621666057293"
+              ],
+              [
+                "10621666057327"
+              ],
+              [
+                "10621666057335"
+              ],
+              [
+                "10621666057343"
+              ],
+              [
+                "10621666057350"
+              ],
+              [
+                "10621666061188"
+              ],
+              [
+                "10621666061196"
+              ],
+              [
+                "10621666061204"
+              ],
+              [
+                "10621666068704"
+              ],
+              [
+                "10621666085120"
+              ],
+              [
+                "10621666085138"
+              ],
+              [
+                "10621666088538"
+              ],
+              [
+                "10621666088546"
+              ],
+              [
+                "10621666088934"
+              ],
+              [
+                "10621666101091"
+              ],
+              [
+                "10621666101109"
+              ],
+              [
+                "10621666102016"
+              ],
+              [
+                "10621666103832"
+              ],
+              [
+                "10621666103840"
+              ],
+              [
+                "10621666105746"
+              ],
+              [
+                "10621666109961"
+              ],
+              [
+                "10621666111231"
+              ],
+              [
+                "10621666111249"
+              ],
+              [
+                "10621666111256"
+              ],
+              [
+                "10621666112882"
+              ],
+              [
+                "10621666117477"
+              ],
+              [
+                "10621666120125"
+              ],
+              [
+                "10622400113142"
+              ],
+              [
+                "10622406006704"
+              ],
+              [
+                "10622406006720"
+              ],
+              [
+                "10622406108328"
+              ],
+              [
+                "10622571033695"
+              ],
+              [
+                "10622650105692"
+              ],
+              [
+                "10622650106815"
+              ],
+              [
+                "10622650108092"
+              ],
+              [
+                "10622650116657"
+              ],
+              [
+                "10622651035310"
+              ],
+              [
+                "10622656006738"
+              ],
+              [
+                "10622656006746"
+              ],
+              [
+                "10622656006753"
+              ],
+              [
+                "10622656006761"
+              ],
+              [
+                "10622656006787"
+              ],
+              [
+                "10622656006795"
+              ],
+              [
+                "10622656006803"
+              ],
+              [
+                "10622656006829"
+              ],
+              [
+                "10622656006837"
+              ],
+              [
+                "10622656006845"
+              ],
+              [
+                "10622656006878"
+              ],
+              [
+                "10622656088959"
+              ],
+              [
+                "10622816006902"
+              ],
+              [
+                "10623310127175"
+              ],
+              [
+                "10623316007009"
+              ],
+              [
+                "10623566007025"
+              ],
+              [
+                "10623640107409"
+              ],
+              [
+                "10623641034990"
+              ],
+              [
+                "10623646007033"
+              ],
+              [
+                "10623646007041"
+              ],
+              [
+                "10623646007058"
+              ],
+              [
+                "10623646115224"
+              ],
+              [
+                "10623800124982"
+              ],
+              [
+                "10623806007074"
+              ],
+              [
+                "10624140113043"
+              ],
+              [
+                "10624140123463"
+              ],
+              [
+                "10624141030766"
+              ],
+              [
+                "10624141036094"
+              ],
+              [
+                "10624146007116"
+              ],
+              [
+                "10624146007124"
+              ],
+              [
+                "10624146007132"
+              ],
+              [
+                "10624146007140"
+              ],
+              [
+                "10624146007157"
+              ],
+              [
+                "10624146007165"
+              ],
+              [
+                "10624146007173"
+              ],
+              [
+                "10624146007181"
+              ],
+              [
+                "10624146007207"
+              ],
+              [
+                "10624146007215"
+              ],
+              [
+                "10624146117865"
+              ],
+              [
+                "10624146117873"
+              ],
+              [
+                "10624301036672"
+              ],
+              [
+                "10624306007231"
+              ],
+              [
+                "10624306007256"
+              ],
+              [
+                "10624306007280"
+              ],
+              [
+                "10624306007298"
+              ],
+              [
+                "10624306007314"
+              ],
+              [
+                "10624306007348"
+              ],
+              [
+                "10624306111124"
+              ],
+              [
+                "10625136007405"
+              ],
+              [
+                "10625396007413"
+              ],
+              [
+                "10625396112387"
+              ],
+              [
+                "10625470120535"
+              ],
+              [
+                "10738091030121"
+              ],
+              [
+                "10738096005995"
+              ],
+              [
+                "10738096006001"
+              ],
+              [
+                "10738096006019"
+              ],
+              [
+                "10739650106476"
+              ],
+              [
+                "10739650113993"
+              ],
+              [
+                "10739650123943"
+              ],
+              [
+                "10739651030626"
+              ],
+              [
+                "10739656006654"
+              ],
+              [
+                "10739656006910"
+              ],
+              [
+                "10739656006936"
+              ],
+              [
+                "10739656006944"
+              ],
+              [
+                "10739656006951"
+              ],
+              [
+                "10739656007389"
+              ],
+              [
+                "10739656112023"
+              ],
+              [
+                "10739656112775"
+              ],
+              [
+                "10739656115521"
+              ],
+              [
+                "10739656120521"
+              ],
+              [
+                "10739656120539"
+              ],
+              [
+                "10739990123596"
+              ],
+              [
+                "10739991033430"
+              ],
+              [
+                "10739996006688"
+              ],
+              [
+                "10739996006696"
+              ],
+              [
+                "10739996007371"
+              ],
+              [
+                "10739996119978"
+              ],
+              [
+                "10751270129163"
+              ],
+              [
+                "10751271030493"
+              ],
+              [
+                "10751276006969"
+              ],
+              [
+                "10751276006977"
+              ],
+              [
+                "10751276006985"
+              ],
+              [
+                "10752341037456"
+              ],
+              [
+                "10752346007223"
+              ],
+              [
+                "10752750124586"
+              ],
+              [
+                "10752751036938"
+              ],
+              [
+                "10754081035575"
+              ],
+              [
+                "10754086007082"
+              ],
+              [
+                "10754086007090"
+              ],
+              [
+                "10755981030535"
+              ],
+              [
+                "10755986005813"
+              ],
+              [
+                "10767781030774"
+              ],
+              [
+                "10767781038306"
+              ],
+              [
+                "10767786005748"
+              ],
+              [
+                "10767786006605"
+              ],
+              [
+                "10767786006613"
+              ],
+              [
+                "11626611132851"
+              ],
+              [
+                "11626616007603"
+              ],
+              [
+                "11626616007611"
+              ],
+              [
+                "11754811135656"
+              ],
+              [
+                "11754816007470"
+              ],
+              [
+                "11754816007488"
+              ],
+              [
+                "11754816007496"
+              ],
+              [
+                "11765621133701"
+              ],
+              [
+                "11765626007447"
+              ],
+              [
+                "12626796007678"
+              ],
+              [
+                "12626871230705"
+              ],
+              [
+                "12626871235209"
+              ],
+              [
+                "12627456007736"
+              ],
+              [
+                "12627456007744"
+              ],
+              [
+                "12628101233402"
+              ],
+              [
+                "12628286007884"
+              ],
+              [
+                "12628936007959"
+              ],
+              [
+                "12629016007967"
+              ],
+              [
+                "12629506008056"
+              ],
+              [
+                "12629506008064"
+              ],
+              [
+                "12629506008072"
+              ],
+              [
+                "12629766008098"
+              ],
+              [
+                "12630320111203"
+              ],
+              [
+                "12630326008163"
+              ],
+              [
+                "12630406008213"
+              ],
+              [
+                "12753746007843"
+              ],
+              [
+                "12753821230135"
+              ],
+              [
+                "12755150127407"
+              ],
+              [
+                "12755151232206"
+              ],
+              [
+                "12755156007751"
+              ],
+              [
+                "12755156007777"
+              ],
+              [
+                "12755156007793"
+              ],
+              [
+                "12755156007827"
+              ],
+              [
+                "12755156057376"
+              ],
+              [
+                "12768026007868"
+              ],
+              [
+                "12768026007876"
+              ],
+              [
+                "12768026008130"
+              ],
+              [
+                "13101326069272"
+              ],
+              [
+                "13630736008262"
+              ],
+              [
+                "13630736008270"
+              ],
+              [
+                "13630736008288"
+              ],
+              [
+                "13630736008296"
+              ],
+              [
+                "13630736008304"
+              ],
+              [
+                "13630811331404"
+              ],
+              [
+                "13630990112318"
+              ],
+              [
+                "13630990113985"
+              ],
+              [
+                "13630991332204"
+              ],
+              [
+                "13630996008346"
+              ],
+              [
+                "13630996008361"
+              ],
+              [
+                "13630996008379"
+              ],
+              [
+                "13630996008387"
+              ],
+              [
+                "13630996099485"
+              ],
+              [
+                "13630996106975"
+              ],
+              [
+                "13630996111587"
+              ],
+              [
+                "13631071332501"
+              ],
+              [
+                "13631076008395"
+              ],
+              [
+                "13631076103535"
+              ],
+              [
+                "13631151330133"
+              ],
+              [
+                "13631151333004"
+              ],
+              [
+                "13631230121855"
+              ],
+              [
+                "13631236008411"
+              ],
+              [
+                "13631236008429"
+              ],
+              [
+                "13631236008437"
+              ],
+              [
+                "13631236008445"
+              ],
+              [
+                "13631236008452"
+              ],
+              [
+                "13631236008460"
+              ],
+              [
+                "13631236008478"
+              ],
+              [
+                "13631236008486"
+              ],
+              [
+                "13631236008494"
+              ],
+              [
+                "13631236108823"
+              ],
+              [
+                "13631236113658"
+              ],
+              [
+                "13631316008502"
+              ],
+              [
+                "13631491335306"
+              ],
+              [
+                "13631496008510"
+              ],
+              [
+                "13631496008528"
+              ],
+              [
+                "13631641335900"
+              ],
+              [
+                "13631646008551"
+              ],
+              [
+                "13631646008569"
+              ],
+              [
+                "13631646117808"
+              ],
+              [
+                "13631806008593"
+              ],
+              [
+                "13631986008619"
+              ]
+            ],
+            "columns": [
+              "CDSCode"
+            ],
+            "error_message": null,
+            "execution_time_ms": 4.616699879989028
+          },
+          "prompt_tokens": 1122,
+          "completion_tokens": 40
+        }
+      ],
+      "final_sql": "SELECT CDSCode FROM frpm WHERE (`Enrollment (K-12)` + `Enrollment (Ages 5-17)`) > 500",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": true,
+      "total_calls": 1,
+      "total_prompt_tokens": 1122,
+      "total_completion_tokens": 40,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 12,
+      "db_id": "california_schools",
+      "question": "Among the schools with an SAT excellence rate of over 0.3, what is the highest eligible free rate for students aged 5-17?",
+      "gold_sql": "SELECT MAX(CAST(T1.`Free Meal Count (Ages 5-17)` AS REAL) / T1.`Enrollment (Ages 5-17)`) FROM frpm AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds WHERE CAST(T2.NumGE1500 AS REAL) / T2.NumTstTakr > 0.3",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT MAX(T1.`Free Meal Count (Ages 5-17)` / T1.`Enrollment (Ages 5-17)`) \nFROM frpm AS T1 \nJOIN satscores AS T2 ON T1.CDSCode = T2.cds \nWHERE T2.NumTstTakr > 0 AND (CAST(T2.NumGE1500 AS REAL) / T2.NumTstTakr) > 0.3 AND T1.`Enrollment (Ages 5-17)` > 0;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "MAX(T1.\"Free Meal Count (Ages 5-17)\" / T1.\"Enrollment (Ages 5-17)\")",
+                "canonical": "MAX(T1.\"Free Meal Count (Ages 5-17)\" / T1.\"Enrollment (Ages 5-17)\")",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM frpm AS T1 JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "canonical": "FROM frpm AS T1 JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "T2.NumTstTakr > 0 AND (CAST(T2.NumGE1500 AS REAL) / T2.NumTstTakr) > 0.3 AND T1.\"Enrollment (Ages 5-17)\" > 0",
+                "canonical": "T2.NumTstTakr > 0 AND (CAST(T2.NumGE1500 AS REAL) / T2.NumTstTakr) > 0.3 AND T1.\"Enrollment (Ages 5-17)\" > 0",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                0.9049079754601227
+              ]
+            ],
+            "columns": [
+              "MAX(T1.`Free Meal Count (Ages 5-17)` / T1.`Enrollment (Ages 5-17)`)"
+            ],
+            "error_message": null,
+            "execution_time_ms": 13.516100123524666
+          },
+          "prompt_tokens": 1163,
+          "completion_tokens": 130
+        }
+      ],
+      "final_sql": "SELECT MAX(T1.`Free Meal Count (Ages 5-17)` / T1.`Enrollment (Ages 5-17)`) \nFROM frpm AS T1 \nJOIN satscores AS T2 ON T1.CDSCode = T2.cds \nWHERE T2.NumTstTakr > 0 AND (CAST(T2.NumGE1500 AS REAL) / T2.NumTstTakr) > 0.3 AND T1.`Enrollment (Ages 5-17)` > 0;",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": true,
+      "total_calls": 1,
+      "total_prompt_tokens": 1163,
+      "total_completion_tokens": 130,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 13,
+      "db_id": "california_schools",
+      "question": "Please list the phone numbers of the schools with the top 3 SAT excellence rate.",
+      "gold_sql": "SELECT T1.Phone FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds ORDER BY CAST(T2.NumGE1500 AS REAL) / T2.NumTstTakr DESC LIMIT 3",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.Phone \nFROM schools AS T1 \nJOIN satscores AS T2 ON T1.CDSCode = T2.cds \nWHERE T2.NumTstTakr > 0 \nORDER BY (CAST(T2.NumGE1500 AS REAL) / T2.NumTstTakr) DESC \nLIMIT 3;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.Phone",
+                "canonical": "T1.Phone",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM schools AS T1 JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "canonical": "FROM schools AS T1 JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "T2.NumTstTakr > 0",
+                "canonical": "T2.NumTstTakr > 0",
+                "ast_type": "Where"
+              },
+              {
+                "clause_type": "ORDER_BY",
+                "content": "(CAST(T2.NumGE1500 AS REAL) / T2.NumTstTakr) DESC",
+                "canonical": "(CAST(T2.NumGE1500 AS REAL) / T2.NumTstTakr) DESC",
+                "ast_type": "Order"
+              },
+              {
+                "clause_type": "LIMIT",
+                "content": "3",
+                "canonical": "3",
+                "ast_type": "Limit"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                "(714) 220-3055"
+              ],
+              [
+                "(562) 229-7745"
+              ],
+              [
+                "(408) 366-7700"
+              ]
+            ],
+            "columns": [
+              "Phone"
+            ],
+            "error_message": null,
+            "execution_time_ms": 4.16670017875731
+          },
+          "prompt_tokens": 1110,
+          "completion_tokens": 86
+        }
+      ],
+      "final_sql": "SELECT T1.Phone \nFROM schools AS T1 \nJOIN satscores AS T2 ON T1.CDSCode = T2.cds \nWHERE T2.NumTstTakr > 0 \nORDER BY (CAST(T2.NumGE1500 AS REAL) / T2.NumTstTakr) DESC \nLIMIT 3;",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": true,
+      "total_calls": 1,
+      "total_prompt_tokens": 1110,
+      "total_completion_tokens": 86,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 14,
+      "db_id": "california_schools",
+      "question": "List the top five schools, by descending order, from the highest to the lowest, the most number of Enrollment (Ages 5-17). Please give their NCES school identification number.",
+      "gold_sql": "SELECT T1.NCESSchool FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode ORDER BY T2.`Enrollment (Ages 5-17)` DESC LIMIT 5",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.NCESSchool \nFROM schools AS T1 \nINNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode \nORDER BY T2.`Enrollment (Ages 5-17)` DESC \nLIMIT 5;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.NCESSchool",
+                "canonical": "T1.NCESSchool",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode",
+                "canonical": "FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "ORDER_BY",
+                "content": "T2.\"Enrollment (Ages 5-17)\" DESC",
+                "canonical": "T2.\"Enrollment (Ages 5-17)\" DESC",
+                "ast_type": "Order"
+              },
+              {
+                "clause_type": "LIMIT",
+                "content": "5",
+                "canonical": "5",
+                "ast_type": "Limit"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                "11707"
+              ],
+              [
+                "04653"
+              ],
+              [
+                "08283"
+              ],
+              [
+                "02751"
+              ],
+              [
+                "03050"
+              ]
+            ],
+            "columns": [
+              "NCESSchool"
+            ],
+            "error_message": null,
+            "execution_time_ms": 37.67019999213517
+          },
+          "prompt_tokens": 1110,
+          "completion_tokens": 65
+        }
+      ],
+      "final_sql": "SELECT T1.NCESSchool \nFROM schools AS T1 \nINNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode \nORDER BY T2.`Enrollment (Ages 5-17)` DESC \nLIMIT 5;",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": true,
+      "total_calls": 1,
+      "total_prompt_tokens": 1110,
+      "total_completion_tokens": 65,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 15,
+      "db_id": "california_schools",
+      "question": "Which active district has the highest average score in Reading?",
+      "gold_sql": "SELECT T1.District FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds WHERE T1.StatusType = 'Active' ORDER BY T2.AvgScrRead DESC LIMIT 1",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.dname FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode WHERE T2.StatusType = 'Active' AND T1.rtype = 'D' ORDER BY T1.AvgScrRead DESC LIMIT 1",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.dname",
+                "canonical": "T1.dname",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode",
+                "canonical": "FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "T2.StatusType = 'Active' AND T1.rtype = 'D'",
+                "canonical": "T2.StatusType = 'Active' AND T1.rtype = 'D'",
+                "ast_type": "Where"
+              },
+              {
+                "clause_type": "ORDER_BY",
+                "content": "T1.AvgScrRead DESC",
+                "canonical": "T1.AvgScrRead DESC",
+                "ast_type": "Order"
+              },
+              {
+                "clause_type": "LIMIT",
+                "content": "1",
+                "canonical": "1",
+                "ast_type": "Limit"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                "Santa Cruz County Office of Education"
+              ]
+            ],
+            "columns": [
+              "dname"
+            ],
+            "error_message": null,
+            "execution_time_ms": 10.040800087153912
+          },
+          "prompt_tokens": 1081,
+          "completion_tokens": 65
+        }
+      ],
+      "final_sql": "SELECT T1.dname FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode WHERE T2.StatusType = 'Active' AND T1.rtype = 'D' ORDER BY T1.AvgScrRead DESC LIMIT 1",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 1081,
+      "total_completion_tokens": 65,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 16,
+      "db_id": "california_schools",
+      "question": "How many schools in merged Alameda have number of test takers less than 100?",
+      "gold_sql": "SELECT COUNT(T1.CDSCode) FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds WHERE T1.StatusType = 'Merged' AND T2.NumTstTakr < 100 AND T1.County = 'Lake'",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT count(*) FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode WHERE T2.County = 'Alameda' AND T1.NumTstTakr < 100",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "COUNT(*)",
+                "canonical": "COUNT(*)",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode",
+                "canonical": "FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "T2.County = 'Alameda' AND T1.NumTstTakr < 100",
+                "canonical": "T2.County = 'Alameda' AND T1.NumTstTakr < 100",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                0
+              ]
+            ],
+            "columns": [
+              "count(*)"
+            ],
+            "error_message": null,
+            "execution_time_ms": 18.680900102481246
+          },
+          "prompt_tokens": 1088,
+          "completion_tokens": 55
+        }
+      ],
+      "final_sql": "SELECT count(*) FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode WHERE T2.County = 'Alameda' AND T1.NumTstTakr < 100",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 1088,
+      "total_completion_tokens": 55,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 17,
+      "db_id": "california_schools",
+      "question": "Rank schools by their average score in Writing where the score is greater than 499, showing their charter numbers.",
+      "gold_sql": "SELECT CharterNum, AvgScrWrite, RANK() OVER (ORDER BY AvgScrWrite DESC) AS WritingScoreRank FROM schools AS T1  INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds WHERE T2.AvgScrWrite > 499 AND CharterNum is not null",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.sname, T1.CharterNum \nFROM (\n    SELECT satscores.sname, schools.CharterNum, satscores.AvgScrWrite \n    FROM satscores \n    JOIN schools ON satscores.cds = schools.CDSCode \n    WHERE satscores.AvgScrWrite > 499 AND schools.CharterNum IS NOT NULL\n) AS T1 \nORDER BY T1.AvgScrWrite DESC",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.sname, T1.CharterNum",
+                "canonical": "T1.sname, T1.CharterNum",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM (SELECT satscores.sname, schools.CharterNum, satscores.AvgScrWrite FROM satscores JOIN schools ON satscores.cds = schools.CDSCode WHERE satscores.AvgScrWrite > 499 AND NOT schools.CharterNum IS NULL) AS T1",
+                "canonical": "FROM (SELECT satscores.sname, schools.CharterNum, satscores.AvgScrWrite FROM satscores JOIN schools ON satscores.cds = schools.CDSCode WHERE satscores.AvgScrWrite > 499 AND NOT schools.CharterNum IS NULL) AS T1",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "ORDER_BY",
+                "content": "T1.AvgScrWrite DESC",
+                "canonical": "T1.AvgScrWrite DESC",
+                "ast_type": "Order"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                "Pacific Collegiate Charter",
+                "0210"
+              ],
+              [
+                "University High",
+                "0890"
+              ],
+              [
+                "OCSA",
+                "0290"
+              ],
+              [
+                "Northcoast Preparatory and Performing Arts Academy",
+                "0930"
+              ],
+              [
+                "John Adams Academy",
+                "1169"
+              ],
+              [
+                "Da Vinci Charter Academy",
+                "1079"
+              ],
+              [
+                "River Valley Charter",
+                "0120"
+              ],
+              [
+                "Ocean Grove Charter",
+                "0747"
+              ],
+              [
+                "University Preparatory",
+                "0612"
+              ],
+              [
+                "Classical Academy High",
+                "0759"
+              ],
+              [
+                "Western Sierra Collegiate Academy",
+                "1071"
+              ],
+              [
+                "Granada Hills Charter High",
+                "0572"
+              ],
+              [
+                "Whitmore Charter High",
+                "0658"
+              ],
+              [
+                "Redwood Academy of Ukiah",
+                "0271"
+              ],
+              [
+                "Temecula Preparatory",
+                "0284"
+              ],
+              [
+                "Everest Public High",
+                "1070"
+              ],
+              [
+                "University Preparatory Academy Charter",
+                "0844"
+              ],
+              [
+                "Grove",
+                "0180"
+              ],
+              [
+                "California Connections Academy @ Ripon",
+                "1398"
+              ],
+              [
+                "Visions In Education",
+                "0248"
+              ],
+              [
+                "Elise P. Buckingham Charter Magnet High",
+                "0056"
+              ],
+              [
+                "Guajome Park Academy Charter",
+                "0050"
+              ],
+              [
+                "Placer High",
+                "0084"
+              ],
+              [
+                "Dehesa Charter",
+                "0419"
+              ],
+              [
+                "OCCS:CHEP/PCHS",
+                "0147"
+              ],
+              [
+                "George Washington Carver School of Arts and Scienc",
+                "0588"
+              ],
+              [
+                "Palisades Charter High",
+                "0037"
+              ],
+              [
+                "William Howard Taft Charter High",
+                "1580"
+              ],
+              [
+                "Natomas Charter",
+                "0019"
+              ],
+              [
+                "Summit Preparatory Charter High",
+                "0835"
+              ],
+              [
+                "California Virtual Academy @ Los Angeles",
+                "0838"
+              ],
+              [
+                "Preuss School UCSD",
+                "0169"
+              ],
+              [
+                "Stockton Unified Early College Academy",
+                "1083"
+              ],
+              [
+                "Julian Charter",
+                "0267"
+              ],
+              [
+                "California Virtual Academy @ San Diego",
+                "0493"
+              ],
+              [
+                "El Camino Real Charter High",
+                "1314"
+              ],
+              [
+                "Escondido Charter High",
+                "0109"
+              ],
+              [
+                "Capistrano Connections Academy",
+                "0664"
+              ],
+              [
+                "High Tech High North County",
+                "0756"
+              ],
+              [
+                "Grover Cleveland Charter High",
+                "1571"
+              ],
+              [
+                "High Tech LA",
+                "0537"
+              ],
+              [
+                "Forest Charter",
+                "1427"
+              ],
+              [
+                "Renaissance Arts Academy",
+                "0579"
+              ],
+              [
+                "Cypress Charter High",
+                "0512"
+              ],
+              [
+                "Academy for Academic Excellence",
+                "0127"
+              ],
+              [
+                "Connecting Waters Charter",
+                "0477"
+              ],
+              [
+                "Santa Rosa Academy",
+                "0730"
+              ],
+              [
+                "Aspire Benjamin Holt College Preparatory Academy",
+                "0565"
+              ],
+              [
+                "Valley Oaks Charter",
+                "0332"
+              ],
+              [
+                "San Francisco Flex Academy",
+                "1208"
+              ]
+            ],
+            "columns": [
+              "sname",
+              "CharterNum"
+            ],
+            "error_message": null,
+            "execution_time_ms": 6.430600071325898
+          },
+          "prompt_tokens": 1109,
+          "completion_tokens": 101
+        }
+      ],
+      "final_sql": "SELECT T1.sname, T1.CharterNum \nFROM (\n    SELECT satscores.sname, schools.CharterNum, satscores.AvgScrWrite \n    FROM satscores \n    JOIN schools ON satscores.cds = schools.CDSCode \n    WHERE satscores.AvgScrWrite > 499 AND schools.CharterNum IS NOT NULL\n) AS T1 \nORDER BY T1.AvgScrWrite DESC",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 1109,
+      "total_completion_tokens": 101,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 18,
+      "db_id": "california_schools",
+      "question": "How many schools in Fresno (directly funded) have number of test takers not more than 250?",
+      "gold_sql": "SELECT COUNT(T1.CDSCode) FROM frpm AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds WHERE T1.`Charter Funding Type` = 'Directly funded' AND T1.`County Name` = 'Fresno' AND T2.NumTstTakr <= 250",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT count(*) \nFROM satscores AS T1 \nINNER JOIN schools AS T2 ON T1.cds = T2.CDSCode \nWHERE T2.City = 'Fresno' AND T1.NumTstTakr <= 250",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "COUNT(*)",
+                "canonical": "COUNT(*)",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode",
+                "canonical": "FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "T2.City = 'Fresno' AND T1.NumTstTakr <= 250",
+                "canonical": "T2.City = 'Fresno' AND T1.NumTstTakr <= 250",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                27
+              ]
+            ],
+            "columns": [
+              "count(*)"
+            ],
+            "error_message": null,
+            "execution_time_ms": 31.769499881193042
+          },
+          "prompt_tokens": 1092,
+          "completion_tokens": 61
+        }
+      ],
+      "final_sql": "SELECT count(*) \nFROM satscores AS T1 \nINNER JOIN schools AS T2 ON T1.cds = T2.CDSCode \nWHERE T2.City = 'Fresno' AND T1.NumTstTakr <= 250",
+      "final_status": "SUCCESS",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 1092,
+      "total_completion_tokens": 61,
+      "model_config": {
+        "populate_by_name": true
+      }
+    },
+    {
+      "question_id": 19,
+      "db_id": "california_schools",
+      "question": "What is the phone number of the school that has the highest average score in Math?",
+      "gold_sql": "SELECT T1.Phone FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds ORDER BY T2.AvgScrMath DESC LIMIT 1",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT T1.Phone FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds ORDER BY T2.AvgScrMath DESC LIMIT 1",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "T1.Phone",
+                "canonical": "T1.Phone",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "canonical": "FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "ORDER_BY",
+                "content": "T2.AvgScrMath DESC",
+                "canonical": "T2.AvgScrMath DESC",
+                "ast_type": "Order"
+              },
+              {
+                "clause_type": "LIMIT",
+                "content": "1",
+                "canonical": "1",
+                "ast_type": "Limit"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "SUCCESS",
+            "rows": [
+              [
+                "(408) 366-7700"
+              ]
+            ],
+            "columns": [
+              "Phone"
+            ],
+            "error_message": null,
+            "execution_time_ms": 23.984199855476618
+          },
+          "prompt_tokens": 1087,
+          "completion_tokens": 45
+        }
+      ],
+      "final_sql": "SELECT T1.Phone FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds ORDER BY T2.AvgScrMath DESC LIMIT 1",
+      "final_status": "SUCCESS",
+      "exact_match": true,
+      "execution_match": true,
+      "total_calls": 1,
+      "total_prompt_tokens": 1087,
+      "total_completion_tokens": 45,
+      "model_config": {
+        "populate_by_name": true
+      }
+    }
+  ]
+}
