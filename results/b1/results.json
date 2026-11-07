@@ -1,0 +1,260 @@
+{
+  "system": "b1",
+  "model": "gpt-4o-mini",
+  "metrics": {
+    "total_questions": 2,
+    "error_count": 2,
+    "empty_count": 0,
+    "success_count": 0,
+    "timeout_count": 0,
+    "error_rate_pct": 100.0,
+    "empty_rate_pct": 0.0,
+    "ex_pct": 0.0,
+    "total_calls": 6,
+    "avg_prompt_tokens": 335.0,
+    "avg_completion_tokens": 68.0,
+    "rdr_pct": null
+  },
+  "states": [
+    {
+      "question_id": 1,
+      "db_id": "financial",
+      "question": "What is the average transaction amount for active accounts?",
+      "gold_sql": "SELECT AVG(amount) FROM transactions WHERE status = 'active';",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 0.17347198445349932
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        },
+        {
+          "turn_index": 2,
+          "sql": "SELECT * FROM financial_records WHERE record_status = 'active';",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "*",
+                "canonical": "*",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM financial_records",
+                "canonical": "FROM financial_records",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "record_status = 'active'",
+                "canonical": "record_status = 'active'",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: financial_records",
+            "execution_time_ms": 0.05174498073756695
+          },
+          "prompt_tokens": 120,
+          "completion_tokens": 25
+        },
+        {
+          "turn_index": 3,
+          "sql": "SELECT * FROM financial_records WHERE record_status = 'active';",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "*",
+                "canonical": "*",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM financial_records",
+                "canonical": "FROM financial_records",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "record_status = 'active'",
+                "canonical": "record_status = 'active'",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: financial_records",
+            "execution_time_ms": 0.049572030548006296
+          },
+          "prompt_tokens": 120,
+          "completion_tokens": 25
+        }
+      ],
+      "final_sql": "SELECT * FROM financial_records WHERE record_status = 'active';",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 3,
+      "total_prompt_tokens": 335,
+      "total_completion_tokens": 68
+    },
+    {
+      "question_id": 2,
+      "db_id": "financial",
+      "question": "Find the account owner with the highest balance.",
+      "gold_sql": "SELECT owner_name FROM accounts ORDER BY balance DESC LIMIT 1;",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 0.053825031500309706
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        },
+        {
+          "turn_index": 2,
+          "sql": "SELECT * FROM financial_records WHERE record_status = 'active';",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "*",
+                "canonical": "*",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM financial_records",
+                "canonical": "FROM financial_records",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "record_status = 'active'",
+                "canonical": "record_status = 'active'",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: financial_records",
+            "execution_time_ms": 0.039745005778968334
+          },
+          "prompt_tokens": 120,
+          "completion_tokens": 25
+        },
+        {
+          "turn_index": 3,
+          "sql": "SELECT * FROM financial_records WHERE record_status = 'active';",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "*",
+                "canonical": "*",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM financial_records",
+                "canonical": "FROM financial_records",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "record_status = 'active'",
+                "canonical": "record_status = 'active'",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: financial_records",
+            "execution_time_ms": 0.06093404954299331
+          },
+          "prompt_tokens": 120,
+          "completion_tokens": 25
+        }
+      ],
+      "final_sql": "SELECT * FROM financial_records WHERE record_status = 'active';",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 3,
+      "total_prompt_tokens": 335,
+      "total_completion_tokens": 68
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "system": "b0",
+  "model": "gpt-4o-mini",
+  "metrics": {
+    "total_questions": 2,
+    "error_count": 2,
+    "empty_count": 0,
+    "success_count": 0,
+    "timeout_count": 0,
+    "error_rate_pct": 100.0,
+    "empty_rate_pct": 0.0,
+    "ex_pct": 0.0,
+    "total_calls": 2,
+    "avg_prompt_tokens": 95.0,
+    "avg_completion_tokens": 18.0,
+    "rdr_pct": null
+  },
+  "states": [
+    {
+      "question_id": 1,
+      "db_id": "financial",
+      "question": "What is the average transaction amount for active accounts?",
+      "gold_sql": "SELECT AVG(amount) FROM transactions WHERE status = 'active';",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 0.22325903410091996
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18
+    },
+    {
+      "question_id": 2,
+      "db_id": "financial",
+      "question": "Find the account owner with the highest balance.",
+      "gold_sql": "SELECT owner_name FROM accounts ORDER BY balance DESC LIMIT 1;",
+      "turns": [
+        {
+          "turn_index": 1,
+          "sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+          "clause_table": {
+            "clauses": [
+              {
+                "clause_type": "SELECT",
+                "content": "id, name",
+                "canonical": "id, name",
+                "ast_type": "Select"
+              },
+              {
+                "clause_type": "FROM",
+                "content": "FROM accounts",
+                "canonical": "FROM accounts",
+                "ast_type": "From"
+              },
+              {
+                "clause_type": "WHERE",
+                "content": "balance > 1000",
+                "canonical": "balance > 1000",
+                "ast_type": "Where"
+              }
+            ]
+          },
+          "sandbox_result": {
+            "status": "ERROR",
+            "rows": null,
+            "columns": null,
+            "error_message": "no such table: accounts",
+            "execution_time_ms": 0.09214202873408794
+          },
+          "prompt_tokens": 95,
+          "completion_tokens": 18
+        }
+      ],
+      "final_sql": "SELECT id, name FROM accounts WHERE balance > 1000;",
+      "final_status": "ERROR",
+      "exact_match": false,
+      "execution_match": false,
+      "total_calls": 1,
+      "total_prompt_tokens": 95,
+      "total_completion_tokens": 18
+    }
+  ]
+}

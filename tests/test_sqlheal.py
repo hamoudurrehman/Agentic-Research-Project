@@ -8,7 +8,7 @@ from sqlheal.parsing import parse_sql, canonicalise_sql, extract_clause_table
 from sqlheal.state import ClauseType, ExecutionStatus, QueryEvaluationState, QueryTurn
 from sqlheal.sandbox import SQLiteSandbox
 from sqlheal.faults import FaultInjector, FaultType
-from eval.metrics import compute_benchmark_metrics, compute_rdr
+from eval.metrics import compute_benchmark_metrics, compute_repair_success_rate
 
 
 def test_clause_parsing_and_canonicalisation():
@@ -134,6 +134,6 @@ def test_metrics_computation_and_rdr():
     assert metrics.error_rate_pct == pytest.approx(33.33, rel=1e-2)
     assert metrics.empty_rate_pct == pytest.approx(33.33, rel=1e-2)
 
-    # Test RDR
-    rdr = compute_rdr([s1, s2], initial_failures=2)
+    # Test Repair Success Rate (legacy Phase 1 rdr)
+    rdr = compute_repair_success_rate([s1, s2], initial_failures=2)
     assert rdr == 50.0
