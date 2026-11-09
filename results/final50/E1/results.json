@@ -1,0 +1,975 @@
+{
+  "experiment": "E1",
+  "description": "Baseline: single-turn zero-shot generation, no feedback.",
+  "config": {
+    "model": "llama3.1:8b",
+    "temperature": 0.0,
+    "max_repair_turns": 2,
+    "max_turns": 3,
+    "seed": 42,
+    "limit": 50,
+    "runs": 1,
+    "mock": false,
+    "prices_per_1m_tokens": {
+      "input_per_1m": 0.15,
+      "output_per_1m": 0.6
+    },
+    "fault_sample": 50,
+    "stress_size": 100,
+    "dataset_sizes": {
+      "natural": 50
+    },
+    "gold_items_dropped": 0,
+    "generated_at": "2026-11-09T14:57:12+00:00"
+  },
+  "arms": {
+    "B0": {
+      "natural": {
+        "label": "B0 single-turn zero-shot",
+        "n_items": 50,
+        "runs": [
+          {
+            "total_questions": 50,
+            "error_count": 11,
+            "empty_count": 6,
+            "success_count": 33,
+            "timeout_count": 0,
+            "error_rate_pct": 22.0,
+            "empty_rate_pct": 12.0,
+            "ex_pct": 40.0,
+            "total_calls": 50,
+            "avg_prompt_tokens": 842.8,
+            "avg_completion_tokens": 63.2,
+            "initial_error_pct": 22.0,
+            "initial_empty_pct": 12.0,
+            "initial_success_pct": 66.0,
+            "rdr_pct": null,
+            "rdr_query_pct": null,
+            "rdr_drifted_clauses": 0,
+            "rdr_correct_clauses": 0,
+            "rdr_repaired_queries": 0,
+            "rdr_excluded_queries": 0,
+            "hrr_pct": 0.0,
+            "hrr_ex_pct": 0.0,
+            "hrr_initial_errors": 11,
+            "hrr_recovered": 0,
+            "erp_pct": null,
+            "erp_edits": 0,
+            "erp_recovered": 0,
+            "recovery_pct": 0.0,
+            "recovery_candidates": 6,
+            "sfpr_before_pct": 12.0,
+            "sfpr_after_pct": 12.0,
+            "sfpr_rel_reduction_pct": 0.0,
+            "eocr_pct": null,
+            "eocr_population": 0,
+            "eocr_overcorrected": 0,
+            "avg_latency_ms": 4732.77,
+            "p50_latency_ms": 5179.51,
+            "p95_latency_ms": 11054.75,
+            "avg_sandbox_ms": 196.005,
+            "avg_calls": 1.0,
+            "avg_turns": 1.0,
+            "total_prompt_tokens": 42141,
+            "total_completion_tokens": 3162,
+            "total_cost_usd": 0.008218,
+            "avg_cost_usd": 0.000164,
+            "retry_distribution": {
+              "1": 50
+            },
+            "attempted": 50,
+            "crashes": 0,
+            "crash_rate_pct": 0.0,
+            "timeout_rate_pct": 0.0,
+            "aborted": 0
+          }
+        ],
+        "summary": {
+          "total_questions": {
+            "mean": 50.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "error_count": {
+            "mean": 11.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "empty_count": {
+            "mean": 6.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "success_count": {
+            "mean": 33.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "timeout_count": {
+            "mean": 0.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "error_rate_pct": {
+            "mean": 22.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "empty_rate_pct": {
+            "mean": 12.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "ex_pct": {
+            "mean": 40.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "total_calls": {
+            "mean": 50.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "avg_prompt_tokens": {
+            "mean": 842.8,
+            "std": 0.0,
+            "n": 1
+          },
+          "avg_completion_tokens": {
+            "mean": 63.2,
+            "std": 0.0,
+            "n": 1
+          },
+          "initial_error_pct": {
+            "mean": 22.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "initial_empty_pct": {
+            "mean": 12.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "initial_success_pct": {
+            "mean": 66.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "rdr_drifted_clauses": {
+            "mean": 0.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "rdr_correct_clauses": {
+            "mean": 0.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "rdr_repaired_queries": {
+            "mean": 0.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "rdr_excluded_queries": {
+            "mean": 0.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "hrr_pct": {
+            "mean": 0.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "hrr_ex_pct": {
+            "mean": 0.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "hrr_initial_errors": {
+            "mean": 11.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "hrr_recovered": {
+            "mean": 0.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "erp_edits": {
+            "mean": 0.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "erp_recovered": {
+            "mean": 0.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "recovery_pct": {
+            "mean": 0.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "recovery_candidates": {
+            "mean": 6.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "sfpr_before_pct": {
+            "mean": 12.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "sfpr_after_pct": {
+            "mean": 12.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "sfpr_rel_reduction_pct": {
+            "mean": 0.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "eocr_population": {
+            "mean": 0.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "eocr_overcorrected": {
+            "mean": 0.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "avg_latency_ms": {
+            "mean": 4732.77,
+            "std": 0.0,
+            "n": 1
+          },
+          "p50_latency_ms": {
+            "mean": 5179.51,
+            "std": 0.0,
+            "n": 1
+          },
+          "p95_latency_ms": {
+            "mean": 11054.75,
+            "std": 0.0,
+            "n": 1
+          },
+          "avg_sandbox_ms": {
+            "mean": 196.005,
+            "std": 0.0,
+            "n": 1
+          },
+          "avg_calls": {
+            "mean": 1.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "avg_turns": {
+            "mean": 1.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "total_prompt_tokens": {
+            "mean": 42141.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "total_completion_tokens": {
+            "mean": 3162.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "total_cost_usd": {
+            "mean": 0.0082,
+            "std": 0.0,
+            "n": 1
+          },
+          "avg_cost_usd": {
+            "mean": 0.0002,
+            "std": 0.0,
+            "n": 1
+          },
+          "attempted": {
+            "mean": 50.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "crashes": {
+            "mean": 0.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "crash_rate_pct": {
+            "mean": 0.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "timeout_rate_pct": {
+            "mean": 0.0,
+            "std": 0.0,
+            "n": 1
+          },
+          "aborted": {
+            "mean": 0.0,
+            "std": 0.0,
+            "n": 1
+          }
+        },
+        "crash_messages": []
+      }
+    }
+  },
+  "queries": [
+    {
+      "question_id": "1504",
+      "db_id": "debit_card_specializing",
+      "initial_sql": "SELECT AVG(T1.Price) \nFROM transactions_1k AS T1 \nJOIN yearmonth AS T2 ON T1.TransactionID = T2.CustomerID \nWHERE T2.Date LIKE '%2012-01%';",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT AVG(T1.Price) \nFROM transactions_1k AS T1 \nJOIN yearmonth AS T2 ON T1.TransactionID = T2.CustomerID \nWHERE T2.Date LIKE '%2012-01%';",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": true,
+      "llm_calls": 1,
+      "prompt_tokens": 310,
+      "completion_tokens": 50
+    },
+    {
+      "question_id": "1273",
+      "db_id": "thrombosis_prediction",
+      "initial_sql": "SELECT COUNT(DISTINCT ID) \nFROM Examination \nWHERE Diagnosis = 'SLE' AND SSB = '0';",
+      "initial_status": "ERROR",
+      "final_sql": "SELECT COUNT(DISTINCT ID) \nFROM Examination \nWHERE Diagnosis = 'SLE' AND SSB = '0';",
+      "final_status": "ERROR",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 731,
+      "completion_tokens": 30
+    },
+    {
+      "question_id": "531",
+      "db_id": "codebase_community",
+      "initial_sql": "SELECT \n    CASE \n        WHEN Reputation > (SELECT MAX(Reputation) FROM users) THEN 'Harlan'\n        ELSE 'Jarrod Dixon'\n    END AS HigherReputationUser\nFROM users\nWHERE DisplayName IN ('Harlan', 'Jarrod Dixon');",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT \n    CASE \n        WHEN Reputation > (SELECT MAX(Reputation) FROM users) THEN 'Harlan'\n        ELSE 'Jarrod Dixon'\n    END AS HigherReputationUser\nFROM users\nWHERE DisplayName IN ('Harlan', 'Jarrod Dixon');",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 990,
+      "completion_tokens": 59
+    },
+    {
+      "question_id": "306",
+      "db_id": "toxicology",
+      "initial_sql": "SELECT \n  m.label, \n  GROUP_CONCAT(DISTINCT a.element) AS elements\nFROM \n  molecule m\nJOIN \n  atom a ON m.molecule_id = a.molecule_id\nJOIN \n  connected c ON a.atom_id = c.atom_id\nJOIN \n  bond b ON c.bond_id = b.bond_id\nWHERE \n  b.bond_type = '#' \nGROUP BY \n  m.label;",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT \n  m.label, \n  GROUP_CONCAT(DISTINCT a.element) AS elements\nFROM \n  molecule m\nJOIN \n  atom a ON m.molecule_id = a.molecule_id\nJOIN \n  connected c ON a.atom_id = c.atom_id\nJOIN \n  bond b ON c.bond_id = b.bond_id\nWHERE \n  b.bond_type = '#' \nGROUP BY \n  m.label;",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 482,
+      "completion_tokens": 94
+    },
+    {
+      "question_id": "712",
+      "db_id": "codebase_community",
+      "initial_sql": "SELECT p.Id, c.Text\nFROM posts p\nJOIN comments c ON p.Id = c.PostId\nWHERE p.Title = 'Group differences on a five point Likert item';",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT p.Id, c.Text\nFROM posts p\nJOIN comments c ON p.Id = c.PostId\nWHERE p.Title = 'Group differences on a five point Likert item';",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": true,
+      "llm_calls": 1,
+      "prompt_tokens": 991,
+      "completion_tokens": 42
+    },
+    {
+      "question_id": "855",
+      "db_id": "formula_1",
+      "initial_sql": "SELECT url \nFROM races \nJOIN circuits ON races.circuitId = circuits.circuitId \nWHERE circuits.name = 'Sepang International Circuit';",
+      "initial_status": "ERROR",
+      "final_sql": "SELECT url \nFROM races \nJOIN circuits ON races.circuitId = circuits.circuitId \nWHERE circuits.name = 'Sepang International Circuit';",
+      "final_status": "ERROR",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 1254,
+      "completion_tokens": 34
+    },
+    {
+      "question_id": "804",
+      "db_id": "superhero",
+      "initial_sql": "SELECT superhero_name \nFROM superhero \nWHERE id = 294;",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT superhero_name \nFROM superhero \nWHERE id = 294;",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": true,
+      "llm_calls": 1,
+      "prompt_tokens": 547,
+      "completion_tokens": 18
+    },
+    {
+      "question_id": "743",
+      "db_id": "superhero",
+      "initial_sql": "SELECT \n    CAST(SUM(CASE WHEN T1.alignment = 'Bad' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.id) AS percentage,\n    COUNT(CASE WHEN T1.alignment = 'Bad' AND T2.publisher_name = 'Marvel Comics' THEN 1 ELSE NULL END) AS count_marvel\nFROM \n    superhero AS T1\nINNER JOIN \n    publisher AS T2 ON T1.publisher_id = T2.id\nWHERE \n    T1.alignment = 'Bad';",
+      "initial_status": "ERROR",
+      "final_sql": "SELECT \n    CAST(SUM(CASE WHEN T1.alignment = 'Bad' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.id) AS percentage,\n    COUNT(CASE WHEN T1.alignment = 'Bad' AND T2.publisher_name = 'Marvel Comics' THEN 1 ELSE NULL END) AS count_marvel\nFROM \n    superhero AS T1\nINNER JOIN \n    publisher AS T2 ON T1.publisher_id = T2.id\nWHERE \n    T1.alignment = 'Bad';",
+      "final_status": "ERROR",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 611,
+      "completion_tokens": 114
+    },
+    {
+      "question_id": "8",
+      "db_id": "california_schools",
+      "initial_sql": "SELECT T1.NumTstTakr\nFROM satscores AS T1\nJOIN (\n    SELECT CDSCode, MAX(FRPM Count (K-12)) AS max_FRPM\n    FROM frpm\n    GROUP BY CDSCode\n) AS T2\nON T1.cds = T2.CDSCode\nWHERE T1.cds = T2.CDSCode AND T2.max_FRPM = (SELECT MAX(FRPM Count (K-12)) FROM frpm);",
+      "initial_status": "ERROR",
+      "final_sql": "SELECT T1.NumTstTakr\nFROM satscores AS T1\nJOIN (\n    SELECT CDSCode, MAX(FRPM Count (K-12)) AS max_FRPM\n    FROM frpm\n    GROUP BY CDSCode\n) AS T2\nON T1.cds = T2.CDSCode\nWHERE T1.cds = T2.CDSCode AND T2.max_FRPM = (SELECT MAX(FRPM Count (K-12)) FROM frpm);",
+      "final_status": "ERROR",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 1004,
+      "completion_tokens": 108
+    },
+    {
+      "question_id": "33",
+      "db_id": "california_schools",
+      "initial_sql": "SELECT T1.`School Name`, T1.Website\nFROM frpm AS T1\nJOIN schools AS T2 ON T1.CDSCode = T2.CDSCode\nWHERE T1.`Free Meal Count (Ages 5-17)` BETWEEN 1900 AND 2000;",
+      "initial_status": "ERROR",
+      "final_sql": "SELECT T1.`School Name`, T1.Website\nFROM frpm AS T1\nJOIN schools AS T2 ON T1.CDSCode = T2.CDSCode\nWHERE T1.`Free Meal Count (Ages 5-17)` BETWEEN 1900 AND 2000;",
+      "final_status": "ERROR",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 1022,
+      "completion_tokens": 66
+    },
+    {
+      "question_id": "1386",
+      "db_id": "student_club",
+      "initial_sql": "SELECT SUM(T1.cost) \nFROM expense AS T1 \nINNER JOIN budget AS T2 ON T1.link_to_budget = T2.budget_id \nINNER JOIN event AS T3 ON T2.link_to_event = T3.event_id \nWHERE T3.event_name = 'Yearly Kickoff';",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT SUM(T1.cost) \nFROM expense AS T1 \nINNER JOIN budget AS T2 ON T1.link_to_budget = T2.budget_id \nINNER JOIN event AS T3 ON T2.link_to_event = T3.event_id \nWHERE T3.event_name = 'Yearly Kickoff';",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": true,
+      "llm_calls": 1,
+      "prompt_tokens": 578,
+      "completion_tokens": 67
+    },
+    {
+      "question_id": "36",
+      "db_id": "california_schools",
+      "initial_sql": "SELECT \n    s.AdmFName1, s.AdmLName1, s.AdmEmail1, s.AdmFName2, s.AdmLName2, s.AdmEmail2, s.AdmFName3, s.AdmLName3, s.AdmEmail3\nFROM \n    schools s\nJOIN \n    satscores sc ON s.CDSCode = sc.cds\nWHERE \n    sc.NumGE1500 = (SELECT MAX(NumGE1500) FROM satscores)\nORDER BY \n    s.AdmFName1, s.AdmLName1, s.AdmFName2, s.AdmLName2, s.AdmFName3, s.AdmLName3;",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT \n    s.AdmFName1, s.AdmLName1, s.AdmEmail1, s.AdmFName2, s.AdmLName2, s.AdmEmail2, s.AdmFName3, s.AdmLName3, s.AdmEmail3\nFROM \n    schools s\nJOIN \n    satscores sc ON s.CDSCode = sc.cds\nWHERE \n    sc.NumGE1500 = (SELECT MAX(NumGE1500) FROM satscores)\nORDER BY \n    s.AdmFName1, s.AdmLName1, s.AdmFName2, s.AdmLName2, s.AdmFName3, s.AdmLName3;",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 1050,
+      "completion_tokens": 160
+    },
+    {
+      "question_id": "1178",
+      "db_id": "thrombosis_prediction",
+      "initial_sql": "SELECT T1.SEX \nFROM Patient AS T1 \nJOIN Examination AS T2 ON T1.ID = T2.ID \nWHERE T2.Diagnosis = 'AORTITIS' \nORDER BY T1.`First Date` \nLIMIT 1;",
+      "initial_status": "EMPTY",
+      "final_sql": "SELECT T1.SEX \nFROM Patient AS T1 \nJOIN Examination AS T2 ON T1.ID = T2.ID \nWHERE T2.Diagnosis = 'AORTITIS' \nORDER BY T1.`First Date` \nLIMIT 1;",
+      "final_status": "EMPTY",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 685,
+      "completion_tokens": 57
+    },
+    {
+      "question_id": "964",
+      "db_id": "formula_1",
+      "initial_sql": "SELECT code \nFROM drivers \nWHERE nationality = 'America';",
+      "initial_status": "EMPTY",
+      "final_sql": "SELECT code \nFROM drivers \nWHERE nationality = 'America';",
+      "final_status": "EMPTY",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 1249,
+      "completion_tokens": 17
+    },
+    {
+      "question_id": "886",
+      "db_id": "formula_1",
+      "initial_sql": "SELECT year, MAX(round) as max_round\nFROM races\nGROUP BY year\nORDER BY max_round DESC\nLIMIT 1;",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT year, MAX(round) as max_round\nFROM races\nGROUP BY year\nORDER BY max_round DESC\nLIMIT 1;",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 1250,
+      "completion_tokens": 32
+    },
+    {
+      "question_id": "320",
+      "db_id": "toxicology",
+      "initial_sql": "SELECT T2.bond_type \nFROM connected AS T1 \nINNER JOIN bond AS T2 \nON T1.bond_id = T2.bond_id \nWHERE T1.atom_id = 'TR000_1' AND T1.atom_id2 = 'TR000_2';",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT T2.bond_type \nFROM connected AS T1 \nINNER JOIN bond AS T2 \nON T1.bond_id = T2.bond_id \nWHERE T1.atom_id = 'TR000_1' AND T1.atom_id2 = 'TR000_2';",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": true,
+      "llm_calls": 1,
+      "prompt_tokens": 386,
+      "completion_tokens": 63
+    },
+    {
+      "question_id": "114",
+      "db_id": "financial",
+      "initial_sql": "SELECT T1.account_id \nFROM account AS T1 \nJOIN disp AS T2 ON T1.account_id = T2.account_id \nJOIN client AS T3 ON T2.client_id = T3.client_id \nJOIN district AS T4 ON T3.district_id = T4.district_id \nWHERE T4.A3 = 'Prague' \nORDER BY T1.account_id \nLIMIT 1;",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT T1.account_id \nFROM account AS T1 \nJOIN disp AS T2 ON T1.account_id = T2.account_id \nJOIN client AS T3 ON T2.client_id = T3.client_id \nJOIN district AS T4 ON T3.district_id = T4.district_id \nWHERE T4.A3 = 'Prague' \nORDER BY T1.account_id \nLIMIT 1;",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 741,
+      "completion_tokens": 89
+    },
+    {
+      "question_id": "330",
+      "db_id": "toxicology",
+      "initial_sql": "SELECT CAST(SUM(CASE WHEN T1.label = '+' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.molecule_id) \nFROM molecule AS T1 \nJOIN atom AS T2 ON T1.molecule_id = T2.molecule_id \nJOIN connected AS T3 ON T2.atom_id = T3.atom_id \nJOIN bond AS T4 ON T3.bond_id = T4.bond_id \nWHERE T2.element = 'h' AND T4.bond_type = '#';",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT CAST(SUM(CASE WHEN T1.label = '+' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.molecule_id) \nFROM molecule AS T1 \nJOIN atom AS T2 ON T1.molecule_id = T2.molecule_id \nJOIN connected AS T3 ON T2.atom_id = T3.atom_id \nJOIN bond AS T4 ON T3.bond_id = T4.bond_id \nWHERE T2.element = 'h' AND T4.bond_type = '#';",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 399,
+      "completion_tokens": 115
+    },
+    {
+      "question_id": "313",
+      "db_id": "toxicology",
+      "initial_sql": "SELECT COUNT(atom_id) \nFROM atom \nWHERE molecule_id = 'TR001';",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT COUNT(atom_id) \nFROM atom \nWHERE molecule_id = 'TR001';",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": true,
+      "llm_calls": 1,
+      "prompt_tokens": 330,
+      "completion_tokens": 22
+    },
+    {
+      "question_id": "669",
+      "db_id": "codebase_community",
+      "initial_sql": "SELECT MIN(CreationDate) \nFROM votes \nWHERE UserId = (SELECT Id FROM users WHERE DisplayName = 'chl');",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT MIN(CreationDate) \nFROM votes \nWHERE UserId = (SELECT Id FROM users WHERE DisplayName = 'chl');",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": true,
+      "llm_calls": 1,
+      "prompt_tokens": 982,
+      "completion_tokens": 29
+    },
+    {
+      "question_id": "728",
+      "db_id": "superhero",
+      "initial_sql": "SELECT \n    T1.eye_colour_id, \n    T2.colour, \n    COUNT(T1.eye_colour_id) AS count\nFROM \n    superhero AS T1\nJOIN \n    colour AS T2 ON T1.eye_colour_id = T2.id\nWHERE \n    T1.publisher_id = (SELECT id FROM publisher WHERE publisher_name = 'Marvel Comics')\nGROUP BY \n    T1.eye_colour_id, T2.colour\nORDER BY \n    count DESC;",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT \n    T1.eye_colour_id, \n    T2.colour, \n    COUNT(T1.eye_colour_id) AS count\nFROM \n    superhero AS T1\nJOIN \n    colour AS T2 ON T1.eye_colour_id = T2.id\nWHERE \n    T1.publisher_id = (SELECT id FROM publisher WHERE publisher_name = 'Marvel Comics')\nGROUP BY \n    T1.eye_colour_id, T2.colour\nORDER BY \n    count DESC;",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 560,
+      "completion_tokens": 102
+    },
+    {
+      "question_id": "1118",
+      "db_id": "european_football_2",
+      "initial_sql": "SELECT \n    P.player_name\nFROM \n    Player P\nJOIN \n    Player_Attributes PA ON P.player_api_id = PA.player_api_id\nWHERE \n    datetime(CURRENT_TIMESTAMP, 'localtime') - datetime(P.birthday, 'localtime') > 34;",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT \n    P.player_name\nFROM \n    Player P\nJOIN \n    Player_Attributes PA ON P.player_api_id = PA.player_api_id\nWHERE \n    datetime(CURRENT_TIMESTAMP, 'localtime') - datetime(P.birthday, 'localtime') > 34;",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 2066,
+      "completion_tokens": 62
+    },
+    {
+      "question_id": "1088",
+      "db_id": "european_football_2",
+      "initial_sql": "SELECT \n  P.player_name \nFROM \n  Player_Attributes PA \n  INNER JOIN Player P ON PA.player_api_id = P.player_api_id \nWHERE \n  PA.volleys > 70 AND PA.dribbling > 70;",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT \n  P.player_name \nFROM \n  Player_Attributes PA \n  INNER JOIN Player P ON PA.player_api_id = P.player_api_id \nWHERE \n  PA.volleys > 70 AND PA.dribbling > 70;",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 2080,
+      "completion_tokens": 54
+    },
+    {
+      "question_id": "762",
+      "db_id": "superhero",
+      "initial_sql": "SELECT T2.power_name \nFROM hero_power AS T1 \nJOIN superpower AS T2 ON T1.power_id = T2.id \nGROUP BY T2.power_name \nORDER BY COUNT(T1.power_id) DESC \nLIMIT 1;",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT T2.power_name \nFROM hero_power AS T1 \nJOIN superpower AS T2 ON T1.power_id = T2.id \nGROUP BY T2.power_name \nORDER BY COUNT(T1.power_id) DESC \nLIMIT 1;",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": true,
+      "llm_calls": 1,
+      "prompt_tokens": 539,
+      "completion_tokens": 55
+    },
+    {
+      "question_id": "568",
+      "db_id": "codebase_community",
+      "initial_sql": "SELECT \n    T2.DisplayName \nFROM \n    votes AS T1 \nINNER JOIN \n    users AS T2 ON T1.UserId = T2.Id \nWHERE \n    T1.Id = 6347;",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT \n    T2.DisplayName \nFROM \n    votes AS T1 \nINNER JOIN \n    users AS T2 ON T1.UserId = T2.Id \nWHERE \n    T1.Id = 6347;",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": true,
+      "llm_calls": 1,
+      "prompt_tokens": 983,
+      "completion_tokens": 48
+    },
+    {
+      "question_id": "281",
+      "db_id": "toxicology",
+      "initial_sql": "SELECT \n  element, \n  COUNT(element) AS tally\nFROM \n  atom\nWHERE \n  molecule_id IN (\n    SELECT \n      molecule_id \n    FROM \n      molecule \n    WHERE \n      label = '+' \n    INTERSECT \n    SELECT \n      molecule_id \n    FROM \n      atom \n    WHERE \n      atom_id LIKE '4%'\n  )\nGROUP BY \n  element;",
+      "initial_status": "EMPTY",
+      "final_sql": "SELECT \n  element, \n  COUNT(element) AS tally\nFROM \n  atom\nWHERE \n  molecule_id IN (\n    SELECT \n      molecule_id \n    FROM \n      molecule \n    WHERE \n      label = '+' \n    INTERSECT \n    SELECT \n      molecule_id \n    FROM \n      atom \n    WHERE \n      atom_id LIKE '4%'\n  )\nGROUP BY \n  element;",
+      "final_status": "EMPTY",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 378,
+      "completion_tokens": 87
+    },
+    {
+      "question_id": "1487",
+      "db_id": "debit_card_specializing",
+      "initial_sql": "SELECT T1.CustomerID, T1.Consumption\nFROM yearmonth AS T1\nJOIN customers AS T2 ON T1.CustomerID = T2.CustomerID\nWHERE T2.Segment = 'LAM' AND T1.Date = '201310' AND T2.Currency = 'Euro'\nORDER BY T1.Consumption DESC\nLIMIT 1;",
+      "initial_status": "EMPTY",
+      "final_sql": "SELECT T1.CustomerID, T1.Consumption\nFROM yearmonth AS T1\nJOIN customers AS T2 ON T1.CustomerID = T2.CustomerID\nWHERE T2.Segment = 'LAM' AND T1.Date = '201310' AND T2.Currency = 'Euro'\nORDER BY T1.Consumption DESC\nLIMIT 1;",
+      "final_status": "EMPTY",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 313,
+      "completion_tokens": 80
+    },
+    {
+      "question_id": "1391",
+      "db_id": "student_club",
+      "initial_sql": "SELECT SUM(CASE WHEN T1.major_name = 'Finance' THEN 1 ELSE 0 END) / \n       SUM(CASE WHEN T1.major_name = 'Physics' THEN 1 ELSE 0 END) AS ratio\nFROM major AS T1;",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT SUM(CASE WHEN T1.major_name = 'Finance' THEN 1 ELSE 0 END) / \n       SUM(CASE WHEN T1.major_name = 'Physics' THEN 1 ELSE 0 END) AS ratio\nFROM major AS T1;",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": true,
+      "llm_calls": 1,
+      "prompt_tokens": 580,
+      "completion_tokens": 58
+    },
+    {
+      "question_id": "1341",
+      "db_id": "student_club",
+      "initial_sql": "SELECT location FROM event WHERE event_name = 'Spring Budget Review';",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT location FROM event WHERE event_name = 'Spring Budget Review';",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": true,
+      "llm_calls": 1,
+      "prompt_tokens": 567,
+      "completion_tokens": 18
+    },
+    {
+      "question_id": "883",
+      "db_id": "formula_1",
+      "initial_sql": "SELECT COUNT(raceId) as totalRaces, name\nFROM races\nWHERE year = 2005\nORDER BY name DESC;",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT COUNT(raceId) as totalRaces, name\nFROM races\nWHERE year = 2005\nORDER BY name DESC;",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 1244,
+      "completion_tokens": 33
+    },
+    {
+      "question_id": "41",
+      "db_id": "california_schools",
+      "initial_sql": "SELECT s.Virtual, s.School, s.County, s.District, s.CDSCode, s.SchoolName, s.DistrictName, s.CountyName, s.AvgScrRead\nFROM (\n    SELECT s.CDSCode, s.SchoolName, s.DistrictName, s.CountyName, s.AvgScrRead,\n    ROW_NUMBER() OVER (PARTITION BY s.County ORDER BY s.AvgScrRead DESC) AS RN\n    FROM satscores s\n    JOIN schools sc ON s.cds = sc.CDSCode\n    WHERE s.rtype = 'S' AND s.Virtual = 'F'\n) AS subquery\nJOIN schools sc ON subquery.CDSCode = sc.CDSCode\nWHERE RN <= 5\nORDER BY subquery.County, subquery.AvgScrRead DESC;",
+      "initial_status": "ERROR",
+      "final_sql": "SELECT s.Virtual, s.School, s.County, s.District, s.CDSCode, s.SchoolName, s.DistrictName, s.CountyName, s.AvgScrRead\nFROM (\n    SELECT s.CDSCode, s.SchoolName, s.DistrictName, s.CountyName, s.AvgScrRead,\n    ROW_NUMBER() OVER (PARTITION BY s.County ORDER BY s.AvgScrRead DESC) AS RN\n    FROM satscores s\n    JOIN schools sc ON s.cds = sc.CDSCode\n    WHERE s.rtype = 'S' AND s.Virtual = 'F'\n) AS subquery\nJOIN schools sc ON subquery.CDSCode = sc.CDSCode\nWHERE RN <= 5\nORDER BY subquery.County, subquery.AvgScrRead DESC;",
+      "final_status": "ERROR",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 1027,
+      "completion_tokens": 179
+    },
+    {
+      "question_id": "1312",
+      "db_id": "student_club",
+      "initial_sql": "SELECT T2.major_name \nFROM member AS T1 \nINNER JOIN major AS T2 ON T1.link_to_major = T2.major_id \nWHERE T1.first_name = 'Angela' AND T1.last_name = 'Sanders';",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT T2.major_name \nFROM member AS T1 \nINNER JOIN major AS T2 ON T1.link_to_major = T2.major_id \nWHERE T1.first_name = 'Angela' AND T1.last_name = 'Sanders';",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": true,
+      "llm_calls": 1,
+      "prompt_tokens": 579,
+      "completion_tokens": 54
+    },
+    {
+      "question_id": "1242",
+      "db_id": "thrombosis_prediction",
+      "initial_sql": "SELECT DISTINCT p.ID \nFROM Patient p \nJOIN Laboratory l ON p.ID = l.ID \nWHERE YEAR(l.Date) = '1984' AND SUBSTR(YEAR(CURRENT_TIMESTAMP), 1, 4) - SUBSTR(p.Birthday, 1, 4) < 50 AND l.PLT BETWEEN 100 AND 400;",
+      "initial_status": "ERROR",
+      "final_sql": "SELECT DISTINCT p.ID \nFROM Patient p \nJOIN Laboratory l ON p.ID = l.ID \nWHERE YEAR(l.Date) = '1984' AND SUBSTR(YEAR(CURRENT_TIMESTAMP), 1, 4) - SUBSTR(p.Birthday, 1, 4) < 50 AND l.PLT BETWEEN 100 AND 400;",
+      "final_status": "ERROR",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 735,
+      "completion_tokens": 76
+    },
+    {
+      "question_id": "208",
+      "db_id": "toxicology",
+      "initial_sql": "SELECT T1.label \nFROM molecule AS T1 \nJOIN atom AS T2 ON T1.molecule_id = T2.molecule_id \nWHERE T2.element = 'h' \nGROUP BY T1.label \nORDER BY COUNT(T2.atom_id) DESC \nLIMIT 1;",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT T1.label \nFROM molecule AS T1 \nJOIN atom AS T2 ON T1.molecule_id = T2.molecule_id \nWHERE T2.element = 'h' \nGROUP BY T1.label \nORDER BY COUNT(T2.atom_id) DESC \nLIMIT 1;",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": true,
+      "llm_calls": 1,
+      "prompt_tokens": 360,
+      "completion_tokens": 63
+    },
+    {
+      "question_id": "1455",
+      "db_id": "student_club",
+      "initial_sql": "SELECT link_to_budget \nFROM expense \nWHERE expense_description = 'Water, chips, cookies' \nORDER BY cost DESC \nLIMIT 1;",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT link_to_budget \nFROM expense \nWHERE expense_description = 'Water, chips, cookies' \nORDER BY cost DESC \nLIMIT 1;",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": true,
+      "llm_calls": 1,
+      "prompt_tokens": 586,
+      "completion_tokens": 34
+    },
+    {
+      "question_id": "936",
+      "db_id": "formula_1",
+      "initial_sql": "SELECT \n    T1.fastestLapTime, \n    T1.fastestLapSpeed\nFROM \n    results AS T1\nINNER JOIN \n    drivers AS T2 ON T1.driverId = T2.driverId\nWHERE \n    T2.forename = 'Lewis' AND T2.surname = 'Hamilton' AND T1.raceId = 1 AND T1.year = 2008;",
+      "initial_status": "ERROR",
+      "final_sql": "SELECT \n    T1.fastestLapTime, \n    T1.fastestLapSpeed\nFROM \n    results AS T1\nINNER JOIN \n    drivers AS T2 ON T1.driverId = T2.driverId\nWHERE \n    T2.forename = 'Lewis' AND T2.surname = 'Hamilton' AND T1.raceId = 1 AND T1.year = 2008;",
+      "final_status": "ERROR",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 1243,
+      "completion_tokens": 90
+    },
+    {
+      "question_id": "1396",
+      "db_id": "student_club",
+      "initial_sql": "SELECT COUNT(T1.link_to_event) AS num_events, T2.major_name\nFROM attendance AS T1\nJOIN member AS T2 ON T1.link_to_member = T2.member_id\nWHERE T2.first_name = 'Luisa' AND T2.last_name = 'Guidi'",
+      "initial_status": "ERROR",
+      "final_sql": "SELECT COUNT(T1.link_to_event) AS num_events, T2.major_name\nFROM attendance AS T1\nJOIN member AS T2 ON T1.link_to_member = T2.member_id\nWHERE T2.first_name = 'Luisa' AND T2.last_name = 'Guidi'",
+      "final_status": "ERROR",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 571,
+      "completion_tokens": 66
+    },
+    {
+      "question_id": "999",
+      "db_id": "formula_1",
+      "initial_sql": "SELECT T1.name \nFROM races AS T1 \nJOIN results AS T2 ON T1.raceId = T2.raceId \nWHERE T2.fastestLapSpeed = (SELECT MIN(fastestLapTime) FROM results);",
+      "initial_status": "EMPTY",
+      "final_sql": "SELECT T1.name \nFROM races AS T1 \nJOIN results AS T2 ON T1.raceId = T2.raceId \nWHERE T2.fastestLapSpeed = (SELECT MIN(fastestLapTime) FROM results);",
+      "final_status": "EMPTY",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 1270,
+      "completion_tokens": 56
+    },
+    {
+      "question_id": "1102",
+      "db_id": "european_football_2",
+      "initial_sql": "SELECT P.player_name \nFROM Player_Attributes PA \nJOIN Player P ON PA.player_api_id = P.player_api_id \nWHERE PA.date LIKE '2016-06-23%' \nAND PA.overall_rating = 77 \nORDER BY P.birthday DESC \nLIMIT 1;",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT P.player_name \nFROM Player_Attributes PA \nJOIN Player P ON PA.player_api_id = P.player_api_id \nWHERE PA.date LIKE '2016-06-23%' \nAND PA.overall_rating = 77 \nORDER BY P.birthday DESC \nLIMIT 1;",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 2108,
+      "completion_tokens": 63
+    },
+    {
+      "question_id": "121",
+      "db_id": "financial",
+      "initial_sql": "SELECT T1.account_id, T1.date\nFROM account AS T1\nJOIN district AS T2 ON T1.district_id = T2.district_id\nWHERE T2.A2 = 'Prachatice';",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT T1.account_id, T1.date\nFROM account AS T1\nJOIN district AS T2 ON T1.district_id = T2.district_id\nWHERE T2.A2 = 'Prachatice';",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": true,
+      "llm_calls": 1,
+      "prompt_tokens": 739,
+      "completion_tokens": 50
+    },
+    {
+      "question_id": "1188",
+      "db_id": "thrombosis_prediction",
+      "initial_sql": "SELECT ID\nFROM Patient\nWHERE SEX = 'F' AND YEAR(Birthday) = 1964 AND Admission = '+';",
+      "initial_status": "ERROR",
+      "final_sql": "SELECT ID\nFROM Patient\nWHERE SEX = 'F' AND YEAR(Birthday) = 1964 AND Admission = '+';",
+      "final_status": "ERROR",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 711,
+      "completion_tokens": 31
+    },
+    {
+      "question_id": "5",
+      "db_id": "california_schools",
+      "initial_sql": "SELECT COUNT(DISTINCT s.cds)\nFROM satscores s\nJOIN schools v ON s.cds = v.CDSCode\nWHERE s.AvgScrMath > 400 AND v.Virtual = 'F';",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT COUNT(DISTINCT s.cds)\nFROM satscores s\nJOIN schools v ON s.cds = v.CDSCode\nWHERE s.AvgScrMath > 400 AND v.Virtual = 'F';",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": true,
+      "llm_calls": 1,
+      "prompt_tokens": 1017,
+      "completion_tokens": 49
+    },
+    {
+      "question_id": "885",
+      "db_id": "formula_1",
+      "initial_sql": "SELECT name, date \nFROM races \nWHERE year = 1999 AND round = (SELECT MAX(round) FROM races WHERE year = 1999);",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT name, date \nFROM races \nWHERE year = 1999 AND round = (SELECT MAX(round) FROM races WHERE year = 1999);",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": true,
+      "llm_calls": 1,
+      "prompt_tokens": 1256,
+      "completion_tokens": 36
+    },
+    {
+      "question_id": "370",
+      "db_id": "card_games",
+      "initial_sql": "SELECT COUNT(*) \nFROM cards \nJOIN foreign_data ON cards.uuid = foreign_data.uuid \nWHERE cards.borderColor = 'borderless' AND foreign_data.language = 'Russian';",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT COUNT(*) \nFROM cards \nJOIN foreign_data ON cards.uuid = foreign_data.uuid \nWHERE cards.borderColor = 'borderless' AND foreign_data.language = 'Russian';",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": true,
+      "llm_calls": 1,
+      "prompt_tokens": 1053,
+      "completion_tokens": 39
+    },
+    {
+      "question_id": "1216",
+      "db_id": "thrombosis_prediction",
+      "initial_sql": "SELECT *\nFROM Patient\nWHERE SEX = 'M' AND Birthday IN (\n    SELECT Birthday\n    FROM Patient\n    WHERE ALB <= 3.5 OR ALB >= 5.5\n)\nORDER BY Birthday DESC;",
+      "initial_status": "ERROR",
+      "final_sql": "SELECT *\nFROM Patient\nWHERE SEX = 'M' AND Birthday IN (\n    SELECT Birthday\n    FROM Patient\n    WHERE ALB <= 3.5 OR ALB >= 5.5\n)\nORDER BY Birthday DESC;",
+      "final_status": "ERROR",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 707,
+      "completion_tokens": 52
+    },
+    {
+      "question_id": "1419",
+      "db_id": "student_club",
+      "initial_sql": "SELECT T1.category \nFROM budget AS T1 \nINNER JOIN event AS T2 \nON T1.link_to_event = T2.event_id \nWHERE T2.event_date = '2020-03-24T12:00:00';",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT T1.category \nFROM budget AS T1 \nINNER JOIN event AS T2 \nON T1.link_to_event = T2.event_id \nWHERE T2.event_date = '2020-03-24T12:00:00';",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": true,
+      "llm_calls": 1,
+      "prompt_tokens": 608,
+      "completion_tokens": 55
+    },
+    {
+      "question_id": "958",
+      "db_id": "formula_1",
+      "initial_sql": "SELECT \n    D.forename, \n    D.surname, \n    LT.time\nFROM \n    drivers D\nJOIN \n    results R ON D.driverId = R.driverId\nJOIN \n    lapTimes LT ON R.raceId = LT.raceId AND D.driverId = LT.driverId\nWHERE \n    LT.lap = (SELECT MAX(lap) FROM lapTimes);",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT \n    D.forename, \n    D.surname, \n    LT.time\nFROM \n    drivers D\nJOIN \n    results R ON D.driverId = R.driverId\nJOIN \n    lapTimes LT ON R.raceId = LT.raceId AND D.driverId = LT.driverId\nWHERE \n    LT.lap = (SELECT MAX(lap) FROM lapTimes);",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 1244,
+      "completion_tokens": 84
+    },
+    {
+      "question_id": "1528",
+      "db_id": "debit_card_specializing",
+      "initial_sql": "SELECT \n    SUM(CASE WHEN T2.Segment = 'premium' THEN 1 ELSE 0 END) AS premium_count,\n    COUNT(T2.Segment) AS total_count\nFROM \n    transactions_1k AS T1\nJOIN \n    gasstations AS T2 ON T1.GasStationID = T2.GasStationID\nWHERE \n    T2.Country = 'SVK'",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT \n    SUM(CASE WHEN T2.Segment = 'premium' THEN 1 ELSE 0 END) AS premium_count,\n    COUNT(T2.Segment) AS total_count\nFROM \n    transactions_1k AS T1\nJOIN \n    gasstations AS T2 ON T1.GasStationID = T2.GasStationID\nWHERE \n    T2.Country = 'SVK'",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 291,
+      "completion_tokens": 88
+    },
+    {
+      "question_id": "1351",
+      "db_id": "student_club",
+      "initial_sql": "SELECT T2.major_name \nFROM member AS T1 \nINNER JOIN major AS T2 ON T1.link_to_major = T2.major_id \nWHERE T1.first_name = 'Brent' AND T1.last_name = 'Thomason';",
+      "initial_status": "SUCCESS",
+      "final_sql": "SELECT T2.major_name \nFROM member AS T1 \nINNER JOIN major AS T2 ON T1.link_to_major = T2.major_id \nWHERE T1.first_name = 'Brent' AND T1.last_name = 'Thomason';",
+      "final_status": "SUCCESS",
+      "turns": 1,
+      "ex": true,
+      "llm_calls": 1,
+      "prompt_tokens": 581,
+      "completion_tokens": 56
+    },
+    {
+      "question_id": "817",
+      "db_id": "superhero",
+      "initial_sql": "SELECT T3.race \nFROM superhero AS T1 \nINNER JOIN colour AS T2 ON T1.hair_colour_id = T2.id \nINNER JOIN race AS T3 ON T1.race_id = T3.id \nWHERE T2.colour = 'blue' AND T1.gender_id = (SELECT id FROM gender WHERE gender = 'male');",
+      "initial_status": "EMPTY",
+      "final_sql": "SELECT T3.race \nFROM superhero AS T1 \nINNER JOIN colour AS T2 ON T1.hair_colour_id = T2.id \nINNER JOIN race AS T3 ON T1.race_id = T3.id \nWHERE T2.colour = 'blue' AND T1.gender_id = (SELECT id FROM gender WHERE gender = 'male');",
+      "final_status": "EMPTY",
+      "turns": 1,
+      "ex": false,
+      "llm_calls": 1,
+      "prompt_tokens": 553,
+      "completion_tokens": 78
+    }
+  ]
+}
