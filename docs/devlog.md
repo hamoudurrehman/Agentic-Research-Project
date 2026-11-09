@@ -33,6 +33,11 @@ print(d['gap1']['arms']['B1']['summary']['rdr_pct'])"
 | 5 | 2026-11-07 | Case-only literal repairs rejected as "already tried" | Loop guard compares SQL case-sensitively | (mock) EX 83.3% to 100.0%; literal recovery 50.0% to 100.0% | Fixed |
 | 6 | 2026-11-07 | Baselines scored a correct empty answer as wrong | One shared EX rule for all systems | (mock) B0 EX 33.3% to 50.0% | Fixed |
 | 7 | 2026-11-07 | Fault injector F3/F7 produce duplicate clauses | Version-safe `from_` lookup, pinned sqlglot (proposed) | (mock) 6 of 22 repairs unscorable | Open |
+| 8 | 2026-11-09 | MSYS2 Python environment was incompatible with the installed Pydantic version; Pydantic v1 lacked the required serialization API | Recreated `.venv` using official Windows CPython 3.12 and reinstalled the project dependencies | Pydantic 2.14.3; trajectory serialization test passed; `pip check` reported no broken requirements | Fixed |
+| 9 | 2026-11-09 | Existing environment and platform-specific SQLite temporary-file behavior prevented a completely clean test-suite run | Rebuilt the environment, installed pytest and python-dotenv, and ran the full test suite | 57 passed, 1 failed; remaining failure was `test_sandbox_read_only_and_typed_states` at `sqlite3.connect(tmp.name)` with `unable to open database file` | Environment repaired; one platform-specific test failure remains |
+| 10 | 2026-11-09 | Real BIRD baseline and system measurements were needed beyond the earlier small smoke tests | Ran E1 with 50 questions and E2/E3 with 40 questions each using `llama3.1:8b`, seed 42, one run | Results saved in `results/final50/E1/results.json` and `results/final40/E2/` and `E3/`; sample sizes differ, so these runs are not a matched comparison | Preliminary real BIRD results recorded |
+| 11 | 2026-11-09 | Gap analysis, ablation and efficiency pipelines needed end-to-end validation with the repaired environment | Ran E4, E5 and E6 smoke experiments using local Llama 3.1 8B | Results saved under `results/smoke_ollama/`; E4 exercised fault, natural, literal and stress subsets; E5 exercised A1/A2/A3; E6 measured B0/B1/A3 | Smoke validation complete; not final research results |
+| 12 | 2026-11-09 | Gemini API requests need to remain below the provider's request-per-minute limit | Increased `min_interval_sec` in `configs/gemini.json` from 5 to 6 seconds | Configured request spacing is now 6 seconds; no new Gemini experiment result is claimed from this configuration change | Updated |
 
 ---
 
@@ -132,3 +137,70 @@ print(d['gap1']['arms']['B1']['summary']['rdr_pct'])"
 - **Measured effect (mock):** 6 of 22 repaired fault cases were excluded from RDR
   (`rdr_excluded_queries`): all five F3 cases and one F7 case. After the fix this value should be 0;
   FILL the post-fix value from `E4 gap1.arms.A1.runs[0].rdr_excluded_queries`.
+
+
+
+## Entry 8 - Rebuild of the Python environment
+
+- **Date:** 2026-11-09
+- **Observed failure / limitation:** The original virtual environment used MSYS2 Python 3.12.7 and Pydantic 1.10.26. This caused compatibility problems with project code relying on Pydantic 2 serialization methods, including `.model_dump()`. Installing the required Pydantic core package in that environment was also unsuccessful.
+- **Change:** Preserved the old environment as `.venv_msys2_backup/`, created a new `.venv` using official Windows CPython 3.12, and reinstalled the project in editable mode. Installed pytest and python-dotenv for testing.
+- **Measured effect:** Python 3.12.10, Pydantic 2.14.3 and pydantic-core 2.50.4 were installed. The `TrajectoryLogger` serialization check passed, and `python -m pip check` reported no broken requirements.
+
+## Entry 9 - Test-suite verification after environment repair
+
+- **Date:** 2026-11-09
+- **Observed failure / limitation:** The project needed a complete test run after replacing the Python environment. One test encountered a Windows SQLite temporary-file error before the sandbox behavior could be tested.
+- **Change:** Installed pytest in the new environment and executed the complete test suite using `python -m pytest -q`.
+- **Measured effect:** 57 tests passed and 1 failed. The remaining failure was `test_sandbox_read_only_and_typed_states` in `tests/test_sqlheal.py`, at `sqlite3.connect(tmp.name)`, with `sqlite3.OperationalError: unable to open database file`. The failure was associated with the temporary-file/SQLite setup on this Windows environment; it was not treated as a successful test.
+
+## Entry 10 - Initial real BIRD runs using local Llama 3.1 8B
+
+- **Date:** 2026-11-09
+- **Observed failure / limitation:** Earlier smoke tests and environment problems had prevented reliable progress toward the Phase 2 BIRD evaluation. The experiments needed to be executed with the actual local model and the correctly nested BIRD database directory.
+- **Change:** Recreated the Windows virtual environment, verified the BIRD database directory, and ran E1, E2 and E3 using `llama3.1:8b`, temperature 0, seed 42 and one run. E1 used a 50-question sample; E2 and E3 used 40-question samples.
+- **Measured effect:** The experiment runner completed and saved:
+  - E1: `results/final50/E1/results.json`
+  - E2: `results/final40/E2/results.json`
+  - E3: `results/final40/E3/results.json`
+
+  E2 recorded 40 natural questions, 82.5% final execution success, 45.0% execution accuracy, 62.5% hallucination recovery rate and 0% repair-drift rate.
+
+  E3 recorded 40 natural questions, 92.5% final execution success, 42.5% execution accuracy, 66.67% hallucination recovery rate, 25.0% empty-result precision and 33.33% empty-result recovery among eligible candidates.
+
+  These are one-run preliminary results. E1, E2 and E3 used different sample sizes, so their execution-accuracy values should not be presented as a controlled head-to-head comparison. The JSON files remain the source of truth for all reported metrics.
+
+## Entry 11 - E4, E5 and E6 smoke validation using local inference
+
+- **Date:** 2026-11-09
+- **Observed failure / limitation:** The gap-analysis, ablation and efficiency experiment pipelines had not yet been verified end-to-end in the repaired Windows environment with the local model.
+- **Change:** Executed E4, E5 and E6 with `llama3.1:8b`, seed 42 and one run, using a 20-question natural sample and the experiment-specific fault, literal and stress subsets.
+- **Measured effect:**
+  - E4 completed its fault, natural, literal and stress experiment arms and saved `results/smoke_ollama/E4/results.json`.
+  - E5 completed A1, A2 and A3 across natural, fault, literal and stress subsets and saved `results/smoke_ollama/E5/results.json`.
+  - E6 completed B0, B1 and A3 on the natural subset and saved `results/smoke_ollama/E6/results.json`.
+
+  The E5 smoke run recorded the following preliminary values:
+
+  | System | Natural EX (%) | Fault HRR (%) | Fault RDR (%) | Literal recovery (%) | Literal ERP (%) | Stress EOCR (%) |
+  |---|---:|---:|---:|---:|---:|---:|
+  | A1 | 25.0 | 94.7 | 4.4 | 0.0 | N/A | 0.0 |
+  | A2 | 30.0 | 96.0 | 4.4 | 100.0 | 100.0 | 25.0 |
+  | A3 | 30.0 | 96.0 | 4.4 | 100.0 | 100.0 | 25.0 |
+
+  E6 recorded the following preliminary average latency measurements:
+
+  | System | Average latency (s/query) | Average LLM calls |
+  |---|---:|---:|
+  | B0 | 0.055 | 1.00 |
+  | B1 | 0.134 | 1.50 |
+  | A3 | 0.122 | 1.55 |
+
+  These are smoke-test results from one run, not final research results. E6 latency requires further inspection because model-client caching may affect the measured timings. The reported USD-equivalent token costs in the JSON are based on configured API pricing and must not be described as actual local Ollama inference costs.
+
+## Entry 12 - Gemini request interval adjustment
+
+- **Date:** 2026-11-09
+- **Observed failure / limitation:** The Gemini API has a request-per-minute limit. Running experiments too close to that limit risks rate-limit errors and interrupted experiment runs.
+- **Change:** Increased `min_interval_sec` in `configs/gemini.json` from 5 to 6 seconds.
+- **Measured effect:** The configuration now requests a minimum six-second interval between requests. This is a preventive configuration change; no improvement in experiment accuracy or completed Gemini runs is claimed.
